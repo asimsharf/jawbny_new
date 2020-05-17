@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="Queue_Icon" data-name="Queue Icon" transform="translate(-180)">
+    <path id="Bounds" d="M180,0h24V24H180Z" fill="none"/>
+    <path id="Icon" d="M184,6h-2V20a2.006,2.006,0,0,0,2,2h14V20H184Zm16-4H188a2.006,2.006,0,0,0-2,2V16a2.006,2.006,0,0,0,2,2h12a2.006,2.006,0,0,0,2-2V4A2.006,2.006,0,0,0,200,2Zm-1,9h-4v4h-2V11h-4V9h4V5h2V9h4Z" fill="#6b42b5"/>
+  </g>
+</svg>

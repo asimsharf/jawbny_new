@@ -1,0 +1,151 @@
+{
+
+
+  "language": "Elige tu idioma",
+
+  "intro": {
+    "p1_title": "Bienvenida",
+    "p1_content": "Jawebny es una plataforma creada para proporcionar respuestas e información entre usuarios.",
+    "p2_title": "Contenido por dinero",
+    "p2_content": "A través de jawbny, puede ganar dinero frente a su interacción después de verificar su cuenta",
+    "p3_title": "Insignias",
+    "p3_content": "La plataforma tiene un sistema de puntuación que muestra el valor de cada interacción que haces",
+    "p4_title": "Consigue puntos altos",
+    "p4_content": "Para asegurarse de obtener puntos altos, solo tiene que seguir las comunidades que representan su especialidad y no escribir información engañosa"
+  }  ,
+
+  "login": {
+    "sms"  : "Recibir mensaje de confirmación",
+    "phone": "Su número de teléfono",
+    "name" :  "Nombre de usuario",
+    "check_sms": "Cuenta de confirmación realizada"
+  }  ,
+
+  "register": {
+    "photo"  : "Adjunte un documento oficial",
+    "agree_condition": "Termino del servicio y política de privacidad",
+    "read_codition" :  "Lea los términos y la política de privacidad",
+    "select_photo" : "Añadir foto",
+    "select_studio" : "Elegir de la galería",
+    "camera_photo" : "Tomar foto",
+    "email": "E-mail",
+    "password": "contraseña",
+    "confirm_pass":"Confirmar contraseña"
+  }  ,
+
+  "home": {
+    "title": "Hogar",
+    "top_visit": "Más visitado",
+    "top_answers": "Mejores respuestas",
+    "top_answered": "Más respondidos",
+    "answers": "Respuestas",
+    "top_voted": "Más votados",
+
+    "popup": {
+      "ques_title": "Título de la pregunta",
+      "community": "Comunidad",
+      "tag": "Etiquetas",
+      "poll": "Encuesta",
+      "attach": "Adjuntar archivo",
+      "ques-detail": "Detalles de la pregunta",
+      "ask_anonymous": "Pregunta anónimamente",
+      "priv_question": "Esta pregunta es una pregunta privada?",
+      "get_notifiacat": "Reciba notificaciones por correo electrónico",
+      "terms": "Termino del servicio y política de privacidad.",
+      "search": "Buscar",
+
+      "stick": "Pegue esta pregunta"
+    }
+  }  ,
+  "menu": {
+
+    "home": "Hogar",
+    "mail": "Bandeja de entrada",
+    "notification":{
+      "notificat": "Bandeja de entrada",
+      "record": "Registro de notificaciones",
+      "n_updat": "Actualizando Notificaciones",
+      "no_notifica": "No Notificaciones"
+    },
+    "point": "Puntos",
+    "point_text": "Has votado por una pregunta",
+    "communites":{
+      "communit": "Comunidades",
+      "follow": "Seguir",
+      "histor": "Seguir",
+      "book": "Libros",
+      "anime": "Anime",
+      "technolog": "Technology"
+    },
+
+    "aske": "Preguntas hechas",
+    "polls": "Centro",
+    "best_answer": "Mejores respuestas",
+    "badges": {
+      "badge":"Insignias",
+      "badge_content": "Queremos que su respuesta signifique que queremos pagar en efectivo por cada punto que obtenga en nuestro sitio, creyendo que su tiempo y su contenido son valiosos. Por lo tanto, se le pagará mensualmente por cada insignia que reciba.\n\n",
+      "user_point": "Puntos para un nuevo usuario en la comunidad",
+      "choose_answer":"Elegir la mejor respuesta para una pregunta",
+      "add_answer": "Agregar una respuesta en la comunidad",
+      "voting_quest": "Votar una pregunta en la comunidad",
+      "voting_answer": "Votar una respuesta en la comunidad"
+    },
+    "funct_class": {
+      "class":"Functional class",
+      "class_content": "Si su pregunta es cuando paga a la plataforma por contenido, la respuesta es",
+      "student": "Estudiante",
+      "level_1": "cuando superan los 100 puntos",
+      "teacher": "Profesora",
+      "level_2": "cuando superan los 750 puntos",
+      "culture": "Culta",
+      "level_3": "cuando superan los 1000 puntos",
+      "graduate": "Graduada",
+      "level_4": "cuando superan los 250 puntos",
+      "advisory": "Consultiva",
+      "level_5": "cuando superan los 500 puntos"
+    },
+    "pending" : "Preguntas pendientes",
+    "sign_out": "desconectar"
+  },
+  "buttons": {
+    "next": "Próxima",
+    "back": "atrás",
+    "ask": "Pedir",
+    "regist": "Registrarse",
+    "result": "Resultados",
+    "apply": "Enviar"
+  },
+  "tabs": {
+    "name":"Hameem alsir",
+    "asked_t": "Preguntado: 24 de mayo de 2019 En: Comunidad de hardware"
+  },
+  "About": {
+    "about": "Acerca de",
+    "share": "Share Jawebny Application",
+    "reserved": "All Rights Reserved",
+    "copy": "Copy 1.0"
+
+  },
+  "profile": {
+    "profile": "Profile",
+
+    "about": "Acerca de",
+    "Question": "Preguntas",
+    "polls": "Centro",
+    "Answers": "Respuestas",
+    "BestAnswers": "Mejores respuestas",
+    "AskedQuestions": "Preguntas solicitadas",
+    "PaidQuestions": "Preguntas pagas",
+    "FollowedQuestions": "Preguntas seguidas",
+    "FavoriteQuestions": "Preguntas favoritas",
+    "posts": "Publicaciones",
+    "Comments": "Comentarios",
+    "FollowersQuestions": "Preguntas de seguidores",
+    "FollowersAnswers": "Seguidores Respuestas",
+    "FollowersPosts": "Publicaciones de seguidores",
+    "FollowersComment": "Comentarios de los seguidores"
+  }
+}
+
+
+

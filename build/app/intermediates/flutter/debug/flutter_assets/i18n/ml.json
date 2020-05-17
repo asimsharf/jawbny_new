@@ -1,0 +1,139 @@
+{
+
+
+  "language": "Pilih bahasa anda",
+
+  "intro": {
+    "p1_title": "Selamat datang",
+    "p1_content": "Jawebny adalah platform yang dibuat untuk memberikan jawapan dan maklumat antara pengguna",
+    "p2_title": "Kandungan untuk wang",
+    "p2_content": "Melalui jawbny, anda boleh membuat wang Melawan interaksi anda selepas akaun anda disahkan",
+    "p3_title": "Lencana",
+    "p3_content": "Platform ini mempunyai nilai Sistem menunjukkan nilai setiap interaksi yang anda lakukan",
+    "p4_title": "Dapatkan mata tinggi",
+    "p4_content": "Untuk memastikan anda mendapat mata tinggi Anda hanya perlu mengikuti komuniti mana Mewakili kepakaran anda dan tidak menulis maklumat yang mengelirukan"
+  }  ,
+
+  "login": {
+    "sms"  : "Terima mesej pengesahan",
+    "phone": "Nombor telefon anda",
+    "name" :  "Nama pengguna",
+    "check_sms": "Selesai Akaun pengesahan"
+  }  ,
+
+  "register": {
+    "photo"  : "Lampirkan dokumen rasmi",
+    "agree_condition": "Syarat Perkhidmatan dan Dasar Privasi",
+    "read_codition" :  "Baca Terma dan Dasar Privasi",
+    "select_photo" : "Tambah foto",
+    "select_studio" : "Pilih dari Galeri",
+    "camera_photo" : "Ambil Foto",
+    "email": "E-mel",
+    "password": "kata laluan",
+    "confirm_pass":"Sahkan kata laluan"
+  }  ,
+
+  "home": {
+    "title": "Rumah",
+    "top_visit": "Paling Dikunjungi",
+    "top_answers": "jawapan atas",
+    "top_answered": "Top Answered",
+    "answers": "Jawapan",
+    "top_voted": "Teratas Diundi",
+    "ques_title": "Tajuk Soalan",
+    "community": "Komuniti",
+    "tag": "Tags",
+    "poll": "Undian",
+    "attach": "Lampirkan Fail",
+    "ques-detail": "Butiran soalan",
+    "ask_anonymous": "Tanya Tanpa Nama",
+    "priv_question": "Soalan ini adalah persoalan peribadi?",
+    "get_notifiacat": "Dapatkan pemberitahuan melalui e-mel",
+    "terms": "Syarat Perkhidmatan dan Dasar Privasi.",
+    "search": "Cari",
+    "stick": "Stick this question"
+  }  ,
+  "menu": {
+
+    "home": "Rumah",
+    "mail": "Peti masuk",
+    "notificat": "Pemberitahuan",
+    "record": "Rekod Pemberitahuan",
+    "n_updat": "Mengemas kini Pemberitahuan",
+    "no_notifica": "Tiada Pemberitahuan",
+    "point": "Mata",
+    "point_text": "Anda telah mengundi untuk soalan",
+    "communit": "Komuniti",
+    "follow": "Ikutilah",
+    "histor": "Sejarah",
+    "book": "Buku",
+    "anime": "Anime",
+    "technolog": "Teknologi",
+
+    "aske": "Soalan yang ditanya",
+    "polls": "Undian",
+    "best_answer": "Jawapan terbaik",
+    "badge":"Lencana",
+    "badge_content": "Kami ingin membuat jawapan anda bermakna bahawa kami ingin membayar tunai untuk setiap titik yang anda dapatkan di laman web kami, mempercayai bahawa masa dan kandungan anda adalah berharga. Jadi anda akan dibayar bulanan untuk setiap lencana yang anda dapatkan.\n\n",
+    "user_point": "Mata untuk pengguna baru dalam komuniti",
+    "choose_answer":"Memilih jawapan yang terbaik untuk soalan",
+    "add_answer": "Tambah jawapan dalam komuniti",
+    "voting_quest": "Mengundi soalan dalam masyarakat",
+    "voting_answer": "Mengundi jawapan dalam komuniti",
+    "class":"Functional class",
+    "class_content": "Jika soalan anda adalah apabila anda membayar platform untuk kandungan, jawapannya",
+    "student": "Pelajar",
+    "level_1": "apabila mereka melebihi 100 mata",
+    "teacher": "Guru",
+    "level_2": "apabila mereka melebihi 750 mata",
+    "culture": "Kultur",
+    "level_3": "apabila mereka melebihi 1000 mata",
+    "graduate": "Lulusan",
+    "level_4": "apabila mereka melebihi 250 mata",
+    "advisory": "Penasihat",
+    "level_5": "apabila mereka melebihi 500 mata",
+    "pending" : "Soalan belum selesai",
+    "sign_out": "Keluar"
+  },
+  "buttons": {
+    "next": "Seterusnya",
+    "back": "Kembali",
+    "ask": "Tanya",
+    "regist": "Daftar",
+    "result": "Keputusan",
+    "apply": "Hantar"
+  },
+  "tabs": {
+    "name":"Hameem alsir",
+    "asked_t": "Ditanya: 24 Mei 2019In: Komuniti perkakasan"
+  },
+  "About": {
+    "about": "About",
+    "share": "Share Jawebny Application",
+    "reserved": "All Rights Reserved",
+    "copy": "Copy 1.0"
+
+  },
+  "profile": {
+    "profile": "Profile",
+
+    "about": "Mengenai",
+    "Question": "Soalan",
+    "polls": "Undian",
+    "Answers": "Jawapan",
+    "BestAnswers": "Jawapan terbaik",
+    "AskedQuestions": "Soalan-soalan yang ditanya",
+    "PaidQuestions": "Soalan Berbayar",
+    "FollowedQuestions": "Soalan yang diikuti",
+    "FavoriteQuestions": "Soalan Kegemaran",
+    "posts": "Posts",
+    "Comments": "Komen",
+    "FollowersQuestions": "Soalan Pengikut",
+    "FollowersAnswers": "Jawapan pengikut",
+    "FollowersPosts": "Pengikut Posts",
+    "FollowersComment": "\nKomen Pengikut"
+  }
+}
+
+
+

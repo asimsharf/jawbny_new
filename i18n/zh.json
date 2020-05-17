@@ -1,0 +1,146 @@
+{
+
+
+  "language": "選擇你的語言",
+
+  "intro": {
+    "p1_title": "歡迎光臨",
+    "p1_content": "Jawebny是一個在用戶之間提供答案和信息的平台",
+    "p2_title": "物有所值",
+    "p2_content": "通過顎骨，您可以通過帳戶驗證後賺錢和互動",
+    "p3_title": "徽章",
+    "p3_content": "該平台具有系統評分，可顯示您進行的每次互動的價值",
+    "p4_title": "獲得高分",
+    "p4_content": "為確保獲得高分，您只需遵循哪個社區代表您的專長，而不會寫出誤導性信息"
+  }  ,
+
+  "login": {
+    "sms"  : "收到確認信息",
+    "phone": "您的電話號碼",
+    "name" :  "用戶名",
+    "check_sms": "完成確認帳戶"
+  }  ,
+
+  "register": {
+    "photo"  : "附上正式文件",
+    "agree_condition": "服務條款和隱私政策",
+    "read_codition" :  "閱讀條款和隱私政策",
+    "select_photo" : "新增相片",
+    "select_studio" : "從圖庫中選擇",
+    "camera_photo" : "拍照",
+    "email": "電子信箱",
+    "password": "密碼",
+    "confirm_pass":"確認密碼"
+  }  ,
+
+  "home": {
+    "title": "首頁",
+    "top_visit": "訪問最多",
+    "top_answers": "最佳答案",
+    "top_answered": "最佳回答",
+    "answers": "答案",
+    "top_voted": "熱門投票",
+
+    "ques_title": "熱門投票",
+    "community": "社區活動",
+    "tag": "標籤",
+    "poll": "投票",
+    "attach": "附加檔案",
+    "ques-detail": "問題的細節",
+    "ask_anonymous": "匿名問",
+    "priv_question": "這個問題是私人問題嗎？",
+    "get_notifiacat": "通過電子郵件獲取通知",
+    "terms": "服務條款和隱私權政策。",
+    "search": "搜尋",
+
+    "stick": "堅持這個問題"
+  }  ,
+  "menu": {
+
+    "home": "首頁",
+    "mail": "收件箱",
+    "notificat": "通知事項",
+    "record": "通知記錄",
+    "n_updat": "更新通知",
+    "no_notifica": "沒有通知",
+    "point": "點數",
+    "point_text": "您已投票贊成一個問題",
+    "communit": "社區",
+    "follow": "跟隨",
+    "histor": "歷史沿革",
+    "book": "書本",
+    "anime": "日本動漫",
+    "technolog": "技術領域",
+
+    "aske": "問的問題",
+    "polls": "問的問題",
+    "best_answer": "最佳答案",
+    "badge":"徽章",
+    "badge_content": "我們希望做出您的回答，這意味著我們希望為您在我們網站上獲得的每一個積分支付現金，並相信您的時間和內容很有價值。 因此，您將獲得每個徽章的月薪。\n\n",
+    "user_point": "社區中新用戶的積分",
+    "choose_answer":"選擇問題的最佳答案",
+    "add_answer": "在社區中添加答案",
+    "voting_quest": "在社區投票",
+    "voting_answer": "在社區中投票答案",
+    "class":"Functional class",
+    "class_content": "如果您的問題是何時向內容平台付款，答案是",
+    "student": "學生",
+    "level_1": "當他們超過100分",
+    "teacher": "老師",
+    "level_2": "當他們超過750分",
+    "culture": "有文化的",
+    "level_3": "當他們超過1000分",
+    "graduate": "應屆畢業生",
+    "level_4": "當他們超過250分",
+    "advisory": "諮詢服務",
+    "level_5": "當他們超過500分",
+    "pending" : "有待解決的問題",
+    "sign_out": "登出"
+  },
+  "buttons": {
+    "next": "下一個",
+    "back": "回去",
+    "ask": "詢問",
+    "regist": "報名",
+    "result": "結果",
+    "apply": "提交"
+  },
+  "tabs": {
+    "name":"Hameem alsir",
+    "asked_t": "詢問：2019年5月24日在：硬件社區"
+  },
+  "About": {
+    "about": "About",
+    "share": "Share Jawebny Application",
+    "reserved": "All Rights Reserved",
+    "copy": "Copy 1.0"
+
+  },
+  "profile": {
+    "profile": "Profile",
+
+    "about": "關於",
+    "Question": "問題",
+    "polls": "民意調查",
+    "Answers": "答案",
+    "BestAnswers": "最佳答案",
+    "AskedQuestions": "問的問題",
+    "PaidQuestions": "付費問題",
+    "FollowedQuestions": "後續問題",
+    "FavoriteQuestions": "最喜歡的問題",
+    "posts": "帖子",
+    "Comments": "註釋",
+    "FollowersQuestions": "關注者問題",
+    "FollowersAnswers": "追隨者答案",
+    "FollowersPosts": "關注者帖子",
+    "FollowersComment": "關注者評論"
+  },
+
+
+  "default": {
+    "Loading": "Loading..."
+  }
+}
+
+
+

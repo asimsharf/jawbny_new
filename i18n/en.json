@@ -1,0 +1,144 @@
+{
+
+
+  "language": "Choose your language",
+
+  "intro": {
+    "p1_title": "Welcome ",
+    "p1_content": "Jawebny is a platform made to provide answers  and information between users",
+    "p2_title": "Content for money",
+    "p2_content": "Via jawbny, you can make money Versus your interaction after your account is verified",
+    "p3_title": "Badges",
+    "p3_content": "The platform has a system Score shows the value of each interaction you do",
+    "p4_title": "Get high points",
+    "p4_content": "To ensure you get high points You just have to follow which communities Represent your specialty and do not write misleading information"
+  }  ,
+
+  "login": {
+    "sms"  : "Receive confirmation message",
+    "phone": "Your phone number",
+    "name" :  "User name",
+    "check_sms": "Done confirmation Account"
+  }  ,
+
+  "register": {
+    "photo"  : "Attach an official document",
+    "agree_condition": "Terms of Service and Privacy Policy",
+    "read_codition" :  "Read Terms and Privacy Policy",
+    "select_photo" : "Add photo",
+    "select_studio" : "Choose from Gallery",
+    "camera_photo" : "Take Photo",
+    "email": "E-mail",
+    "password": "password",
+    "confirm_pass":"Confirm password"
+  }  ,
+
+  "home": {
+    "title": "Home",
+    "top_visit": "Most Visited",
+    "top_answers": "",
+    "top_answered": "Top Answered",
+    "answers": "Answers",
+    "top_voted": "Top Voted",
+
+    "ques_title": "Question Title ",
+    "community": "Community",
+    "tag": "Tags",
+    "poll": "Poll",
+    "attach": "Attach File",
+    "ques-detail": "Details of the question",
+    "ask_anonymous": "Ask Anonymously",
+    "priv_question": "This question is a private question?",
+    "get_notifiacat": "Get notification by email ",
+    "terms": "Terms of Service and Privacy Policy .",
+    "search": "Search for",
+
+    "stick": "Stick this question"
+  }  ,
+  "menu": {
+
+    "home": "Home",
+    "mail": "Inbox",
+    "notificat": "Notifications",
+    "record": "Notifications Record",
+    "n_updat": "Updating Notifications",
+    "no_notifica": "No Notifications",
+    "point": "Points",
+    "point_text": "You have voted up for a question",
+    "communit": "Communities",
+    "follow": "Follow",
+    "histor": "History",
+    "book": "Books",
+    "anime": "Anime",
+    "technolog": "Technology",
+    "aske": "Questions asked",
+    "polls": "Polls",
+    "best_answer": "Best answers",
+    "badge":"Badges",
+    "badge_content": "We want to make your answer meaning that we want to pay cash for every point you get in our site, believing that your time and your content is valuable. So you will be paid monthly for each badge you get.\n\n",
+    "user_point": "Points for a new user in the community",
+    "choose_answer":"Choosing the best answer for a question",
+    "add_answer": "Add an answer in the community",
+    "voting_quest": "Voting a question in the community",
+    "voting_answer": "Voting an answer in the community",
+    "class":"Functional class",
+    "class_content": "If your question is when you pay the platform for content, the answer is",
+    "student": "Student",
+    "level_1": "when they exceed 100 points",
+    "teacher": "Teacher",
+    "level_2": "when they exceed 750 points",
+    "culture": "Cultured",
+    "level_3": "when they exceed 1000 points",
+    "graduate": "Graduate",
+    "level_4": "when they exceed 250 points",
+    "advisory": "Advisory",
+    "level_5": "when they exceed 500 points",
+    "pending" : "Questions pending",
+    "sign_out": "Sign out"
+  },
+  "buttons": {
+    "next": "Next",
+    "back": "Back",
+    "ask": "Ask",
+    "regist": "Register",
+    "result": "Results",
+    "apply": "Submit"
+  },
+  "tabs": {
+    "name":"Hameem alsir",
+    "asked_t": "Asked: May 24, 2019In: Hardware community"
+  },
+  "About": {
+    "about": "About",
+    "share": "Share Jawebny Application",
+    "reserved": "All Rights Reserved",
+    "copy": "Copy 1.0"
+
+  },
+
+  "profile": {
+    "profile": "Profile",
+    "about": "About",
+    "Question": "Questions",
+    "polls": "Polls",
+    "Answers": "Answers",
+    "BestAnswers": "Best Answers\n",
+    "AskedQuestions": "Asked Questions\n",
+    "PaidQuestions": "Paid Questions\n",
+    "FollowedQuestions": "Followed Questions\n",
+    "FavoriteQuestions": "Favorite Questions\n",
+    "posts": "Posts",
+    "Comments": "Comments",
+    "FollowersQuestions": "Followers Questions",
+    "FollowersAnswers": "Followers Answers",
+    "FollowersPosts": "FollowersPosts",
+    "FollowersComment": "Followers Comment"
+  },
+
+  "default": {
+    "Loading": "Loading..."
+  }
+}
+
+
+
