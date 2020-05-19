@@ -2,7 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:scope_demo/controllers/app_localizations.dart';
-import 'package:scope_demo/screens/register.dart';
+import 'package:scope_demo/screens/userImageAndResum.dart';
 
 class Done extends StatefulWidget {
   @override
@@ -107,7 +107,7 @@ class _DoneState extends State<Done> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => J_register(),
+                    builder: (context) => UserImageAndResum(),
                   ),
                 );
               },

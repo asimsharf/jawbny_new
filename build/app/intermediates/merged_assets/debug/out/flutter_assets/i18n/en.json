@@ -133,6 +133,10 @@
     "FollowersAnswers": "Followers Answers",
     "FollowersPosts": "FollowersPosts",
     "FollowersComment": "Followers Comment"
+  },
+
+  "default": {
+    "Loading": "Loading..."
   }
 }
 

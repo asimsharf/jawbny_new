@@ -132,6 +132,11 @@
     "FollowersAnswers": "अनुयायी उत्तर",
     "FollowersPosts": "अनुयायी पोस्ट",
     "FollowersComment": "अनुयायी टिप्पणियाँ"
+  },
+
+
+  "default": {
+    "Loading": "Loading..."
   }
 }
 

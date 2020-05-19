@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "E:\\FLUTTER_APP\\AYMEN_ALSHIQ\\jawbny_new\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
+            "outputFile": "C:\\Users\\A Y M A N\\Desktop\\jawbny_new\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
             "map": [
                 {
-                    "source": "E:\\FLUTTER_APP\\AYMEN_ALSHIQ\\jawbny_new\\build\\app\\generated\\fabric\\res\\debug\\values\\com_crashlytics_build_id.xml",
+                    "source": "C:\\Users\\A Y M A N\\Desktop\\jawbny_new\\build\\app\\generated\\fabric\\res\\debug\\values\\com_crashlytics_build_id.xml",
                     "from": {
                         "startLines": "8",
                         "startColumns": "0",
@@ -21,7 +21,23 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Q\\.gradle\\caches\\transforms-2\\files-2.1\\83dd696ebab5109b40aeb9f49d5069f8\\core-1.0.2\\res\\values\\values.xml",
+                    "source": "C:\\Users\\A Y M A N\\.gradle\\caches\\transforms-2\\files-2.1\\454541ed0d74e0d0babd214b189709ff\\coordinatorlayout-1.0.0\\res\\values\\values.xml",
+                    "from": {
+                        "startLines": "-1,-1",
+                        "startColumns": "-1,-1",
+                        "startOffsets": "-1,-1"
+                    },
+                    "to": {
+                        "startLines": "2,59",
+                        "startColumns": "4,4",
+                        "startOffsets": "100,3765",
+                        "endLines": "2,61",
+                        "endColumns": "60,12",
+                        "endOffsets": "156,3905"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\A Y M A N\\.gradle\\caches\\transforms-2\\files-2.1\\83dd696ebab5109b40aeb9f49d5069f8\\core-1.0.2\\res\\values\\values.xml",
                     "from": {
                         "startLines": "-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1",
                         "startColumns": "-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1",
@@ -37,7 +53,7 @@
                     }
                 },
                 {
-                    "source": "E:\\FLUTTER_APP\\AYMEN_ALSHIQ\\jawbny_new\\android\\app\\src\\main\\res\\values\\styles.xml",
+                    "source": "C:\\Users\\A Y M A N\\Desktop\\jawbny_new\\android\\app\\src\\main\\res\\values\\styles.xml",
                     "from": {
                         "startLines": "-1",
                         "startColumns": "-1",
@@ -50,22 +66,6 @@
                         "endLines": "45",
                         "endColumns": "12",
                         "endOffsets": "2863"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\Q\\.gradle\\caches\\transforms-2\\files-2.1\\454541ed0d74e0d0babd214b189709ff\\coordinatorlayout-1.0.0\\res\\values\\values.xml",
-                    "from": {
-                        "startLines": "-1,-1",
-                        "startColumns": "-1,-1",
-                        "startOffsets": "-1,-1"
-                    },
-                    "to": {
-                        "startLines": "2,59",
-                        "startColumns": "4,4",
-                        "startOffsets": "100,3765",
-                        "endLines": "2,61",
-                        "endColumns": "60,12",
-                        "endOffsets": "156,3905"
                     }
                 }
             ]

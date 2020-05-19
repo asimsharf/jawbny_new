@@ -38,7 +38,7 @@
     <item name="text2" type="id"/>
     <item name="title" type="id"/>
     <integer name="status_bar_notification_info_maxnum">999</integer>
-    <string name="com.crashlytics.android.build_id" ns1:ignore="UnusedResources,TypographyDashes" translatable="false">4fc37b79-0e07-4090-a20c-af251ba24cb7</string>
+    <string name="com.crashlytics.android.build_id" ns1:ignore="UnusedResources,TypographyDashes" translatable="false">7ee0e743-c06f-4f67-bb85-827c87fcdb44</string>
     <string name="status_bar_notification_info_overflow">999+</string>
     <style name="LaunchTheme" parent="@android:style/Theme.Black.NoTitleBar">
         

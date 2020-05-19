@@ -2,7 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import "package:flutter/material.dart";
 import 'package:flutter_svg/svg.dart';
 import 'package:scope_demo/controllers/app_localizations.dart';
-import 'package:scope_demo/screens/login.dart';
+import 'package:scope_demo/screens/RegisterPage.dart';
 
 class Intro extends StatefulWidget {
   @override
@@ -259,7 +259,7 @@ class IntroState extends State<Intro> {
                 if (active == 3) {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => LoginPage()),
+                    MaterialPageRoute(builder: (context) => RegisterPage()),
                   );
                 }
                 if (active == 2) {

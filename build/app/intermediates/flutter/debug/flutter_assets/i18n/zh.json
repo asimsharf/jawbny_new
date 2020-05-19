@@ -134,6 +134,11 @@
     "FollowersAnswers": "追隨者答案",
     "FollowersPosts": "關注者帖子",
     "FollowersComment": "關注者評論"
+  },
+
+
+  "default": {
+    "Loading": "Loading..."
   }
 }
 

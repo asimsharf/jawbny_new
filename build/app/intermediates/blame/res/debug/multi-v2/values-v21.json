@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "E:\\FLUTTER_APP\\AYMEN_ALSHIQ\\jawbny_new\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v21\\values-v21.xml",
+            "outputFile": "C:\\Users\\A Y M A N\\Desktop\\jawbny_new\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v21\\values-v21.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Q\\.gradle\\caches\\transforms-2\\files-2.1\\83dd696ebab5109b40aeb9f49d5069f8\\core-1.0.2\\res\\values-v21\\values-v21.xml",
+                    "source": "C:\\Users\\A Y M A N\\.gradle\\caches\\transforms-2\\files-2.1\\83dd696ebab5109b40aeb9f49d5069f8\\core-1.0.2\\res\\values-v21\\values-v21.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,13",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4",

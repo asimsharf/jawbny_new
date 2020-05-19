@@ -3,6 +3,8 @@ class APIData {
   static const String domainLink = "http://alliedinds.com/";
   static const String domainApiLink = domainLink + "jawebny/api/";
 
+
+
   static const String acceptHeader = "application/json";
   static const String contentType = "multipart/form-data";
   static const String authorization =

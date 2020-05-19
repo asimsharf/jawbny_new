@@ -1,4 +1,4 @@
-#Sun May 17 17:57:34 GMT+02:00 2020
-base.0=E\:\\FLUTTER_APP\\AYMEN_ALSHIQ\\jawbny_new\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\out\\classes.dex
+#Tue May 19 20:07:21 AST 2020
+base.0=C\:\\Users\\A Y M A N\\Desktop\\jawbny_new\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\out\\classes.dex
 path.0=classes.dex
 renamed.0=classes.dex

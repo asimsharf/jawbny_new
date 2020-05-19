@@ -2,9 +2,12 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
+import 'package:scope_demo/controllers/Authentication/authentication_provider.dart';
 import 'package:scope_demo/controllers/app_localizations.dart';
 import 'package:scope_demo/tabs.dart' as prefix0;
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 
 import 'done.dart';
 
@@ -24,12 +27,6 @@ class OtpPageState extends State<OtpPage> {
   String _btntext;
   String _btntext2;
 
-  String phone;
-  Future<void> getUserInfo() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    phone = prefs.getString('phone');
-  }
-
   @override
   void dispose() {
     super.dispose();
@@ -42,15 +39,16 @@ class OtpPageState extends State<OtpPage> {
 
   @override
   void initState() {
-    this.getUserInfo();
-    print(phone.toString());
-    // TODO: implement initState
     super.initState();
     currController = controller1;
   }
 
   @override
   Widget build(BuildContext context) {
+    var userPhone =
+        Provider.of<AuthenticationProvider>(context, listen: false).userPhone;
+    var userOtp =
+        Provider.of<AuthenticationProvider>(context, listen: false).userOtp;
     _btntext = AppLocalizations.of(context).translate('buttons', 'next');
     _btntext2 = AppLocalizations.of(context).translate('buttons', 'back');
 
@@ -196,7 +194,7 @@ class OtpPageState extends State<OtpPage> {
                   padding:
                       const EdgeInsets.only(left: 30.0, top: 2.0, right: 30.0),
                   child: Text(
-                    phone != null ? phone : "000000000",
+                    userPhone != null ? userPhone : '0000000000',
                     style: TextStyle(
                         fontSize: 15.0,
                         fontWeight: FontWeight.bold,
@@ -233,7 +231,7 @@ class OtpPageState extends State<OtpPage> {
           color: Colors.white,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: buildContainer(),
+            child: buildContainer(userOtp),
           ),
         ),
       ),
@@ -320,7 +318,7 @@ class OtpPageState extends State<OtpPage> {
         });
   }
 
-  Widget buildContainer() {
+  Widget buildContainer(String userOtp) {
     return Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -356,12 +354,25 @@ class OtpPageState extends State<OtpPage> {
                 maxFontSize: 18,
               ),
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Done(),
-                  ),
-                );
+                if (controller4.text +
+                        controller3.text +
+                        controller2.text +
+                        controller1.text !=
+                    userOtp) {
+                  Fluttertoast.showToast(msg: 'ادخل رقم التتعريف الصحيح');
+                }
+                if (controller4.text +
+                        controller3.text +
+                        controller2.text +
+                        controller1.text ==
+                    userOtp) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Done(),
+                    ),
+                  );
+                }
               },
             ),
           )

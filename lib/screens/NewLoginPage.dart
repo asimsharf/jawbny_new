@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:scope_demo/controllers/app_localizations.dart';
 import 'package:scope_demo/loading/loading_page.dart';
-import 'package:scope_demo/screens/login.dart';
+import 'package:scope_demo/screens/RegisterPage.dart';
 
 class NewLoginPage extends StatefulWidget {
   @override
@@ -13,12 +13,15 @@ class NewLoginPage extends StatefulWidget {
 }
 
 class _NewLoginPageState extends State<NewLoginPage> {
+
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final color = const Color(0xff6F499D);
   int active = 0;
   int count = 0;
   String _btntext = "";
   String _btntext2 = "إنشاء";
+
+
   final TextEditingController phoneController = new TextEditingController();
   final TextEditingController nameController = new TextEditingController();
 
@@ -62,6 +65,7 @@ class _NewLoginPageState extends State<NewLoginPage> {
                                 color: Color(0xff000000),
                               ),
                             ),
+                            ///Phone number //////////////////////////////
                             keyboardType: TextInputType.number,
                             controller: phoneController,
                           ),
@@ -94,6 +98,7 @@ class _NewLoginPageState extends State<NewLoginPage> {
           Container(
             width: 100,
             child: FlatButton(
+              ///Submit ////////////////////////////////////////////
               textColor: Color(0xff6F499D),
               color: Colors.transparent,
               child: Container(
@@ -108,7 +113,7 @@ class _NewLoginPageState extends State<NewLoginPage> {
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (ctx) => LoginPage(),
+                    builder: (ctx) => RegisterPage(),
                   ),
                 );
               },
@@ -138,6 +143,7 @@ class _NewLoginPageState extends State<NewLoginPage> {
       builder: (BuildContext context) => new LoadingPage(
         isSelected: true,
         useremail: phoneController.text,
+        //name///////////////////////////////////////////////
         userpass: nameController.text,
       ),
     );

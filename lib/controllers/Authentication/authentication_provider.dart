@@ -8,81 +8,145 @@ import 'package:scope_demo/apidata.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticationProvider extends ChangeNotifier {
-  bool isLoading = true;
+  bool _isLoading = false;
   String message;
 
-  Future<void> postRegister(String name, String phone) async {
-    var prefs = await SharedPreferences.getInstance();
-    try {
-      final accessToken = await http.post(
-          Uri.encodeFull(APIData.tokenApi + "?name=$name&phone=$phone"),
-          headers: {
-            HttpHeaders.acceptHeader: APIData.acceptHeader,
-            HttpHeaders.AUTHORIZATION: APIData.authorization
-          });
+  String userName;
+  String userId;
+  String userPhone;
+  String userReputation;
+  String userOtp;
+  String userResumeUrl;
+  String userCreatedAt;
+  String userUpdatedAt;
+  String userProfileImageUrl;
+  String userLevel;
+  String token;
 
-      if (accessToken.statusCode == 200) {
-        final register = json.decode(accessToken.body);
-        print(register.toString());
-        if (register['message'] == "account created successfuly!") {
-          await prefs.setString("id", register['user']['id']);
-          await prefs.setString("asimsharf", register['user']['name']);
-          await prefs.setString("phone", register['user']['phone'].toString());
-          await prefs.setString("otp", register['user']['otp'].toString());
-          await prefs.setString(
-              "reputation", register['user']['reputation'].toString());
-          await prefs.setString(
-              "resume_url", register['user']['resume_url'].toString());
-          await prefs.setString("profile_image_url",
-              register['user']['profile_image_url'].toString());
-          await prefs.setString(
-              "user_level", register['user']['user_level'].toString());
-          await prefs.setString(
-              "updated_at", register['user']['updated_at'].toString());
-          await prefs.setString(
-              "created_at", register['user']['created_at'].toString());
-          await prefs.setString(
-              "access_toekn", register['access_toekn'].toString());
-          postSendOtp(register['user']['phone']);
-          throw HttpException(register['message']);
-        } else if (register['message'] == "The given data was invalid.") {
-          throw HttpException(register['errors']['phone'][0]);
-        } else {
-          throw HttpException(register['message']);
-        }
+  bool get userLoading => _isLoading;
+
+  bool get isAuth {
+    return token != null;
+  }
+
+  Future<void> register(String name, String phone) async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      final response = await http.post(
+        Uri.encodeFull(
+            APIData.domainApiLink + "register?name=$name&phone=$phone"),
+        headers: {
+          HttpHeaders.acceptHeader: APIData.acceptHeader,
+          // HttpHeaders.AUTHORIZATION: APIData.authorization
+        },
+      );
+
+      final responseData = json.decode(response.body) as Map<String, dynamic>;
+      print(responseData);
+
+      ///if [Error != null ] hendel it .....................
+      if (response.statusCode >= 400) {
+        throw HttpException(responseData['message']);
       }
+
+      ///else if [NO Error] save the response date .....................
+      if (responseData['code'] == 1) {
+        userName = responseData['user']['name'];
+        userId = responseData['user']['id'].toString();
+        userPhone = responseData['user']['phone'].toString();
+        userCreatedAt = responseData['user']['created_at'].toString();
+        userUpdatedAt = responseData['user']['updated_at'].toString();
+        userOtp = responseData['user']['otp'].toString();
+        userReputation = responseData['user']['reputation'].toString();
+        userResumeUrl = responseData['user']['resume_url'].toString();
+        userProfileImageUrl =
+            responseData['user']['profile_image_url'].toString();
+        userLevel = responseData['user']['user_level'].toString();
+        token = responseData['access_toekn'];
+
+        // /// send [otp] ......
+        // postOtp(responseData['user']['phone'].toString());
+
+        /// [*] Storing data after logIn.... for [Auto log in] .......
+        final prefs = await SharedPreferences.getInstance();
+        final userData = json.encode({
+          'userName': responseData['user']['name'],
+          'userId': responseData['user']['id'].toString(),
+          'userPhone': responseData['user']['phone'].toString(),
+          'userCreatedAt': responseData['user']['created_at'].toString(),
+          'userUpdatedAt': responseData['user']['updated_at'].toString(),
+          'userOtp': responseData['user']['otp'].toString(),
+          'userReputation': responseData['user']['reputation'].toString(),
+          'userResumeUrl': responseData['user']['resume_url'].toString(),
+          'userProfileImageUrl':
+              responseData['user']['profile_image_url'].toString(),
+          'userLevel': responseData['user']['user_level'].toString(),
+          'token': "Bearer " + responseData['access_toekn'],
+        });
+        prefs.setString('userData', userData);
+      }
+      _isLoading = false;
       notifyListeners();
-    } on SocketException {
-      throw HttpException("يرجى تفقد الإنترنت");
-    } catch (err) {
-      message = err.toString();
+    } catch (error) {
+      _isLoading = false;
       notifyListeners();
+      throw error;
     }
   }
 
-  bool get getIsLoading => isLoading;
-
-  Future<void> postSendOtp(String phone) async {
-    var prefs = await SharedPreferences.getInstance();
+  //Sending Otp ......................
+  Future<void> postOtp() async {
     try {
-      final accessToken = await http
-          .post(Uri.encodeFull(APIData.sendotp + "?phone=$phone"), headers: {
-        HttpHeaders.acceptHeader: APIData.acceptHeader,
-        HttpHeaders.AUTHORIZATION: APIData.authorization
-      });
-      if (accessToken.statusCode == 200) {
-        final sendOtp = json.decode(accessToken.body);
-        if (sendOtp['message'] == "OTP has been sent!") {
-          await prefs.setString("otp", sendOtp['otp']);
-          throw HttpException(sendOtp['message']);
-        }
+      final response = await http.post(
+        Uri.encodeFull(APIData.domainApiLink + "?phone=$userPhone"),
+        headers: {HttpHeaders.acceptHeader: APIData.acceptHeader},
+      );
+
+      final responseData = json.decode(response.body);
+
+      ///if [Error != null ] hendel it .....................
+      if (response.statusCode >= 400) {
+        throw HttpException(responseData['message']);
       }
-      notifyListeners();
-    } on SocketException {
-      throw HttpException("");
-    } catch (err) {
-      message = err.toString();
-      notifyListeners();
+
+      ///else if [NO Error] save the response date .....................
+      if (response.statusCode == 200) {
+        throw HttpException(responseData['message']);
+      }
+    } catch (error) {
+      throw error;
     }
   }
+
+  /// [*] Retrive Data from [SharedPref] .....................[Auto LogIn]....
+  Future<bool> tryAutoLogIn() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (!prefs.containsKey('userData')) {
+      return false;
+    }
+
+    final extractedUserData =
+        json.decode(prefs.getString('userData')) as Map<String, Object>;
+
+    //Reintializ all property up there .........
+    userName = extractedUserData['userName'];
+    userId = extractedUserData['userName'].toString();
+    userPhone = extractedUserData['userName'].toString();
+    userReputation = extractedUserData['userName'].toString();
+    userOtp = extractedUserData['userName'].toString();
+    userResumeUrl = extractedUserData['userName'].toString();
+    userCreatedAt = extractedUserData['userName'].toString();
+    userUpdatedAt = extractedUserData['userName'].toString();
+    userProfileImageUrl = extractedUserData['userName'].toString();
+    userLevel = extractedUserData['userName'].toString();
+    token = extractedUserData['userName'];
+
+    notifyListeners();
+    return true;
+  }
+
+  // Future<void> logIn(String phone, int otp) async {
+  //   return postRegister("login?phone=$phone&otp=$otp");
+  // }
 }

@@ -133,7 +133,12 @@
     "FollowersAnswers": "إجابات المتابعين",
     "FollowersPosts": "أتباع المشاركات",
     "FollowersComment": "تعليقات المتابعين"
+  },
+
+  "default": {
+    "Loading": "يتم التحميل..."
   }
+
 }
 
 

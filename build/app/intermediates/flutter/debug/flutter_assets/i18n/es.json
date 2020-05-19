@@ -132,6 +132,11 @@
     "FollowersAnswers": "Seguidores Respuestas",
     "FollowersPosts": "Publicaciones de seguidores",
     "FollowersComment": "Comentarios de los seguidores"
+  },
+
+
+  "default": {
+    "Loading": "Loading..."
   }
 }
 

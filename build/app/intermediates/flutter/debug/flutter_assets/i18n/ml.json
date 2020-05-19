@@ -132,6 +132,11 @@
     "FollowersAnswers": "Jawapan pengikut",
     "FollowersPosts": "Pengikut Posts",
     "FollowersComment": "\nKomen Pengikut"
+  },
+
+
+  "default": {
+    "Loading": "Loading..."
   }
 }
 
