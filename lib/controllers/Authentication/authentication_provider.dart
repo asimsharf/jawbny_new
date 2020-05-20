@@ -26,8 +26,6 @@ class AuthenticationProvider extends ChangeNotifier {
   bool get userLoading => _isLoading;
 
   bool get isAuth {
-    print('Rebuilded ....................');
-    print(_token);
     return _token != null;
   }
 
@@ -51,7 +49,6 @@ class AuthenticationProvider extends ChangeNotifier {
       );
 
       final responseData = json.decode(response.body) as Map<String, dynamic>;
-      print(responseData);
 
       ///if [Error != null ] hendel it .....................
       if (response.statusCode >= 400) {

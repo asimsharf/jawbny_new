@@ -29,11 +29,11 @@ class QuestionsProvider extends ChangeNotifier {
         HttpHeaders.authorizationHeader: auth
       });
 
-      print(responseData.body.toString());
       isLoading = false;
       if (responseData.statusCode == 200) {
         final questions = questionsFromJson(responseData.body);
         questionsList = questions;
+
         notifyListeners();
       }
     } catch (err) {
@@ -169,6 +169,8 @@ class QuestionsProvider extends ChangeNotifier {
 
   ///fetch all QuestionsMostAnswered
   QuestionsMostAnswered questionsMostAnsweredList;
+  List<DatumQuestions> _data = [];
+
   Future<void> getQuestionsMostAnswered() async {
     try {
       final responseData = await http.get(
@@ -182,6 +184,11 @@ class QuestionsProvider extends ChangeNotifier {
         final questionsMostAnswered =
             questionsMostAnsweredFromJson(responseData.body);
         questionsMostAnsweredList = questionsMostAnswered;
+
+        _data.clear();
+        questionsMostAnswered.data.forEach((e) {
+          _data.add(e);
+        });
         notifyListeners();
       }
     } catch (err) {
@@ -191,6 +198,7 @@ class QuestionsProvider extends ChangeNotifier {
     }
   }
 
+  List<DatumQuestions> get getDatumQuestions => _data;
   QuestionsMostAnswered get getQuestionsMostAnsweredList =>
       questionsMostAnsweredList;
 

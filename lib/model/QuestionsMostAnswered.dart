@@ -4,27 +4,33 @@
 
 import 'dart:convert';
 
-QuestionsMostAnswered questionsMostAnsweredFromJson(String str) => QuestionsMostAnswered.fromMap(json.decode(str));
+QuestionsMostAnswered questionsMostAnsweredFromJson(String str) =>
+    QuestionsMostAnswered.fromMap(json.decode(str));
 
-String questionsMostAnsweredToJson(QuestionsMostAnswered data) => json.encode(data.toMap());
+String questionsMostAnsweredToJson(QuestionsMostAnswered data) =>
+    json.encode(data.toMap());
 
 class QuestionsMostAnswered {
-  List<Datum> data;
+  List<DatumQuestions> data;
 
-  QuestionsMostAnswered({
-    this.data,
-  });
+  QuestionsMostAnswered({this.data});
 
-  factory QuestionsMostAnswered.fromMap(Map<String, dynamic> json) => QuestionsMostAnswered(
-    data: json["data"] == null ? null : List<Datum>.from(json["data"].map((x) => Datum.fromMap(x))),
-  );
+  factory QuestionsMostAnswered.fromMap(Map<String, dynamic> json) =>
+      QuestionsMostAnswered(
+        data: json["data"] == null
+            ? null
+            : List<DatumQuestions>.from(
+            json["data"].map((x) => DatumQuestions.fromMap(x))),
+      );
 
   Map<String, dynamic> toMap() => {
-    "data": data == null ? null : List<dynamic>.from(data.map((x) => x.toMap())),
+    "data": data == null
+        ? null
+        : List<dynamic>.from(data.map((x) => x.toMap())),
   };
 }
 
-class Datum {
+class DatumQuestions {
   int id;
   String title;
   String body;
@@ -47,7 +53,7 @@ class Datum {
   int answersCount;
   DateTime createdAt;
 
-  Datum({
+  DatumQuestions({
     this.id,
     this.title,
     this.body,
@@ -71,29 +77,41 @@ class Datum {
     this.createdAt,
   });
 
-  factory Datum.fromMap(Map<String, dynamic> json) => Datum(
-    id: json["id"] == null ? null : json["id"],
-    title: json["title"] == null ? null : json["title"],
-    body: json["body"] == null ? null : json["body"],
-    isPoll: json["is_poll"] == null ? null : json["is_poll"],
-    followersCount: json["followers_count"] == null ? null : json["followers_count"],
-    views: json["views"] == null ? null : json["views"],
-    votesUp: json["votes_up"] == null ? null : json["votes_up"],
-    votesDown: json["votes_down"] == null ? null : json["votes_down"],
-    votesAverage: json["votes_average"] == null ? null : json["votes_average"],
-    image: json["image"],
-    imageUrl: json["image_url"],
-    isClosed: json["is_closed"] == null ? null : json["is_closed"],
-    isPrivate: json["is_private"] == null ? null : json["is_private"],
-    userId: json["user_id"] == null ? null : json["user_id"],
-    hasBestAnswer: json["has_best_answer"] == null ? null : json["has_best_answer"],
-    options: json["options"] == null ? null : List<dynamic>.from(json["options"].map((x) => x)),
-    user: json["user"] == null ? null : User.fromMap(json["user"]),
-    communityName: json["community_name"] == null ? null : json["community_name"],
-    answers: json["answers"] == null ? null : List<Answer>.from(json["answers"].map((x) => Answer.fromMap(x))),
-    answersCount: json["answers_count"] == null ? null : json["answers_count"],
-    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-  );
+  factory DatumQuestions.fromMap(Map<String, dynamic> json) =>
+      DatumQuestions(
+        id: json["id"] == null ? null : json["id"],
+        title: json["title"] == null ? null : json["title"],
+        body: json["body"] == null ? null : json["body"],
+        isPoll: json["is_poll"] == null ? null : json["is_poll"],
+        followersCount:
+        json["followers_count"] == null ? null : json["followers_count"],
+        views: json["views"] == null ? null : json["views"],
+        votesUp: json["votes_up"] == null ? null : json["votes_up"],
+        votesDown: json["votes_down"] == null ? null : json["votes_down"],
+        votesAverage:
+        json["votes_average"] == null ? null : json["votes_average"],
+        image: json["image"],
+        imageUrl: json["image_url"],
+        isClosed: json["is_closed"] == null ? null : json["is_closed"],
+        isPrivate: json["is_private"] == null ? null : json["is_private"],
+        userId: json["user_id"] == null ? null : json["user_id"],
+        hasBestAnswer:
+        json["has_best_answer"] == null ? null : json["has_best_answer"],
+        options: json["options"] == null
+            ? null
+            : List<dynamic>.from(json["options"].map((x) => x)),
+        user: json["user"] == null ? null : User.fromMap(json["user"]),
+        communityName:
+        json["community_name"] == null ? null : json["community_name"],
+        answers: json["answers"] == null
+            ? null
+            : List<Answer>.from(json["answers"].map((x) => Answer.fromMap(x))),
+        answersCount:
+        json["answers_count"] == null ? null : json["answers_count"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+      );
 
   Map<String, dynamic> toMap() => {
     "id": id == null ? null : id,
@@ -111,10 +129,13 @@ class Datum {
     "is_private": isPrivate == null ? null : isPrivate,
     "user_id": userId == null ? null : userId,
     "has_best_answer": hasBestAnswer == null ? null : hasBestAnswer,
-    "options": options == null ? null : List<dynamic>.from(options.map((x) => x)),
+    "options":
+    options == null ? null : List<dynamic>.from(options.map((x) => x)),
     "user": user == null ? null : user.toMap(),
     "community_name": communityName == null ? null : communityName,
-    "answers": answers == null ? null : List<dynamic>.from(answers.map((x) => x.toMap())),
+    "answers": answers == null
+        ? null
+        : List<dynamic>.from(answers.map((x) => x.toMap())),
     "answers_count": answersCount == null ? null : answersCount,
     "created_at": createdAt == null ? null : createdAt.toIso8601String(),
   };
@@ -152,10 +173,13 @@ class Answer {
     userId: json["user_id"] == null ? null : json["user_id"],
     votesUp: json["votes_up"] == null ? null : json["votes_up"],
     votesDown: json["votes_down"] == null ? null : json["votes_down"],
-    votesAverage: json["votes_average"] == null ? null : json["votes_average"],
+    votesAverage:
+    json["votes_average"] == null ? null : json["votes_average"],
     image: json["image"],
     imageUrl: json["image_url"],
-    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
+    createdAt: json["created_at"] == null
+        ? null
+        : DateTime.parse(json["created_at"]),
   );
 
   Map<String, dynamic> toMap() => {
@@ -215,11 +239,18 @@ class User {
     profileImage: json["profile_image"],
     profileImageUrl: json["profile_image_url"],
     resumeUrl: json["resume_url"],
-    questionsCount: json["questions_count"] == null ? null : json["questions_count"],
-    answersCount: json["answers_count"] == null ? null : json["answers_count"],
-    usersIFollowCount: json["users_i_follow_count"] == null ? null : json["users_i_follow_count"],
-    followersCount: json["followers_count"] == null ? null : json["followers_count"],
-    answers: json["answers"] == null ? null : List<Answer>.from(json["answers"].map((x) => Answer.fromMap(x))),
+    questionsCount:
+    json["questions_count"] == null ? null : json["questions_count"],
+    answersCount:
+    json["answers_count"] == null ? null : json["answers_count"],
+    usersIFollowCount: json["users_i_follow_count"] == null
+        ? null
+        : json["users_i_follow_count"],
+    followersCount:
+    json["followers_count"] == null ? null : json["followers_count"],
+    answers: json["answers"] == null
+        ? null
+        : List<Answer>.from(json["answers"].map((x) => Answer.fromMap(x))),
   );
 
   Map<String, dynamic> toMap() => {
@@ -234,8 +265,11 @@ class User {
     "resume_url": resumeUrl,
     "questions_count": questionsCount == null ? null : questionsCount,
     "answers_count": answersCount == null ? null : answersCount,
-    "users_i_follow_count": usersIFollowCount == null ? null : usersIFollowCount,
+    "users_i_follow_count":
+    usersIFollowCount == null ? null : usersIFollowCount,
     "followers_count": followersCount == null ? null : followersCount,
-    "answers": answers == null ? null : List<dynamic>.from(answers.map((x) => x.toMap())),
+    "answers": answers == null
+        ? null
+        : List<dynamic>.from(answers.map((x) => x.toMap())),
   };
 }

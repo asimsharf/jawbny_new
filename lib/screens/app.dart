@@ -34,7 +34,6 @@ class App extends StatelessWidget {
         ChangeNotifierProxyProvider<AuthenticationProvider, QuestionsProvider>(
           update: (context, auth, __) => QuestionsProvider(
             auth: auth.token,
-//            questionsList: questions == null ? {} : questions.questionsList,
           ),
           create: (_) => null,
         ),
