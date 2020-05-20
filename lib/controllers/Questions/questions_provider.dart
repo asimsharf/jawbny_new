@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:scope_demo/apidata.dart';
 import 'package:scope_demo/model/Questions.dart';
 import 'package:scope_demo/model/QuestionsIFollow.dart';
+import 'package:scope_demo/model/QuestionsMostAnswered.dart';
 import 'package:scope_demo/model/QuestionsMy.dart';
 import 'package:scope_demo/model/QuestionsPrivate.dart';
 import 'package:scope_demo/model/QuestionsSingle.dart';
@@ -169,6 +170,33 @@ class QuestionsProvider extends ChangeNotifier {
   }
 
   QuestionsIFollow get getQuestionsIFollowList => questionsIFollowList;
+
+  ///fetch all QuestionsMostAnswered
+  QuestionsMostAnswered questionsMostAnsweredList;
+  Future<void> getQuestionsMostAnswered() async {
+    try {
+      final accessToken = await http.get(
+          Uri.encodeFull(APIData.questions + "/?order_by=answers_count"),
+          headers: {
+            HttpHeaders.acceptHeader: APIData.acceptHeader,
+            HttpHeaders.AUTHORIZATION: APIData.authorization
+          });
+      isLoading = false;
+      if (accessToken.statusCode == 200) {
+        final questionsMostAnswered =
+            questionsMostAnsweredFromJson(accessToken.body);
+        questionsMostAnsweredList = questionsMostAnswered;
+        notifyListeners();
+      }
+    } catch (err) {
+      message = err.toString();
+      isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  QuestionsMostAnswered get getQuestionsMostAnsweredList =>
+      questionsMostAnsweredList;
 
   ///fetch all QuestionsIFollow
   Future<void> postQuestions(
