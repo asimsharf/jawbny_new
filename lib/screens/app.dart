@@ -6,7 +6,6 @@ import 'package:scope_demo/controllers/Questions/questions_provider.dart';
 import 'package:scope_demo/controllers/app_localizations.dart';
 import 'package:scope_demo/controllers/services_provider.dart';
 import 'package:scope_demo/controllers/userUpload/UploadUserImage.dart';
-import 'package:scope_demo/screens/RegisterPage.dart';
 import 'package:scope_demo/screens/language.dart';
 import 'package:scope_demo/tabs.dart';
 
@@ -33,7 +32,7 @@ class App extends StatelessWidget {
         ChangeNotifierProvider.value(value: QuestionsProvider()),
       ],
       child: Consumer<AuthenticationProvider>(
-        builder: (ctx, auth, _) {
+        builder: (ctx, auth, child) {
           return Consumer<ServicesProvider>(
             builder: (ctx, model, child) {
               return MaterialApp(
@@ -59,13 +58,15 @@ class App extends StatelessWidget {
                 locale: model.appLocal,
                 home: auth.isAuth
                     ? ScrollableTabsDemo()
-                    : FutureBuilder(
-                        future: auth.tryAutoLogIn(),
-                        builder: (context, authResultSnapShot) =>
-                            authResultSnapShot.connectionState ==
-                                    ConnectionState.waiting
-                                ? Center(child: CircularProgressIndicator())
-                                : AppLanguage(),
+                    : Scaffold(
+                        body: FutureBuilder(
+                          future: auth.tryAutoLogIn(),
+                          builder: (context, authResultSnapShot) =>
+                              authResultSnapShot.connectionState ==
+                                      ConnectionState.waiting
+                                  ? Center(child: CircularProgressIndicator())
+                                  : AppLanguage(),
+                        ),
                       ),
               );
             },

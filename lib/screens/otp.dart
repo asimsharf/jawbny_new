@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 import 'package:scope_demo/controllers/Authentication/authentication_provider.dart';
 import 'package:scope_demo/controllers/app_localizations.dart';
 import 'package:scope_demo/tabs.dart' as prefix0;
-// import 'package:shared_preferences/shared_preferences.dart';
 
 import 'done.dart';
 
@@ -360,6 +359,10 @@ class OtpPageState extends State<OtpPage> {
                         controller1.text !=
                     userOtp) {
                   Fluttertoast.showToast(msg: 'ادخل رقم التتعريف الصحيح');
+                  print(controller4.text +
+                      controller3.text +
+                      controller2.text +
+                      controller1.text);
                 }
                 if (controller4.text +
                         controller3.text +
