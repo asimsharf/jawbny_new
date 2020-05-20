@@ -11,32 +11,28 @@ import 'package:scope_demo/model/QuestionsMy.dart';
 import 'package:scope_demo/model/QuestionsPrivate.dart';
 import 'package:scope_demo/model/QuestionsSingle.dart';
 import 'package:scope_demo/model/QuestionsUsersIFollow.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class QuestionsProvider extends ChangeNotifier {
   bool isLoading = true;
   String message;
+  String auth;
 
-  String authorization;
-  Future<void> getUserInfoAuthorization() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    authorization = prefs.getString('authorization');
-  }
-
-  String get getBuyerID => authorization;
+  QuestionsProvider({this.auth});
 
   ///fetch all Questions
   Questions questionsList;
   Future<void> getQuestions() async {
     try {
-      final accessToken =
+      final responseData =
           await http.get(Uri.encodeFull(APIData.questions), headers: {
         HttpHeaders.acceptHeader: APIData.acceptHeader,
-        HttpHeaders.AUTHORIZATION: APIData.authorization
+        HttpHeaders.authorizationHeader: auth
       });
+
+      print(responseData.body.toString());
       isLoading = false;
-      if (accessToken.statusCode == 200) {
-        final questions = questionsFromJson(accessToken.body);
+      if (responseData.statusCode == 200) {
+        final questions = questionsFromJson(responseData.body);
         questionsList = questions;
         notifyListeners();
       }
@@ -53,14 +49,14 @@ class QuestionsProvider extends ChangeNotifier {
   QuestionsSingle questionsSingleList;
   Future<void> getQuestionsSingle(int questionsID) async {
     try {
-      final accessToken = await http
+      final responseData = await http
           .get(Uri.encodeFull(APIData.questions + "/$questionsID"), headers: {
         HttpHeaders.acceptHeader: APIData.acceptHeader,
-        HttpHeaders.AUTHORIZATION: APIData.authorization
+        HttpHeaders.authorizationHeader: auth
       });
       isLoading = false;
-      if (accessToken.statusCode == 200) {
-        final questionsSingle = questionsSingleFromJson(accessToken.body);
+      if (responseData.statusCode == 200) {
+        final questionsSingle = questionsSingleFromJson(responseData.body);
         questionsSingleList = questionsSingle;
         notifyListeners();
       }
@@ -77,14 +73,14 @@ class QuestionsProvider extends ChangeNotifier {
   QuestionsPrivate questionsPrivateList;
   Future<void> getQuestionsPrivate() async {
     try {
-      final accessToken =
+      final responseData =
           await http.get(Uri.encodeFull(APIData.privatequestions), headers: {
         HttpHeaders.acceptHeader: APIData.acceptHeader,
-        HttpHeaders.AUTHORIZATION: APIData.authorization
+        HttpHeaders.authorizationHeader: auth
       });
       isLoading = false;
-      if (accessToken.statusCode == 200) {
-        final questionsPrivate = questionsPrivateFromJson(accessToken.body);
+      if (responseData.statusCode == 200) {
+        final questionsPrivate = questionsPrivateFromJson(responseData.body);
         questionsPrivateList = questionsPrivate;
         notifyListeners();
       }
@@ -101,15 +97,15 @@ class QuestionsProvider extends ChangeNotifier {
   QuestionsUsersIFollow questionsUsersIFollowList;
   Future<void> getQuestionsUsersIFollow() async {
     try {
-      final accessToken = await http
+      final responseData = await http
           .get(Uri.encodeFull(APIData.usersifollowquestions), headers: {
         HttpHeaders.acceptHeader: APIData.acceptHeader,
-        HttpHeaders.AUTHORIZATION: APIData.authorization
+        HttpHeaders.authorizationHeader: auth
       });
       isLoading = false;
-      if (accessToken.statusCode == 200) {
+      if (responseData.statusCode == 200) {
         final questionsUsersIFollow =
-            questionsUsersIFollowFromJson(accessToken.body);
+            questionsUsersIFollowFromJson(responseData.body);
         questionsUsersIFollowList = questionsUsersIFollow;
         notifyListeners();
       }
@@ -127,14 +123,14 @@ class QuestionsProvider extends ChangeNotifier {
   QuestionsMy questionsMyList;
   Future<void> getQuestionsMy() async {
     try {
-      final accessToken =
+      final responseData =
           await http.get(Uri.encodeFull(APIData.myquestions), headers: {
         HttpHeaders.acceptHeader: APIData.acceptHeader,
-        HttpHeaders.AUTHORIZATION: APIData.authorization
+        HttpHeaders.authorizationHeader: auth
       });
       isLoading = false;
-      if (accessToken.statusCode == 200) {
-        final questionsMy = questionsMyFromJson(accessToken.body);
+      if (responseData.statusCode == 200) {
+        final questionsMy = questionsMyFromJson(responseData.body);
         questionsMyList = questionsMy;
         notifyListeners();
       }
@@ -151,14 +147,14 @@ class QuestionsProvider extends ChangeNotifier {
   QuestionsIFollow questionsIFollowList;
   Future<void> getQuestionsIFollow() async {
     try {
-      final accessToken =
+      final responseData =
           await http.get(Uri.encodeFull(APIData.myquestions), headers: {
         HttpHeaders.acceptHeader: APIData.acceptHeader,
-        HttpHeaders.AUTHORIZATION: APIData.authorization
+        HttpHeaders.authorizationHeader: auth
       });
       isLoading = false;
-      if (accessToken.statusCode == 200) {
-        final questionsIFollow = questionsIFollowFromJson(accessToken.body);
+      if (responseData.statusCode == 200) {
+        final questionsIFollow = questionsIFollowFromJson(responseData.body);
         questionsIFollowList = questionsIFollow;
         notifyListeners();
       }
@@ -175,16 +171,16 @@ class QuestionsProvider extends ChangeNotifier {
   QuestionsMostAnswered questionsMostAnsweredList;
   Future<void> getQuestionsMostAnswered() async {
     try {
-      final accessToken = await http.get(
+      final responseData = await http.get(
           Uri.encodeFull(APIData.questions + "/?order_by=answers_count"),
           headers: {
             HttpHeaders.acceptHeader: APIData.acceptHeader,
-            HttpHeaders.AUTHORIZATION: APIData.authorization
+            HttpHeaders.authorizationHeader: auth
           });
       isLoading = false;
-      if (accessToken.statusCode == 200) {
+      if (responseData.statusCode == 200) {
         final questionsMostAnswered =
-            questionsMostAnsweredFromJson(accessToken.body);
+            questionsMostAnsweredFromJson(responseData.body);
         questionsMostAnsweredList = questionsMostAnswered;
         notifyListeners();
       }
@@ -208,13 +204,13 @@ class QuestionsProvider extends ChangeNotifier {
     List options,
   ) async {
     try {
-      final accessToken =
+      final responseData =
           await http.get(Uri.encodeFull(APIData.questions), headers: {
         HttpHeaders.acceptHeader: APIData.acceptHeader,
-        HttpHeaders.AUTHORIZATION: APIData.authorization
+        HttpHeaders.authorizationHeader: auth
       });
       isLoading = false;
-      if (accessToken.statusCode == 200) {
+      if (responseData.statusCode == 200) {
         notifyListeners();
       }
     } catch (err) {
@@ -230,7 +226,7 @@ class QuestionsProvider extends ChangeNotifier {
       final responseData = await http
           .get(Uri.encodeFull(APIData.follow + "/$questionsID"), headers: {
         HttpHeaders.acceptHeader: APIData.acceptHeader,
-        HttpHeaders.AUTHORIZATION: APIData.authorization
+        HttpHeaders.authorizationHeader: auth
       });
       isLoading = false;
       if (responseData.statusCode == 200) {
@@ -252,7 +248,7 @@ class QuestionsProvider extends ChangeNotifier {
       final responseData = await http
           .get(Uri.encodeFull(APIData.unfollow + "/$questionsID"), headers: {
         HttpHeaders.acceptHeader: APIData.acceptHeader,
-        HttpHeaders.AUTHORIZATION: APIData.authorization
+        HttpHeaders.authorizationHeader: auth
       });
       isLoading = false;
       if (responseData.statusCode == 200) {
@@ -274,7 +270,7 @@ class QuestionsProvider extends ChangeNotifier {
       final responseData = await http
           .get(Uri.encodeFull(APIData.upvote + "/$questionsID"), headers: {
         HttpHeaders.acceptHeader: APIData.acceptHeader,
-        HttpHeaders.AUTHORIZATION: APIData.authorization
+        HttpHeaders.authorizationHeader: auth
       });
       isLoading = false;
       if (responseData.statusCode == 200) {
@@ -296,7 +292,7 @@ class QuestionsProvider extends ChangeNotifier {
       final responseData = await http
           .get(Uri.encodeFull(APIData.downvote + "/$questionsID"), headers: {
         HttpHeaders.acceptHeader: APIData.acceptHeader,
-        HttpHeaders.AUTHORIZATION: APIData.authorization
+        HttpHeaders.authorizationHeader: auth
       });
       isLoading = false;
       if (responseData.statusCode == 200) {
@@ -318,7 +314,7 @@ class QuestionsProvider extends ChangeNotifier {
       final responseData = await http
           .get(Uri.encodeFull(APIData.open + "/$questionsID"), headers: {
         HttpHeaders.acceptHeader: APIData.acceptHeader,
-        HttpHeaders.AUTHORIZATION: APIData.authorization
+        HttpHeaders.authorizationHeader: auth
       });
       isLoading = false;
       if (responseData.statusCode == 200) {
@@ -340,7 +336,7 @@ class QuestionsProvider extends ChangeNotifier {
       final responseData = await http
           .get(Uri.encodeFull(APIData.close + "/$questionsID"), headers: {
         HttpHeaders.acceptHeader: APIData.acceptHeader,
-        HttpHeaders.AUTHORIZATION: APIData.authorization
+        HttpHeaders.authorizationHeader: auth
       });
       isLoading = false;
       if (responseData.statusCode == 200) {
@@ -362,7 +358,7 @@ class QuestionsProvider extends ChangeNotifier {
       final responseData = await http
           .get(Uri.encodeFull(APIData.isfollowing + "/$questionsID"), headers: {
         HttpHeaders.acceptHeader: APIData.acceptHeader,
-        HttpHeaders.AUTHORIZATION: APIData.authorization
+        HttpHeaders.authorizationHeader: auth
       });
       isLoading = false;
       if (responseData.statusCode == 200) {
@@ -385,7 +381,7 @@ class QuestionsProvider extends ChangeNotifier {
           Uri.encodeFull(APIData.questions + "/$questionsID"),
           headers: {
             HttpHeaders.acceptHeader: APIData.acceptHeader,
-            HttpHeaders.AUTHORIZATION: APIData.authorization
+            HttpHeaders.authorizationHeader: auth
           });
       isLoading = false;
       if (responseData.statusCode == 200) {
