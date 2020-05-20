@@ -21,12 +21,21 @@ class AuthenticationProvider extends ChangeNotifier {
   String userUpdatedAt;
   String userProfileImageUrl;
   String userLevel;
-  String token;
+  String _token;
 
   bool get userLoading => _isLoading;
 
   bool get isAuth {
-    return token != null;
+    print('Rebuilded ....................');
+    print(_token);
+    return _token != null;
+  }
+
+  String get token {
+    if (userPhone != null && userOtp != null && _token != null) {
+      return _token;
+    }
+    return null;
   }
 
   Future<void> register(String name, String phone) async {
@@ -38,7 +47,6 @@ class AuthenticationProvider extends ChangeNotifier {
             APIData.domainApiLink + "register?name=$name&phone=$phone"),
         headers: {
           HttpHeaders.acceptHeader: APIData.acceptHeader,
-          // HttpHeaders.AUTHORIZATION: APIData.authorization
         },
       );
 
@@ -63,7 +71,7 @@ class AuthenticationProvider extends ChangeNotifier {
         userProfileImageUrl =
             responseData['user']['profile_image_url'].toString();
         userLevel = responseData['user']['user_level'].toString();
-        token = responseData['access_toekn'];
+        _token = "Bearer " + responseData['access_toekn'];
 
         // /// send [otp] ......
         // postOtp(responseData['user']['phone'].toString());
@@ -131,16 +139,16 @@ class AuthenticationProvider extends ChangeNotifier {
 
     //Reintializ all property up there .........
     userName = extractedUserData['userName'];
-    userId = extractedUserData['userName'].toString();
-    userPhone = extractedUserData['userName'].toString();
-    userReputation = extractedUserData['userName'].toString();
-    userOtp = extractedUserData['userName'].toString();
-    userResumeUrl = extractedUserData['userName'].toString();
-    userCreatedAt = extractedUserData['userName'].toString();
-    userUpdatedAt = extractedUserData['userName'].toString();
-    userProfileImageUrl = extractedUserData['userName'].toString();
-    userLevel = extractedUserData['userName'].toString();
-    token = extractedUserData['userName'];
+    userId = extractedUserData['userId'].toString();
+    userPhone = extractedUserData['userPhone'].toString();
+    userReputation = extractedUserData['userReputation'].toString();
+    userOtp = extractedUserData['userOtp'].toString();
+    userResumeUrl = extractedUserData['userResumeUrl'].toString();
+    userCreatedAt = extractedUserData['userCreatedAt'].toString();
+    userUpdatedAt = extractedUserData['userUpdatedAt'].toString();
+    userProfileImageUrl = extractedUserData['userProfileImageUrl'].toString();
+    userLevel = extractedUserData['userLevel'].toString();
+    _token = extractedUserData['token'];
 
     notifyListeners();
     return true;

@@ -27,10 +27,10 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController phoneController = new TextEditingController();
   final TextEditingController nameController = new TextEditingController();
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  // }
 
   @override
   Widget build(BuildContext context) {
