@@ -28,6 +28,7 @@ class App extends StatelessWidget {
           ),
           create: (_) => null,
         ),
+        
         ChangeNotifierProvider.value(value: ServicesProvider()),
         ChangeNotifierProvider.value(value: QuestionsProvider()),
       ],
