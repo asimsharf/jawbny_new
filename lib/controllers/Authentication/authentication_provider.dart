@@ -26,7 +26,7 @@ class AuthenticationProvider extends ChangeNotifier {
   bool get userLoading => _isLoading;
 
   bool get isAuth {
-    print('Rebuilded ....................');
+    print('Rebuilding ............');
     print(_token);
     return _token != null;
   }
@@ -49,6 +49,8 @@ class AuthenticationProvider extends ChangeNotifier {
           HttpHeaders.acceptHeader: APIData.acceptHeader,
         },
       );
+      _isLoading = false;
+      notifyListeners();
 
       final responseData = json.decode(response.body) as Map<String, dynamic>;
       print(responseData);
@@ -93,9 +95,8 @@ class AuthenticationProvider extends ChangeNotifier {
           'token': "Bearer " + responseData['access_toekn'],
         });
         prefs.setString('userData', userData);
+        notifyListeners();
       }
-      _isLoading = false;
-      notifyListeners();
     } catch (error) {
       _isLoading = false;
       notifyListeners();
@@ -153,8 +154,4 @@ class AuthenticationProvider extends ChangeNotifier {
     notifyListeners();
     return true;
   }
-
-  // Future<void> logIn(String phone, int otp) async {
-  //   return postRegister("login?phone=$phone&otp=$otp");
-  // }
 }

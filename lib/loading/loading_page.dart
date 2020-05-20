@@ -156,17 +156,20 @@ class _LoadingPageState extends State<LoadingPage>
 
   Widget loadingPageWidget() {
     return Expanded(
-        child: Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          animatedOpacityLogo(),
-          Padding(padding: EdgeInsets.only(top: 20.0)),
-          animatedOpacityCircular(),
-        ],
+      child: Container(
+        height: 80.0,
+        width: 80.0,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            animatedOpacityLogo(),
+            Padding(padding: EdgeInsets.only(top: 20.0)),
+            animatedOpacityCircular(),
+          ],
+        ),
       ),
-    ));
+    );
   }
 
   Widget animatedOpacityLogo() {
@@ -200,6 +203,7 @@ class _LoadingPageState extends State<LoadingPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[

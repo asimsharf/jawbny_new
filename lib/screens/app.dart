@@ -28,9 +28,16 @@ class App extends StatelessWidget {
           ),
           create: (_) => null,
         ),
-        
+
         ChangeNotifierProvider.value(value: ServicesProvider()),
-        ChangeNotifierProvider.value(value: QuestionsProvider()),
+
+        ///[ProxyProvider]  the 'QuestionsProvider' widget depends on  [Auth] & [QuestionsProvider]
+        ChangeNotifierProxyProvider<AuthenticationProvider, QuestionsProvider>(
+          update: (context, auth, __) => QuestionsProvider(
+            auth: auth.token,
+          ),
+          create: (_) => null,
+        ),
       ],
       child: Consumer<AuthenticationProvider>(
         builder: (ctx, auth, child) {

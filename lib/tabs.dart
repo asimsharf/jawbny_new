@@ -153,7 +153,8 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                 ListTile(
                   leading: const Icon(MdiIcons.home),
                   title: Text(
-                      AppLocalizations.of(context).translate('menu', 'home')),
+                    AppLocalizations.of(context).translate('menu', 'home'),
+                  ),
                   selected: true,
                   onTap: () {
                     Navigator.of(context).pop();
@@ -162,12 +163,17 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                 new ListTile(
                   leading: const Icon(Icons.mail),
                   title: Text(
-                      AppLocalizations.of(context).translate('menu', 'mail')),
+                    AppLocalizations.of(context).translate('menu', 'mail'),
+                  ),
                   selected: true,
                   onTap: () {
                     Navigator.of(context).pop();
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => J_msgs()));
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => J_msgs(),
+                      ),
+                    );
                   },
                 ),
                 new ListTile(
@@ -414,7 +420,10 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
         children: _allPages.map<Widget>(
           (_Page page) {
             return SafeArea(
-                top: false, bottom: false, child: _body(context, page.cat));
+              top: false,
+              bottom: false,
+              child: _body(context, page.cat),
+            );
           },
         ).toList(),
       ),
@@ -444,355 +453,419 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
   }
 
   Widget _body(BuildContext context, int id) {
+    Provider.of<QuestionsProvider>(context).getQuestionsMostAnswered();
     Locale mylocale = Localizations.localeOf(context);
-    return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          Container(
-            color: Colors.grey[200],
-            child: Container(
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  top: 2.0,
-                ),
-                child: new Container(
-                  color: Colors.grey[200],
-                  width: double.infinity,
-                  child: Material(
-                    elevation: 1,
-                    child: FittedBox(
+    switch (id) {
+      case 1:
+        return Consumer<QuestionsProvider>(
+          builder: (ctx, modelData, child) {
+            modelData.getQuestionsMostAnswered();
+            if (modelData.isLoading) {
+              return Center(child: CircularProgressIndicator());
+            } else if (modelData.getDatumQuestions != null) {
+              return ListView.builder(
+                itemCount: modelData.getDatumQuestions.length,
+                itemBuilder: (ctx, index) {
+                  var data = modelData.getDatumQuestions[index];
+                  return Container(
+                    color: Colors.grey[200],
+                    child: Container(
                       child: Padding(
                         padding: const EdgeInsets.only(
-                            right: 30.0, left: 30.0, top: 20),
-                        child: Column(
-                          children: <Widget>[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Row(
-                                  children: <Widget>[
-                                    Align(
-                                      alignment: Alignment.topRight,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Image.asset(
-                                          "assets/Avatar.png",
-                                          height: 50,
-                                          width: 50,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 8.0),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 5.0, bottom: 2.0),
-                                        child: AutoSizeText(
-                                          AppLocalizations.of(context)
-                                              .translate('tabs', 'name'),
-                                          maxLines: 2,
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                      ),
-                                      Container(
-                                        width: 300,
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 0.0),
-                                          child: AutoSizeText(
-                                            AppLocalizations.of(context)
-                                                .translate('tabs', 'asked_t'),
-                                            style: TextStyle(fontSize: 14),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                            Row(
-                              children: <Widget>[
-                                Row(
-                                  children: <Widget>[
-                                    Padding(
-                                      padding:
-                                          mylocale.languageCode.contains("ur")
-                                              ? EdgeInsets.only(left: 12.0)
-                                              : EdgeInsets.only(right: 12.0),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          IconButton(
-                                            icon: Icon(
-                                              Icons.arrow_drop_up,
-                                              size: 40,
-                                              color: Colors.black54,
-                                            ),
-                                            onPressed: () {},
-                                          ),
-                                          Container(
-                                            margin: mylocale.languageCode
-                                                    .contains("ur")
-                                                ? EdgeInsets.only(right: 10)
-                                                : EdgeInsets.only(left: 10),
-                                            child: Text(
-                                              "2",
-                                              style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ),
-                                          IconButton(
-                                            icon: Icon(
-                                              Icons.arrow_drop_down,
-                                              size: 40,
-                                              color: Colors.black54,
-                                            ),
-                                            onPressed: () {},
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Container(
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 10.0),
-                                        child: AutoSizeText(
-                                          "ايهما افضل؟",
-                                          maxLines: 2,
-                                          style: TextStyle(fontSize: 14),
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      width: 300,
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 10.0),
-                                        child: Text(
-                                          "ايهما افضل من ناحية السعر والاداء بالنسبة للموديلات الجديدة",
-                                          style: TextStyle(fontSize: 14),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                            Row(
-                              children: <Widget>[
-                                Padding(
-                                  padding: const EdgeInsets.all(8),
-                                  child: Row(
-                                    children: <Widget>[
-                                      SvgPicture.asset(
-                                        "assets/svgs/seen.svg",
-                                        height: 15,
-                                        width: 15,
-                                        color: Colors.black45,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text("65"),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 27,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8),
-                                  child: Row(
-                                    children: <Widget>[
-                                      SvgPicture.asset(
-                                        "assets/svgs/chat.svg",
-                                        height: 30,
-                                        width: 30,
-                                        color: Colors.black45,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text("8"),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 27,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8),
-                                  child: Row(
-                                    children: <Widget>[
-                                      SvgPicture.asset(
-                                        "assets/svgs/controbution.svg",
-                                        height: 20,
-                                        width: 20,
-                                        color: Colors.black45,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text("33"),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(width: 27),
-                                Padding(
-                                  padding: const EdgeInsets.all(8),
-                                  child: Row(
-                                    children: <Widget>[
-                                      Icon(
-                                        Icons.star,
-                                        color: Colors.black45,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text("0"),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
+                          top: 2.0,
                         ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Consumer<QuestionsProvider>(
-            builder: (ctx, questionsData, child) {
-              questionsData.getQuestions();
-              if (id == 1) {
-                return Center(
-                  child: FittedBox(
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        top: 10,
-                      ),
-                      child: new Container(
-                        width: MediaQuery.of(context).size.width,
-                        child: Material(
-                          elevation: 1,
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                right: 55.0, left: 55.0, top: 1, bottom: 10),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Text("شارك في الاستطلاع ، اختر اجابتك..."),
-                                new CheckboxListTile(
-                                  activeColor: color,
-                                  title: new Text("ماك بوك"),
-                                  value: _value1,
-                                  onChanged: (bool value) {
-                                    _onChanged1(value);
-                                  },
-                                ),
-                                new CheckboxListTile(
-                                  activeColor: color,
-                                  title: new Text("كروم بوك"),
-                                  value: _value2,
-                                  onChanged: (bool value) {
-                                    _onChanged2(value);
-                                  },
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      GestureDetector(
-                                        onTap: () {},
-                                        child: Container(
-                                          height: 40,
-                                          width: 100,
-                                          decoration: BoxDecoration(
-                                              color: color,
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(50))),
-                                          child: Center(
-                                            child: Text(
-                                              AppLocalizations.of(context)
-                                                  .translate(
-                                                      'buttons', 'apply'),
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 18),
+                        child: new Container(
+                          color: Colors.grey[200],
+                          width: double.infinity,
+                          child: Material(
+                            elevation: 1,
+                            child: FittedBox(
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    right: 30.0, left: 30.0, top: 20),
+                                child: Column(
+                                  children: <Widget>[
+                                    Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Row(
+                                          children: <Widget>[
+                                            Align(
+                                              alignment: Alignment.topRight,
+                                              child: Padding(
+                                                padding:
+                                                const EdgeInsets.all(8.0),
+                                                child: Image.asset(
+                                                  "assets/Avatar.png",
+                                                  height: 50,
+                                                  width: 50,
+                                                ),
+                                              ),
                                             ),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding:
+                                          const EdgeInsets.only(top: 8.0),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 5.0, bottom: 2.0),
+                                                child: AutoSizeText(
+                                                  "${data.user.name}",
+//                                                  AppLocalizations.of(context).translate('tabs', 'name'),
+                                                  maxLines: 2,
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                width: 300,
+                                                child: Padding(
+                                                  padding:
+                                                  const EdgeInsets.only(
+                                                      right: 0.0),
+                                                  child: AutoSizeText(
+                                                    AppLocalizations.of(context)
+                                                        .translate(
+                                                        'tabs', 'asked_t'),
+                                                    style:
+                                                    TextStyle(fontSize: 14),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    Row(
+                                      children: <Widget>[
+                                        Row(
+                                          children: <Widget>[
+                                            Padding(
+                                              padding: mylocale.languageCode
+                                                  .contains("ur")
+                                                  ? EdgeInsets.only(left: 12.0)
+                                                  : EdgeInsets.only(
+                                                  right: 12.0),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                                children: <Widget>[
+                                                  IconButton(
+                                                    icon: Icon(
+                                                      Icons.arrow_drop_up,
+                                                      size: 40,
+                                                      color: Colors.black54,
+                                                    ),
+                                                    onPressed: () {},
+                                                  ),
+                                                  Container(
+                                                    margin: mylocale
+                                                        .languageCode
+                                                        .contains("ur")
+                                                        ? EdgeInsets.only(
+                                                        right: 10)
+                                                        : EdgeInsets.only(
+                                                        left: 10),
+                                                    child: Text(
+                                                      "${data.votesAverage
+                                                          .toString()}",
+                                                      style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                          FontWeight.bold),
+                                                    ),
+                                                  ),
+                                                  IconButton(
+                                                    icon: Icon(
+                                                      Icons.arrow_drop_down,
+                                                      size: 40,
+                                                      color: Colors.black54,
+                                                    ),
+                                                    onPressed: () {},
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                        Column(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Container(
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    right: 10.0),
+                                                child: AutoSizeText(
+                                                  "${data.title}",
+                                                  maxLines: 2,
+                                                  style:
+                                                  TextStyle(fontSize: 14),
+                                                ),
+                                              ),
+                                            ),
+                                            Container(
+                                              width: 300,
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    right: 10.0),
+                                                child: Text(
+                                                  "${data.body}",
+                                                  style:
+                                                  TextStyle(fontSize: 14),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                    Row(
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: const EdgeInsets.all(8),
+                                          child: Row(
+                                            children: <Widget>[
+                                              SvgPicture.asset(
+                                                "assets/svgs/seen.svg",
+                                                height: 15,
+                                                width: 15,
+                                                color: Colors.black45,
+                                              ),
+                                              Padding(
+                                                padding:
+                                                const EdgeInsets.all(8.0),
+                                                child: Text("${data.views}"),
+                                              )
+                                            ],
                                           ),
                                         ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {},
-                                        child: Container(
-                                          height: 40,
-                                          width: 100,
-                                          decoration: BoxDecoration(
-                                              color: color,
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(50))),
-                                          child: Center(
-                                            child: Text(
-                                              AppLocalizations.of(context)
-                                                  .translate(
-                                                      'buttons', 'result'),
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 18),
-                                            ),
+                                        SizedBox(
+                                          width: 27,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8),
+                                          child: Row(
+                                            children: <Widget>[
+                                              SvgPicture.asset(
+                                                "assets/svgs/chat.svg",
+                                                height: 30,
+                                                width: 30,
+                                                color: Colors.black45,
+                                              ),
+                                              Padding(
+                                                padding:
+                                                const EdgeInsets.all(8.0),
+                                                child: Text(
+                                                    "${data.answersCount}"),
+                                              )
+                                            ],
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ],
+                                        SizedBox(
+                                          width: 27,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8),
+                                          child: Row(
+                                            children: <Widget>[
+                                              SvgPicture.asset(
+                                                "assets/svgs/controbution.svg",
+                                                height: 20,
+                                                width: 20,
+                                                color: Colors.black45,
+                                              ),
+                                              Padding(
+                                                padding:
+                                                const EdgeInsets.all(8.0),
+                                                child: Text(
+                                                    "${data.followersCount}"),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(width: 27),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8),
+                                          child: Row(
+                                            children: <Widget>[
+                                              Icon(
+                                                Icons.star,
+                                                color: Colors.black45,
+                                              ),
+                                              Padding(
+                                                padding:
+                                                const EdgeInsets.all(8.0),
+                                                child: Text("0"),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                );
-              } else {
-                return Container();
-              }
-            },
-          ),
-        ],
-      ),
-    );
+                  );
+                },
+              );
+            } else {
+              return Center(
+                child: Text("No Data"),
+              );
+            }
+          },
+        );
+        break;
+      case 4:
+        return Container(
+          child: Center(child: Text("4")),
+        );
+        break;
+      case 6:
+        return Container(
+          child: Center(child: Text("6")),
+        );
+        break;
+      case 5:
+        return Container(
+          child: Center(child: Text("5")),
+        );
+        break;
+    }
+
+//    return SingleChildScrollView(
+
+//      child: Column(
+//        children: <Widget>[
+//          Consumer<QuestionsProvider>(
+//            builder: (ctx, questionsData, child) {
+//              questionsData.getQuestions();
+//              if (id == 1) {
+//                return Center(
+//                  child: FittedBox(
+//                    child: Padding(
+//                      padding: const EdgeInsets.only(
+//                        top: 10,
+//                      ),
+//                      child: new Container(
+//                        width: MediaQuery.of(context).size.width,
+//                        child: Material(
+//                          elevation: 1,
+//                          child: Padding(
+//                            padding: const EdgeInsets.only(
+//                                right: 55.0, left: 55.0, top: 1, bottom: 10),
+//                            child: Column(
+//                              mainAxisAlignment: MainAxisAlignment.center,
+//                              mainAxisSize: MainAxisSize.min,
+//                              crossAxisAlignment: CrossAxisAlignment.center,
+//                              children: <Widget>[
+//                                Text("شارك في الاستطلاع ، اختر اجابتك..."),
+//                                new CheckboxListTile(
+//                                  activeColor: color,
+//                                  title: new Text("ماك بوك"),
+//                                  value: _value1,
+//                                  onChanged: (bool value) {
+//                                    _onChanged1(value);
+//                                  },
+//                                ),
+//                                new CheckboxListTile(
+//                                  activeColor: color,
+//                                  title: new Text("كروم بوك"),
+//                                  value: _value2,
+//                                  onChanged: (bool value) {
+//                                    _onChanged2(value);
+//                                  },
+//                                ),
+//                                Padding(
+//                                  padding: const EdgeInsets.all(8.0),
+//                                  child: Row(
+//                                    mainAxisAlignment:
+//                                        MainAxisAlignment.spaceBetween,
+//                                    crossAxisAlignment:
+//                                        CrossAxisAlignment.start,
+//                                    children: <Widget>[
+//                                      GestureDetector(
+//                                        onTap: () {},
+//                                        child: Container(
+//                                          height: 40,
+//                                          width: 100,
+//                                          decoration: BoxDecoration(
+//                                              color: color,
+//                                              borderRadius: BorderRadius.all(
+//                                                  Radius.circular(50))),
+//                                          child: Center(
+//                                            child: Text(
+//                                              AppLocalizations.of(context)
+//                                                  .translate(
+//                                                      'buttons', 'apply'),
+//                                              style: TextStyle(
+//                                                  color: Colors.white,
+//                                                  fontSize: 18),
+//                                            ),
+//                                          ),
+//                                        ),
+//                                      ),
+//                                      GestureDetector(
+//                                        onTap: () {},
+//                                        child: Container(
+//                                          height: 40,
+//                                          width: 100,
+//                                          decoration: BoxDecoration(
+//                                              color: color,
+//                                              borderRadius: BorderRadius.all(
+//                                                  Radius.circular(50))),
+//                                          child: Center(
+//                                            child: Text(
+//                                              AppLocalizations.of(context)
+//                                                  .translate(
+//                                                      'buttons', 'result'),
+//                                              style: TextStyle(
+//                                                  color: Colors.white,
+//                                                  fontSize: 18),
+//                                            ),
+//                                          ),
+//                                        ),
+//                                      ),
+//                                    ],
+//                                  ),
+//                                )
+//                              ],
+//                            ),
+//                          ),
+//                        ),
+//                      ),
+//                    ),
+//                  ),
+//                );
+//              } else {
+//                return Container();
+//              }
+//            },
+//          ),
+//        ],
+//      ),
+//    );
   }
 
   void _searchPressed() {
