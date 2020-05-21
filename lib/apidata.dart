@@ -20,6 +20,7 @@ class APIData {
   static const String usersifollowquestions =
       domainApiLink + "users-i-follow-questions";
   static const String myquestions = domainApiLink + "my-questions";
+  static const String myanswers = domainApiLink + "my-answers";
   static const String communitiesifollow =
       domainApiLink + "communities-i-follow";
   static const String follow = domainApiLink + "follow";

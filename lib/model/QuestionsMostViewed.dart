@@ -11,7 +11,7 @@ String questionsMostViewedToJson(QuestionsMostViewed data) =>
     json.encode(data.toMap());
 
 class QuestionsMostViewed {
-  List<Datum> data;
+  List<DatumViewQuestions> data;
 
   QuestionsMostViewed({
     this.data,
@@ -21,7 +21,8 @@ class QuestionsMostViewed {
       QuestionsMostViewed(
         data: json["data"] == null
             ? null
-            : List<Datum>.from(json["data"].map((x) => Datum.fromMap(x))),
+            : List<DatumViewQuestions>.from(
+                json["data"].map((x) => DatumViewQuestions.fromMap(x))),
       );
 
   Map<String, dynamic> toMap() => {
@@ -31,7 +32,7 @@ class QuestionsMostViewed {
       };
 }
 
-class Datum {
+class DatumViewQuestions {
   int id;
   String title;
   String body;
@@ -53,7 +54,7 @@ class Datum {
   int answersCount;
   DateTime createdAt;
 
-  Datum({
+  DatumViewQuestions({
     this.id,
     this.title,
     this.body,
@@ -76,7 +77,8 @@ class Datum {
     this.createdAt,
   });
 
-  factory Datum.fromMap(Map<String, dynamic> json) => Datum(
+  factory DatumViewQuestions.fromMap(Map<String, dynamic> json) =>
+      DatumViewQuestions(
         id: json["id"] == null ? null : json["id"],
         title: json["title"] == null ? null : json["title"],
         body: json["body"] == null ? null : json["body"],

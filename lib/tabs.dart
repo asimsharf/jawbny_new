@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:scope_demo/controllers/Answers/AnswersProvider.dart';
 import 'package:scope_demo/controllers/Questions/questions_provider.dart';
 import 'package:scope_demo/controllers/app_localizations.dart';
 import 'package:scope_demo/model/Http_Exception.dart';
@@ -61,10 +62,10 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
   bool isInit = true;
   @override
   void didChangeDependencies() {
-    if (isInit) {
-      Provider.of<QuestionsProvider>(context).getQuestions();
-    }
-    isInit = false;
+//    if (isInit) {
+//      Provider.of<QuestionsProvider>(context).getQuestions();
+//    }
+//    isInit = false;
     super.didChangeDependencies();
   }
 
@@ -461,7 +462,6 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
   }
 
   Widget _body(BuildContext context, int id) {
-    Provider.of<QuestionsProvider>(context).getQuestionsMostAnswered();
     Locale mylocale = Localizations.localeOf(context);
     switch (id) {
       case 1:
@@ -609,7 +609,6 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                                             left: 10),
                                                     child: Text(
                                                       "${data.votesAverage.toString()}",
-                                                      
                                                       style: TextStyle(
                                                           fontSize: 14,
                                                           fontWeight:
@@ -785,16 +784,16 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
         );
         break;
       case 4:
-        return Consumer<QuestionsProvider>(
+        return Consumer<AnswersProvider>(
           builder: (ctx, modelData, child) {
-            modelData.getQuestionsMostAnswered();
+            modelData.getAnswers();
             if (modelData.isLoading) {
               return Center(child: CircularProgressIndicator());
-            } else if (modelData.getDatumQuestions != null) {
+            } else if (modelData.getDataDatumAnswer != null) {
               return ListView.builder(
-                itemCount: modelData.getDatumQuestions.length,
+                itemCount: modelData.getDataDatumAnswer.length,
                 itemBuilder: (ctx, index) {
-                  var data = modelData.getDatumQuestions[index];
+                  var data = modelData.getDataDatumAnswer[index];
                   return Container(
                     color: Colors.grey[200],
                     child: Container(
@@ -848,7 +847,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                                 padding: const EdgeInsets.only(
                                                     top: 5.0, bottom: 2.0),
                                                 child: AutoSizeText(
-                                                  "${data.user.name}",
+                                                  "wwwww",
 //                                                  AppLocalizations.of(context).translate('tabs', 'name'),
                                                   maxLines: 2,
                                                   style: TextStyle(
@@ -908,7 +907,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                                         : EdgeInsets.only(
                                                             left: 10),
                                                     child: Text(
-                                                      "${data.votesAverage.toString()}",
+                                                      "$index",
                                                       style: TextStyle(
                                                           fontSize: 14,
                                                           fontWeight:
@@ -939,7 +938,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                                 padding: const EdgeInsets.only(
                                                     right: 10.0),
                                                 child: AutoSizeText(
-                                                  "${data.title}",
+                                                  "www",
                                                   maxLines: 2,
                                                   style:
                                                       TextStyle(fontSize: 14),
@@ -952,7 +951,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                                 padding: const EdgeInsets.only(
                                                     right: 10.0),
                                                 child: Text(
-                                                  "${data.body}",
+                                                  "aaaaaaaaaaaaaaaaaaaaaaaaaaaa",
                                                   style:
                                                       TextStyle(fontSize: 14),
                                                 ),
@@ -977,7 +976,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                               Padding(
                                                 padding:
                                                     const EdgeInsets.all(8.0),
-                                                child: Text("${data.views}"),
+                                                child: Text("$index"),
                                               )
                                             ],
                                           ),
@@ -998,8 +997,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                               Padding(
                                                 padding:
                                                     const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                    "${data.answersCount}"),
+                                                child: Text("22"),
                                               )
                                             ],
                                           ),
@@ -1020,8 +1018,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                               Padding(
                                                 padding:
                                                     const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                    "${data.followersCount}"),
+                                                child: Text("22"),
                                               )
                                             ],
                                           ),
@@ -1067,14 +1064,14 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
       case 6:
         return Consumer<QuestionsProvider>(
           builder: (ctx, modelData, child) {
-            modelData.getQuestionsMostAnswered();
+            modelData.getQuestionsMostViewed();
             if (modelData.isLoading) {
               return Center(child: CircularProgressIndicator());
-            } else if (modelData.getDatumQuestions != null) {
+            } else if (modelData.getDataMostViewedQuestions != null) {
               return ListView.builder(
-                itemCount: modelData.getDatumQuestions.length,
+                itemCount: modelData.getDataMostViewedQuestions.length,
                 itemBuilder: (ctx, index) {
-                  var data = modelData.getDatumQuestions[index];
+                  var data = modelData.getDataMostViewedQuestions[index];
                   return Container(
                     color: Colors.grey[200],
                     child: Container(
