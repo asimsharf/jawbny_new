@@ -29,9 +29,10 @@ class App extends StatelessWidget {
           ),
           create: (_) => null,
         ),
+
         ChangeNotifierProvider.value(value: ServicesProvider()),
 
-        ///[ProxyProvider]  the 'UploadUserImage' widget depends on  [Auth] & [UploadUserImage]
+        ///[ProxyProvider]  the 'QuestionsProvider' widget depends on  [Auth] & [QuestionsProvider]
         ChangeNotifierProxyProvider<AuthenticationProvider, QuestionsProvider>(
           update: (context, auth, __) => QuestionsProvider(
             auth: auth.token,
