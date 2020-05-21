@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:scope_demo/controllers/Answers/AnswersProvider.dart';
 import 'package:scope_demo/controllers/Authentication/authentication_provider.dart';
 import 'package:scope_demo/controllers/Questions/questions_provider.dart';
 import 'package:scope_demo/controllers/app_localizations.dart';
@@ -33,6 +34,14 @@ class App extends StatelessWidget {
         ///[ProxyProvider]  the 'UploadUserImage' widget depends on  [Auth] & [UploadUserImage]
         ChangeNotifierProxyProvider<AuthenticationProvider, QuestionsProvider>(
           update: (context, auth, __) => QuestionsProvider(
+            auth: auth.token,
+          ),
+          create: (_) => null,
+        ),
+
+        ///[ProxyProvider]  the 'UploadUserImage' widget depends on  [Auth] & [UploadUserImage]
+        ChangeNotifierProxyProvider<AuthenticationProvider, AnswersProvider>(
+          update: (context, auth, __) => AnswersProvider(
             auth: auth.token,
           ),
           create: (_) => null,

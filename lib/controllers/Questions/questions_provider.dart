@@ -7,6 +7,7 @@ import 'package:scope_demo/apidata.dart';
 import 'package:scope_demo/model/Questions.dart';
 import 'package:scope_demo/model/QuestionsIFollow.dart';
 import 'package:scope_demo/model/QuestionsMostAnswered.dart';
+import 'package:scope_demo/model/QuestionsMostViewed.dart';
 import 'package:scope_demo/model/QuestionsMy.dart';
 import 'package:scope_demo/model/QuestionsPrivate.dart';
 import 'package:scope_demo/model/QuestionsSingle.dart';
@@ -169,7 +170,7 @@ class QuestionsProvider extends ChangeNotifier {
 
   ///fetch all QuestionsMostAnswered
   QuestionsMostAnswered questionsMostAnsweredList;
-  List<DatumQuestions> _data = [];
+  List<DatumAnswerQuestions> _data = [];
 
   Future<void> getQuestionsMostAnswered() async {
     try {
@@ -192,15 +193,51 @@ class QuestionsProvider extends ChangeNotifier {
         notifyListeners();
       }
     } catch (err) {
+      isLoading = false;
+      message = err.toString();
+      notifyListeners();
+    }
+  }
+
+  List<DatumAnswerQuestions> get getDatumQuestions => _data;
+  QuestionsMostAnswered get getQuestionsMostAnsweredList =>
+      questionsMostAnsweredList;
+
+  ///fetch all QuestionsMostAnswered
+  QuestionsMostViewed questionsMostViewedList;
+  List<DatumViewQuestions> _dataMostViewedQuestions = [];
+
+  Future<void> getQuestionsMostViewed() async {
+    try {
+      final responseData = await http.get(
+          Uri.encodeFull(APIData.questions + "/?order_by=answers_count"),
+          headers: {
+            HttpHeaders.acceptHeader: APIData.acceptHeader,
+            HttpHeaders.authorizationHeader: auth
+          });
+      isLoading = false;
+      if (responseData.statusCode == 200) {
+        final questionsMostViewed =
+            questionsMostViewedFromJson(responseData.body);
+        questionsMostViewedList = questionsMostViewed;
+
+        _dataMostViewedQuestions.clear();
+        questionsMostViewed.data.forEach((e) {
+          _dataMostViewedQuestions.add(e);
+        });
+        notifyListeners();
+      }
+    } catch (err) {
       message = err.toString();
       isLoading = false;
       notifyListeners();
     }
   }
 
-  List<DatumQuestions> get getDatumQuestions => _data;
-  QuestionsMostAnswered get getQuestionsMostAnsweredList =>
-      questionsMostAnsweredList;
+  List<DatumViewQuestions> get getDataMostViewedQuestions =>
+      _dataMostViewedQuestions;
+  QuestionsMostViewed get getQuestionsMostMostViewedList =>
+      questionsMostViewedList;
 
   ///fetch all QuestionsIFollow
   Future<void> postQuestions(
