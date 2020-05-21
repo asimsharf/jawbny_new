@@ -1,4 +1,5 @@
 import "dart:async";
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -272,47 +273,63 @@ class QuestionsProvider extends ChangeNotifier {
     }
   }
 
+////////////////////////////////////[Question VoteUp Post]//////////////////////////////
   ///post all UpVote Questions
   Future<void> postQuestionsUpVote(int questionsID) async {
     try {
-      final responseData = await http
-          .get(Uri.encodeFull(APIData.upvote + "/$questionsID"), headers: {
-        HttpHeaders.acceptHeader: APIData.acceptHeader,
-        HttpHeaders.authorizationHeader: auth
-      });
-      isLoading = false;
-      if (responseData.statusCode == 200) {
-//        {
-//          "message": "you already voted up for this question!"
-//        }
-        notifyListeners();
+      final response = await http.post(
+          Uri.encodeFull(APIData.questions + "/upvote/$questionsID"),
+          headers: {
+            HttpHeaders.acceptHeader: APIData.acceptHeader,
+            HttpHeaders.authorizationHeader: auth,
+          });
+
+      var responseData = json.decode(response.body);
+
+      if (response.statusCode >= 400) {
+        throw HttpException(responseData['message'].toString());
       }
-    } catch (err) {
-      message = err.toString();
-      isLoading = false;
+
+      if (responseData['message'] == 'you voted up successfully') {
+        message = 'you voted up successfully';
+      }
+      if (responseData['message'] ==
+          'you already voted up for this question!') {
+        message = 'you already voted up for this question!';
+      }
       notifyListeners();
+    } catch (err) {
+      throw HttpException(err);
     }
   }
 
+  ////////////////////////////////////[Question VoteDown Post]//////////////////////////
   ///post all DownVote Questions
   Future<void> postQuestionsDownVote(int questionsID) async {
     try {
-      final responseData = await http
-          .get(Uri.encodeFull(APIData.downvote + "/$questionsID"), headers: {
-        HttpHeaders.acceptHeader: APIData.acceptHeader,
-        HttpHeaders.authorizationHeader: auth
-      });
-      isLoading = false;
-      if (responseData.statusCode == 200) {
-//        {
-//          "message": "you already voted down for this question!"
-//        }
-        notifyListeners();
+      final response = await http.post(
+          Uri.encodeFull(APIData.questions + "/downvote/$questionsID"),
+          headers: {
+            HttpHeaders.acceptHeader: APIData.acceptHeader,
+            HttpHeaders.authorizationHeader: auth,
+          });
+
+      var responseData = json.decode(response.body);
+
+      if (response.statusCode >= 400) {
+        throw HttpException(responseData['message'].toString());
       }
-    } catch (err) {
-      message = err.toString();
-      isLoading = false;
+
+      if (responseData['message'] == 'you voted down successfully') {
+        message = 'you voted down successfully';
+      }
+      if (responseData['message'] ==
+          'you already voted down for this question!') {
+        message = 'you already voted down for this question!';
+      }
       notifyListeners();
+    } catch (err) {
+      throw HttpException(err);
     }
   }
 

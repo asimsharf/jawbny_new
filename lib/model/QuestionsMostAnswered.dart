@@ -31,6 +31,8 @@ class QuestionsMostAnswered {
 }
 
 class DatumQuestions {
+  var isVotDownloading = false;
+  var isVotUploading = false;
   int id;
   String title;
   String body;

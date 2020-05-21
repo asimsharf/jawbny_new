@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:scope_demo/controllers/Answers/answer_provider.dart';
 import 'package:scope_demo/controllers/Authentication/authentication_provider.dart';
 import 'package:scope_demo/controllers/Questions/questions_provider.dart';
 import 'package:scope_demo/controllers/app_localizations.dart';
@@ -20,6 +21,8 @@ class App extends StatelessWidget {
           value: AuthenticationProvider(),
         ),
 
+        ChangeNotifierProvider.value(value: ServicesProvider()),
+
         ///[ProxyProvider]  the 'UploadUserImage' widget depends on  [Auth] & [UploadUserImage]
         ChangeNotifierProxyProvider<AuthenticationProvider, UploadUserImage>(
           update: (context, auth, __) => UploadUserImage(
@@ -29,11 +32,17 @@ class App extends StatelessWidget {
           create: (_) => null,
         ),
 
-        ChangeNotifierProvider.value(value: ServicesProvider()),
-
         ///[ProxyProvider]  the 'QuestionsProvider' widget depends on  [Auth] & [QuestionsProvider]
         ChangeNotifierProxyProvider<AuthenticationProvider, QuestionsProvider>(
           update: (context, auth, __) => QuestionsProvider(
+            auth: auth.token,
+          ),
+          create: (_) => null,
+        ),
+
+        ///[ProxyProvider]  the 'QuestionsProvider' widget depends on  [Auth] & [AnswerProvider]
+        ChangeNotifierProxyProvider<AuthenticationProvider, AnswerProvider>(
+          update: (context, auth, __) => AnswerProvider(
             auth: auth.token,
           ),
           create: (_) => null,

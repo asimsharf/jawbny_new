@@ -2,10 +2,12 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:scope_demo/controllers/Questions/questions_provider.dart';
 import 'package:scope_demo/controllers/app_localizations.dart';
+import 'package:scope_demo/model/Http_Exception.dart';
 import 'package:scope_demo/screens/best_answer.dart';
 import 'package:scope_demo/screens/j_comunities.dart';
 import 'package:scope_demo/screens/j_msgs.dart';
@@ -19,6 +21,7 @@ import 'package:scope_demo/screens/qstnairs.dart';
 import 'package:scope_demo/screens/related_qsts.dart';
 import 'package:scope_demo/screens/targeted_qsts.dart';
 import 'package:scope_demo/utils/my_flutter_app_icons.dart';
+import 'package:sweetalert/sweetalert.dart';
 
 class DrawerItem {
   String title;
@@ -53,6 +56,8 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
   void _onChanged1(bool value) => setState(() => _value1 = value);
   void _onChanged2(bool value) => setState(() => _value2 = value);
   Widget _appBarTitle = new Text("");
+
+  var isLoading = false;
   bool isInit = true;
   @override
   void didChangeDependencies() {
@@ -118,8 +123,11 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                         child: GestureDetector(
                           onTap: () {
                             Navigator.of(context).pop();
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => Profile()));
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => Profile(),
+                              ),
+                            );
                           },
                           child: Container(
                             height: 70,
@@ -487,9 +495,9 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                   children: <Widget>[
                                     Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                          MainAxisAlignment.spaceEvenly,
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       children: <Widget>[
                                         Row(
                                           children: <Widget>[
@@ -497,7 +505,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                               alignment: Alignment.topRight,
                                               child: Padding(
                                                 padding:
-                                                const EdgeInsets.all(8.0),
+                                                    const EdgeInsets.all(8.0),
                                                 child: Image.asset(
                                                   "assets/Avatar.png",
                                                   height: 50,
@@ -509,12 +517,12 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                         ),
                                         Padding(
                                           padding:
-                                          const EdgeInsets.only(top: 8.0),
+                                              const EdgeInsets.only(top: 8.0),
                                           child: Column(
                                             mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
+                                                MainAxisAlignment.spaceEvenly,
                                             crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                                CrossAxisAlignment.start,
                                             children: <Widget>[
                                               Padding(
                                                 padding: const EdgeInsets.only(
@@ -533,14 +541,14 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                                 width: 300,
                                                 child: Padding(
                                                   padding:
-                                                  const EdgeInsets.only(
-                                                      right: 0.0),
+                                                      const EdgeInsets.only(
+                                                          right: 0.0),
                                                   child: AutoSizeText(
                                                     AppLocalizations.of(context)
                                                         .translate(
-                                                        'tabs', 'asked_t'),
+                                                            'tabs', 'asked_t'),
                                                     style:
-                                                    TextStyle(fontSize: 14),
+                                                        TextStyle(fontSize: 14),
                                                   ),
                                                 ),
                                               ),
@@ -555,46 +563,85 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                           children: <Widget>[
                                             Padding(
                                               padding: mylocale.languageCode
-                                                  .contains("ur")
+                                                      .contains("ur")
                                                   ? EdgeInsets.only(left: 12.0)
                                                   : EdgeInsets.only(
-                                                  right: 12.0),
+                                                      right: 12.0),
                                               child: Column(
                                                 mainAxisAlignment:
-                                                MainAxisAlignment.center,
+                                                    MainAxisAlignment.center,
                                                 children: <Widget>[
+                                                  //////////////////////vooote Up Questionnnnnnnnnnnnnnnnnnnnnnnnnnn
                                                   IconButton(
-                                                    icon: Icon(
+                                                    icon: data.isVotUploading ? CircularProgressIndicator() : Icon(
                                                       Icons.arrow_drop_up,
                                                       size: 40,
                                                       color: Colors.black54,
                                                     ),
-                                                    onPressed: () {},
+                                                    onPressed: () async{
+                                                      try {
+                                                        setState(() {
+                                                          data.isVotUploading = true;
+                                                        });
+                                                        await modelData.postQuestionsUpVote(data.id).then((_){
+                                                        setState(() {
+                                                          data.isVotUploading = false;
+                                                        });
+                                                         SweetAlert.show(context, 
+                                                         title: modelData.message,
+                                                         style: SweetAlertStyle.success,
+                                                         );
+                                                        });
+                                                      } on HttpException catch(error){
+                                                        Fluttertoast.showToast(msg: error.toString());
+                                                      }catch(error){
+                                                        Fluttertoast.showToast(msg: error.toString());
+                                                      }
+                                                    }
                                                   ),
                                                   Container(
                                                     margin: mylocale
-                                                        .languageCode
-                                                        .contains("ur")
+                                                            .languageCode
+                                                            .contains("ur")
                                                         ? EdgeInsets.only(
-                                                        right: 10)
+                                                            right: 10)
                                                         : EdgeInsets.only(
-                                                        left: 10),
+                                                            left: 10),
                                                     child: Text(
-                                                      "${data.votesAverage
-                                                          .toString()}",
+                                                      "${data.votesAverage.toString()}",
+                                                      
                                                       style: TextStyle(
                                                           fontSize: 14,
                                                           fontWeight:
-                                                          FontWeight.bold),
+                                                              FontWeight.bold),
                                                     ),
                                                   ),
                                                   IconButton(
-                                                    icon: Icon(
-                                                      Icons.arrow_drop_down,
+                                                    icon: data.isVotDownloading ? CircularProgressIndicator() : Icon(
+                                                     Icons.arrow_drop_down,
                                                       size: 40,
                                                       color: Colors.black54,
                                                     ),
-                                                    onPressed: () {},
+                                                    onPressed: () async{
+                                                      try {
+                                                        setState(() {
+                                                          data.isVotDownloading = true;
+                                                        });
+                                                        await modelData.postQuestionsDownVote(data.id).then((_){
+                                                         setState(() {
+                                                          data.isVotDownloading = false;
+                                                        });
+                                                         SweetAlert.show(context, 
+                                                         title: modelData.message,
+                                                         style: SweetAlertStyle.confirm,
+                                                         );
+                                                        });
+                                                      } on HttpException catch(error){
+                                                        Fluttertoast.showToast(msg: error.toString());
+                                                      }catch(error){
+                                                        Fluttertoast.showToast(msg: error.toString());
+                                                      }
+                                                    },
                                                   ),
                                                 ],
                                               ),
@@ -603,9 +650,9 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                         ),
                                         Column(
                                           mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
+                                              MainAxisAlignment.spaceEvenly,
                                           crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Container(
                                               child: Padding(
@@ -615,7 +662,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                                   "${data.title}",
                                                   maxLines: 2,
                                                   style:
-                                                  TextStyle(fontSize: 14),
+                                                      TextStyle(fontSize: 14),
                                                 ),
                                               ),
                                             ),
@@ -627,7 +674,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                                 child: Text(
                                                   "${data.body}",
                                                   style:
-                                                  TextStyle(fontSize: 14),
+                                                      TextStyle(fontSize: 14),
                                                 ),
                                               ),
                                             ),
@@ -649,7 +696,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                               ),
                                               Padding(
                                                 padding:
-                                                const EdgeInsets.all(8.0),
+                                                    const EdgeInsets.all(8.0),
                                                 child: Text("${data.views}"),
                                               )
                                             ],
@@ -670,7 +717,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                               ),
                                               Padding(
                                                 padding:
-                                                const EdgeInsets.all(8.0),
+                                                    const EdgeInsets.all(8.0),
                                                 child: Text(
                                                     "${data.answersCount}"),
                                               )
@@ -692,7 +739,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                               ),
                                               Padding(
                                                 padding:
-                                                const EdgeInsets.all(8.0),
+                                                    const EdgeInsets.all(8.0),
                                                 child: Text(
                                                     "${data.followersCount}"),
                                               )
@@ -710,7 +757,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                               ),
                                               Padding(
                                                 padding:
-                                                const EdgeInsets.all(8.0),
+                                                    const EdgeInsets.all(8.0),
                                                 child: Text("0"),
                                               )
                                             ],
@@ -768,9 +815,9 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                   children: <Widget>[
                                     Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                          MainAxisAlignment.spaceEvenly,
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       children: <Widget>[
                                         Row(
                                           children: <Widget>[
@@ -778,7 +825,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                               alignment: Alignment.topRight,
                                               child: Padding(
                                                 padding:
-                                                const EdgeInsets.all(8.0),
+                                                    const EdgeInsets.all(8.0),
                                                 child: Image.asset(
                                                   "assets/Avatar.png",
                                                   height: 50,
@@ -790,12 +837,12 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                         ),
                                         Padding(
                                           padding:
-                                          const EdgeInsets.only(top: 8.0),
+                                              const EdgeInsets.only(top: 8.0),
                                           child: Column(
                                             mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
+                                                MainAxisAlignment.spaceEvenly,
                                             crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                                CrossAxisAlignment.start,
                                             children: <Widget>[
                                               Padding(
                                                 padding: const EdgeInsets.only(
@@ -814,14 +861,14 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                                 width: 300,
                                                 child: Padding(
                                                   padding:
-                                                  const EdgeInsets.only(
-                                                      right: 0.0),
+                                                      const EdgeInsets.only(
+                                                          right: 0.0),
                                                   child: AutoSizeText(
                                                     AppLocalizations.of(context)
                                                         .translate(
-                                                        'tabs', 'asked_t'),
+                                                            'tabs', 'asked_t'),
                                                     style:
-                                                    TextStyle(fontSize: 14),
+                                                        TextStyle(fontSize: 14),
                                                   ),
                                                 ),
                                               ),
@@ -836,13 +883,13 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                           children: <Widget>[
                                             Padding(
                                               padding: mylocale.languageCode
-                                                  .contains("ur")
+                                                      .contains("ur")
                                                   ? EdgeInsets.only(left: 12.0)
                                                   : EdgeInsets.only(
-                                                  right: 12.0),
+                                                      right: 12.0),
                                               child: Column(
                                                 mainAxisAlignment:
-                                                MainAxisAlignment.center,
+                                                    MainAxisAlignment.center,
                                                 children: <Widget>[
                                                   IconButton(
                                                     icon: Icon(
@@ -854,19 +901,18 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                                   ),
                                                   Container(
                                                     margin: mylocale
-                                                        .languageCode
-                                                        .contains("ur")
+                                                            .languageCode
+                                                            .contains("ur")
                                                         ? EdgeInsets.only(
-                                                        right: 10)
+                                                            right: 10)
                                                         : EdgeInsets.only(
-                                                        left: 10),
+                                                            left: 10),
                                                     child: Text(
-                                                      "${data.votesAverage
-                                                          .toString()}",
+                                                      "${data.votesAverage.toString()}",
                                                       style: TextStyle(
                                                           fontSize: 14,
                                                           fontWeight:
-                                                          FontWeight.bold),
+                                                              FontWeight.bold),
                                                     ),
                                                   ),
                                                   IconButton(
@@ -884,9 +930,9 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                         ),
                                         Column(
                                           mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
+                                              MainAxisAlignment.spaceEvenly,
                                           crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Container(
                                               child: Padding(
@@ -896,7 +942,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                                   "${data.title}",
                                                   maxLines: 2,
                                                   style:
-                                                  TextStyle(fontSize: 14),
+                                                      TextStyle(fontSize: 14),
                                                 ),
                                               ),
                                             ),
@@ -908,7 +954,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                                 child: Text(
                                                   "${data.body}",
                                                   style:
-                                                  TextStyle(fontSize: 14),
+                                                      TextStyle(fontSize: 14),
                                                 ),
                                               ),
                                             ),
@@ -930,7 +976,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                               ),
                                               Padding(
                                                 padding:
-                                                const EdgeInsets.all(8.0),
+                                                    const EdgeInsets.all(8.0),
                                                 child: Text("${data.views}"),
                                               )
                                             ],
@@ -951,7 +997,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                               ),
                                               Padding(
                                                 padding:
-                                                const EdgeInsets.all(8.0),
+                                                    const EdgeInsets.all(8.0),
                                                 child: Text(
                                                     "${data.answersCount}"),
                                               )
@@ -973,7 +1019,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                               ),
                                               Padding(
                                                 padding:
-                                                const EdgeInsets.all(8.0),
+                                                    const EdgeInsets.all(8.0),
                                                 child: Text(
                                                     "${data.followersCount}"),
                                               )
@@ -991,7 +1037,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                               ),
                                               Padding(
                                                 padding:
-                                                const EdgeInsets.all(8.0),
+                                                    const EdgeInsets.all(8.0),
                                                 child: Text("0"),
                                               )
                                             ],
@@ -1049,9 +1095,9 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                   children: <Widget>[
                                     Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                          MainAxisAlignment.spaceEvenly,
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       children: <Widget>[
                                         Row(
                                           children: <Widget>[
@@ -1059,7 +1105,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                               alignment: Alignment.topRight,
                                               child: Padding(
                                                 padding:
-                                                const EdgeInsets.all(8.0),
+                                                    const EdgeInsets.all(8.0),
                                                 child: Image.asset(
                                                   "assets/Avatar.png",
                                                   height: 50,
@@ -1071,12 +1117,12 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                         ),
                                         Padding(
                                           padding:
-                                          const EdgeInsets.only(top: 8.0),
+                                              const EdgeInsets.only(top: 8.0),
                                           child: Column(
                                             mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
+                                                MainAxisAlignment.spaceEvenly,
                                             crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                                CrossAxisAlignment.start,
                                             children: <Widget>[
                                               Padding(
                                                 padding: const EdgeInsets.only(
@@ -1095,14 +1141,14 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                                 width: 300,
                                                 child: Padding(
                                                   padding:
-                                                  const EdgeInsets.only(
-                                                      right: 0.0),
+                                                      const EdgeInsets.only(
+                                                          right: 0.0),
                                                   child: AutoSizeText(
                                                     AppLocalizations.of(context)
                                                         .translate(
-                                                        'tabs', 'asked_t'),
+                                                            'tabs', 'asked_t'),
                                                     style:
-                                                    TextStyle(fontSize: 14),
+                                                        TextStyle(fontSize: 14),
                                                   ),
                                                 ),
                                               ),
@@ -1117,13 +1163,13 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                           children: <Widget>[
                                             Padding(
                                               padding: mylocale.languageCode
-                                                  .contains("ur")
+                                                      .contains("ur")
                                                   ? EdgeInsets.only(left: 12.0)
                                                   : EdgeInsets.only(
-                                                  right: 12.0),
+                                                      right: 12.0),
                                               child: Column(
                                                 mainAxisAlignment:
-                                                MainAxisAlignment.center,
+                                                    MainAxisAlignment.center,
                                                 children: <Widget>[
                                                   IconButton(
                                                     icon: Icon(
@@ -1135,19 +1181,18 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                                   ),
                                                   Container(
                                                     margin: mylocale
-                                                        .languageCode
-                                                        .contains("ur")
+                                                            .languageCode
+                                                            .contains("ur")
                                                         ? EdgeInsets.only(
-                                                        right: 10)
+                                                            right: 10)
                                                         : EdgeInsets.only(
-                                                        left: 10),
+                                                            left: 10),
                                                     child: Text(
-                                                      "${data.votesAverage
-                                                          .toString()}",
+                                                      "${data.votesAverage.toString()}",
                                                       style: TextStyle(
                                                           fontSize: 14,
                                                           fontWeight:
-                                                          FontWeight.bold),
+                                                              FontWeight.bold),
                                                     ),
                                                   ),
                                                   IconButton(
@@ -1165,9 +1210,9 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                         ),
                                         Column(
                                           mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
+                                              MainAxisAlignment.spaceEvenly,
                                           crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Container(
                                               child: Padding(
@@ -1177,7 +1222,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                                   "${data.title}",
                                                   maxLines: 2,
                                                   style:
-                                                  TextStyle(fontSize: 14),
+                                                      TextStyle(fontSize: 14),
                                                 ),
                                               ),
                                             ),
@@ -1189,7 +1234,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                                 child: Text(
                                                   "${data.body}",
                                                   style:
-                                                  TextStyle(fontSize: 14),
+                                                      TextStyle(fontSize: 14),
                                                 ),
                                               ),
                                             ),
@@ -1211,7 +1256,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                               ),
                                               Padding(
                                                 padding:
-                                                const EdgeInsets.all(8.0),
+                                                    const EdgeInsets.all(8.0),
                                                 child: Text("${data.views}"),
                                               )
                                             ],
@@ -1232,7 +1277,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                               ),
                                               Padding(
                                                 padding:
-                                                const EdgeInsets.all(8.0),
+                                                    const EdgeInsets.all(8.0),
                                                 child: Text(
                                                     "${data.answersCount}"),
                                               )
@@ -1254,7 +1299,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                               ),
                                               Padding(
                                                 padding:
-                                                const EdgeInsets.all(8.0),
+                                                    const EdgeInsets.all(8.0),
                                                 child: Text(
                                                     "${data.followersCount}"),
                                               )
@@ -1272,7 +1317,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                               ),
                                               Padding(
                                                 padding:
-                                                const EdgeInsets.all(8.0),
+                                                    const EdgeInsets.all(8.0),
                                                 child: Text("0"),
                                               )
                                             ],
@@ -1330,9 +1375,9 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                   children: <Widget>[
                                     Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                          MainAxisAlignment.spaceEvenly,
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       children: <Widget>[
                                         Row(
                                           children: <Widget>[
@@ -1340,7 +1385,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                               alignment: Alignment.topRight,
                                               child: Padding(
                                                 padding:
-                                                const EdgeInsets.all(8.0),
+                                                    const EdgeInsets.all(8.0),
                                                 child: Image.asset(
                                                   "assets/Avatar.png",
                                                   height: 50,
@@ -1352,12 +1397,12 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                         ),
                                         Padding(
                                           padding:
-                                          const EdgeInsets.only(top: 8.0),
+                                              const EdgeInsets.only(top: 8.0),
                                           child: Column(
                                             mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
+                                                MainAxisAlignment.spaceEvenly,
                                             crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                                CrossAxisAlignment.start,
                                             children: <Widget>[
                                               Padding(
                                                 padding: const EdgeInsets.only(
@@ -1376,14 +1421,14 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                                 width: 300,
                                                 child: Padding(
                                                   padding:
-                                                  const EdgeInsets.only(
-                                                      right: 0.0),
+                                                      const EdgeInsets.only(
+                                                          right: 0.0),
                                                   child: AutoSizeText(
                                                     AppLocalizations.of(context)
                                                         .translate(
-                                                        'tabs', 'asked_t'),
+                                                            'tabs', 'asked_t'),
                                                     style:
-                                                    TextStyle(fontSize: 14),
+                                                        TextStyle(fontSize: 14),
                                                   ),
                                                 ),
                                               ),
@@ -1398,13 +1443,13 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                           children: <Widget>[
                                             Padding(
                                               padding: mylocale.languageCode
-                                                  .contains("ur")
+                                                      .contains("ur")
                                                   ? EdgeInsets.only(left: 12.0)
                                                   : EdgeInsets.only(
-                                                  right: 12.0),
+                                                      right: 12.0),
                                               child: Column(
                                                 mainAxisAlignment:
-                                                MainAxisAlignment.center,
+                                                    MainAxisAlignment.center,
                                                 children: <Widget>[
                                                   IconButton(
                                                     icon: Icon(
@@ -1416,19 +1461,18 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                                   ),
                                                   Container(
                                                     margin: mylocale
-                                                        .languageCode
-                                                        .contains("ur")
+                                                            .languageCode
+                                                            .contains("ur")
                                                         ? EdgeInsets.only(
-                                                        right: 10)
+                                                            right: 10)
                                                         : EdgeInsets.only(
-                                                        left: 10),
+                                                            left: 10),
                                                     child: Text(
-                                                      "${data.votesAverage
-                                                          .toString()}",
+                                                      "${data.votesAverage.toString()}",
                                                       style: TextStyle(
                                                           fontSize: 14,
                                                           fontWeight:
-                                                          FontWeight.bold),
+                                                              FontWeight.bold),
                                                     ),
                                                   ),
                                                   IconButton(
@@ -1446,9 +1490,9 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                         ),
                                         Column(
                                           mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
+                                              MainAxisAlignment.spaceEvenly,
                                           crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Container(
                                               child: Padding(
@@ -1458,7 +1502,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                                   "${data.title}",
                                                   maxLines: 2,
                                                   style:
-                                                  TextStyle(fontSize: 14),
+                                                      TextStyle(fontSize: 14),
                                                 ),
                                               ),
                                             ),
@@ -1470,7 +1514,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                                 child: Text(
                                                   "${data.body}",
                                                   style:
-                                                  TextStyle(fontSize: 14),
+                                                      TextStyle(fontSize: 14),
                                                 ),
                                               ),
                                             ),
@@ -1492,7 +1536,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                               ),
                                               Padding(
                                                 padding:
-                                                const EdgeInsets.all(8.0),
+                                                    const EdgeInsets.all(8.0),
                                                 child: Text("${data.views}"),
                                               )
                                             ],
@@ -1513,7 +1557,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                               ),
                                               Padding(
                                                 padding:
-                                                const EdgeInsets.all(8.0),
+                                                    const EdgeInsets.all(8.0),
                                                 child: Text(
                                                     "${data.answersCount}"),
                                               )
@@ -1535,7 +1579,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                               ),
                                               Padding(
                                                 padding:
-                                                const EdgeInsets.all(8.0),
+                                                    const EdgeInsets.all(8.0),
                                                 child: Text(
                                                     "${data.followersCount}"),
                                               )
@@ -1553,7 +1597,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                               ),
                                               Padding(
                                                 padding:
-                                                const EdgeInsets.all(8.0),
+                                                    const EdgeInsets.all(8.0),
                                                 child: Text("0"),
                                               )
                                             ],
