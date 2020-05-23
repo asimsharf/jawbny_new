@@ -66,7 +66,6 @@ class Temp extends State<TempScreen> {
   Widget buildListView() {
     if (data == null) {
       communities();
-
       return new Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

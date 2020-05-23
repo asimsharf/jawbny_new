@@ -3,6 +3,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:scope_demo/controllers/Answers/AnswersProvider.dart';
 import 'package:scope_demo/controllers/Authentication/authentication_provider.dart';
+import 'package:scope_demo/controllers/Communities/communities_provider.dart';
+import 'package:scope_demo/controllers/Polls/Polls_provider.dart';
 import 'package:scope_demo/controllers/Questions/questions_provider.dart';
 import 'package:scope_demo/controllers/app_localizations.dart';
 import 'package:scope_demo/controllers/services_provider.dart';
@@ -45,6 +47,25 @@ class App extends StatelessWidget {
           update: (context, auth, __) => AnswersProvider(
             auth: auth.token,
           ),
+          create: (_) => null,
+        ),
+
+        ///[ProxyProvider]  the 'QuestionsProvider' widget depends on  [Auth] & [AnswerProvider]
+        ChangeNotifierProxyProvider<AuthenticationProvider,
+            CommunitiesProvider>(
+          update: (context, auth, __) =>
+              CommunitiesProvider(
+                auth: auth.token,
+              ),
+          create: (_) => null,
+        ),
+
+        ///[ProxyProvider]  the 'QuestionsProvider' widget depends on  [Auth] & [AnswerProvider]
+        ChangeNotifierProxyProvider<AuthenticationProvider, PollsProvider>(
+          update: (context, auth, __) =>
+              PollsProvider(
+                auth: auth.token,
+              ),
           create: (_) => null,
         ),
       ],

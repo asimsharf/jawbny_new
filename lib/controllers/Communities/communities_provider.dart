@@ -12,14 +12,19 @@ class CommunitiesProvider extends ChangeNotifier {
   bool isLoading = true;
   String message;
 
+  String auth;
+
+  CommunitiesProvider({this.auth});
+
   ///fetch all CommunitiesSingle
   CommunitiesSingle communitiesSingleList;
-  Future<void> getCommunitiesSingle(int communityID) async {
+
+  Future<void> fetchCommunitiesSingle(int communityID) async {
     try {
       final responseData = await http
           .get(Uri.encodeFull(APIData.communities + "$communityID"), headers: {
         HttpHeaders.acceptHeader: APIData.acceptHeader,
-        HttpHeaders.AUTHORIZATION: APIData.authorization
+        HttpHeaders.AUTHORIZATION: auth,
       });
       isLoading = false;
       if (responseData.statusCode == 200) {
@@ -38,12 +43,13 @@ class CommunitiesProvider extends ChangeNotifier {
 
   ///fetch all CommunitiesIFollow
   CommunitiesIFollow communitiesIFollowList;
-  Future<void> getCommunitiesIFollow() async {
+
+  Future<void> fetchCommunitiesIFollow() async {
     try {
       final responseData =
           await http.get(Uri.encodeFull(APIData.communitiesifollow), headers: {
         HttpHeaders.acceptHeader: APIData.acceptHeader,
-        HttpHeaders.AUTHORIZATION: APIData.authorization
+            HttpHeaders.AUTHORIZATION: auth,
       });
       isLoading = false;
       if (responseData.statusCode == 200) {
@@ -63,12 +69,13 @@ class CommunitiesProvider extends ChangeNotifier {
 
   ///fetch all Communities
   Communities communitiesList;
-  Future<void> getCommunities() async {
+
+  Future<void> fetchCommunities() async {
     try {
       final responseData =
           await http.get(Uri.encodeFull(APIData.communities), headers: {
         HttpHeaders.acceptHeader: APIData.acceptHeader,
-        HttpHeaders.AUTHORIZATION: APIData.authorization
+            HttpHeaders.AUTHORIZATION: auth,
       });
       isLoading = false;
       if (responseData.statusCode == 200) {
@@ -91,7 +98,7 @@ class CommunitiesProvider extends ChangeNotifier {
       final responseData = await http
           .get(Uri.encodeFull(APIData.follow + "/$communityID"), headers: {
         HttpHeaders.acceptHeader: APIData.acceptHeader,
-        HttpHeaders.AUTHORIZATION: APIData.authorization
+        HttpHeaders.AUTHORIZATION: auth,
       });
       isLoading = false;
       if (responseData.statusCode == 200) {
@@ -113,7 +120,7 @@ class CommunitiesProvider extends ChangeNotifier {
       final responseData = await http
           .get(Uri.encodeFull(APIData.unfollow + "/$communityID"), headers: {
         HttpHeaders.acceptHeader: APIData.acceptHeader,
-        HttpHeaders.AUTHORIZATION: APIData.authorization
+        HttpHeaders.AUTHORIZATION: auth,
       });
       isLoading = false;
       if (responseData.statusCode == 200) {

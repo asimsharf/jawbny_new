@@ -150,10 +150,12 @@ class QuestionsProvider extends ChangeNotifier {
   Future<void> getQuestionsIFollow() async {
     try {
       final responseData =
-          await http.get(Uri.encodeFull(APIData.myquestions), headers: {
+      await http.get(Uri.encodeFull(APIData.questionsifollow), headers: {
         HttpHeaders.acceptHeader: APIData.acceptHeader,
         HttpHeaders.authorizationHeader: auth
       });
+
+      print(responseData.body.toString());
       isLoading = false;
       if (responseData.statusCode == 200) {
         final questionsIFollow = questionsIFollowFromJson(responseData.body);
@@ -176,11 +178,12 @@ class QuestionsProvider extends ChangeNotifier {
   Future<void> getQuestionsMostAnswered() async {
     try {
       final responseData = await http.get(
-          Uri.encodeFull(APIData.questions + "/?order_by=answers_count"),
-          headers: {
-            HttpHeaders.acceptHeader: APIData.acceptHeader,
-            HttpHeaders.authorizationHeader: auth
-          });
+        Uri.encodeFull(APIData.questions + "/?order_by=answers_count"),
+        headers: {
+          HttpHeaders.acceptHeader: APIData.acceptHeader,
+          HttpHeaders.authorizationHeader: auth
+        },
+      );
       isLoading = false;
       if (responseData.statusCode == 200) {
         final questionsMostAnswered =
