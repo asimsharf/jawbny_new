@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:scope_demo/controllers/Answers/AnswersProvider.dart';
 import 'package:scope_demo/controllers/Questions/questions_provider.dart';
 import 'package:scope_demo/controllers/app_localizations.dart';
+import 'package:scope_demo/controllers/convesations/conversation_provider.dart';
 import 'package:scope_demo/model/Http_Exception.dart';
 import 'package:scope_demo/screens/best_answer.dart';
 import 'package:scope_demo/screens/j_comunities.dart';
@@ -169,13 +170,19 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                     Navigator.of(context).pop();
                   },
                 ),
-                ListTile(
+                new ListTile(
                   leading: const Icon(Icons.mail),
                   title: Text(
                     AppLocalizations.of(context).translate('menu', 'mail'),
                   ),
                   selected: true,
-                  onTap: () {
+                  onTap: ()async {
+                    try {
+                     await Provider.of<ConversationProvider>(context, listen: false)
+                          .getConvesationMessage();
+                    } catch (error) {
+                      print('An error acurred');
+                    }
                     Navigator.of(context).pop();
                     Navigator.push(
                       context,
@@ -185,7 +192,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                     );
                   },
                 ),
-                ListTile(
+                new ListTile(
                   selected: true,
                   leading: const Icon(Icons.notifications),
                   title: Text(AppLocalizations.of(context)
@@ -200,7 +207,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                     );
                   },
                 ),
-                ListTile(
+                new ListTile(
                   selected: true,
                   leading: const Icon(MyFlutterApp.cup),
                   title: Text(
@@ -211,7 +218,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                         MaterialPageRoute(builder: (context) => J_points()));
                   },
                 ),
-                ListTile(
+                new ListTile(
                   selected: true,
                   leading: const Icon(MyFlutterApp.controbution),
                   title: Text(AppLocalizations.of(context)
@@ -226,7 +233,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                     );
                   },
                 ),
-                ListTile(
+                new ListTile(
                   selected: true,
                   leading: const Icon(MdiIcons.help),
                   title: Text(
@@ -241,7 +248,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                     );
                   },
                 ),
-                ListTile(
+                new ListTile(
                   selected: true,
                   leading: const Icon(Icons.transfer_within_a_station),
                   title: Text(
@@ -257,7 +264,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                     );
                   },
                 ),
-                ListTile(
+                new ListTile(
                   selected: true,
                   leading: const Icon(
                     MyFlutterApp.university,
@@ -277,7 +284,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                     );
                   },
                 ),
-                ListTile(
+                new ListTile(
                   selected: true,
                   leading: const Icon(MyFlutterApp.points_system),
                   title: Text(
@@ -293,7 +300,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                     );
                   },
                 ),
-                ListTile(
+                new ListTile(
                   selected: true,
                   leading: const Icon(MyFlutterApp.controbution),
                   title: Text(
@@ -308,7 +315,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                     );
                   },
                 ),
-                ListTile(
+                new ListTile(
                   selected: true,
                   leading: const Icon(MyFlutterApp.qst_related),
                   title: Text(
@@ -324,7 +331,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                     );
                   },
                 ),
-                ListTile(
+                new ListTile(
                   selected: true,
                   leading: const Icon(MdiIcons.logout),
                   title: Text(AppLocalizations.of(context)
@@ -346,27 +353,19 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
     List<_Page> _allPages = <_Page>[
       _Page(
         cat: 1,
-        text: "أسئلة حالية",
-      ),
-      _Page(
-        cat: 2,
         text: AppLocalizations.of(context).translate('home', 'top_answered'),
       ),
       _Page(
-        cat: 3,
+        cat: 4,
         text: AppLocalizations.of(context).translate('home', 'answers'),
       ),
       _Page(
-        cat: 4,
+        cat: 6,
         text: AppLocalizations.of(context).translate('home', 'top_visit'),
       ),
       _Page(
         cat: 5,
         text: AppLocalizations.of(context).translate('home', 'top_voted'),
-      ),
-      _Page(
-        cat: 6,
-        text: "لا جواب",
       ),
     ];
 
@@ -824,359 +823,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
           },
         );
         break;
-      case 2:
-        return Consumer<QuestionsProvider>(
-          builder: (ctx, modelData, child) {
-            modelData.getQuestionsMostAnswered();
-            if (modelData.isLoading) {
-              return Center(child: CircularProgressIndicator());
-            } else if (modelData.getDatumQuestions != null) {
-              return ListView.builder(
-                itemCount: modelData.getDatumQuestions.length,
-                itemBuilder: (ctx, index) {
-                  var data = modelData.getDatumQuestions[index];
-                  return Container(
-                    color: Colors.grey[200],
-                    child: Container(
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          top: 2.0,
-                        ),
-                        child: new Container(
-                          color: Colors.grey[200],
-                          width: double.infinity,
-                          child: Material(
-                            elevation: 1,
-                            child: FittedBox(
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    right: 30.0, left: 30.0, top: 20),
-                                child: Column(
-                                  children: <Widget>[
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Row(
-                                          children: <Widget>[
-                                            Align(
-                                              alignment: Alignment.topRight,
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Image.asset(
-                                                  "assets/Avatar.png",
-                                                  height: 50,
-                                                  width: 50,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 8.0),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 5.0, bottom: 2.0),
-                                                child: AutoSizeText(
-                                                  "${data.user.name}",
-//                                                  AppLocalizations.of(context).translate('tabs', 'name'),
-                                                  maxLines: 2,
-                                                  style: TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
-                                              ),
-                                              Container(
-                                                width: 300,
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          right: 0.0),
-                                                  child: AutoSizeText(
-                                                    AppLocalizations.of(context)
-                                                        .translate(
-                                                            'tabs', 'asked_t'),
-                                                    style:
-                                                        TextStyle(fontSize: 14),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    Row(
-                                      children: <Widget>[
-                                        Row(
-                                          children: <Widget>[
-                                            Padding(
-                                              padding: mylocale.languageCode
-                                                      .contains("ur")
-                                                  ? EdgeInsets.only(left: 12.0)
-                                                  : EdgeInsets.only(
-                                                      right: 12.0),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: <Widget>[
-                                                  //////////////////////vooote Up Questionnnnnnnnnnnnnnnnnnnnnnnnnnn
-                                                  IconButton(
-                                                      icon: data.isVotUploading
-                                                          ? CircularProgressIndicator()
-                                                          : Icon(
-                                                              Icons
-                                                                  .arrow_drop_up,
-                                                              size: 40,
-                                                              color: Colors
-                                                                  .black54,
-                                                            ),
-                                                      onPressed: () async {
-                                                        try {
-                                                          setState(() {
-                                                            data.isVotUploading =
-                                                                true;
-                                                          });
-                                                          await modelData
-                                                              .postQuestionsUpVote(
-                                                                  data.id)
-                                                              .then((_) {
-                                                            setState(() {
-                                                              data.isVotUploading =
-                                                                  false;
-                                                            });
-                                                            SweetAlert.show(
-                                                              context,
-                                                              title: modelData
-                                                                  .message,
-                                                              style:
-                                                                  SweetAlertStyle
-                                                                      .success,
-                                                            );
-                                                          });
-                                                        } on HttpException catch (error) {
-                                                          Fluttertoast.showToast(
-                                                              msg: error
-                                                                  .toString());
-                                                        } catch (error) {
-                                                          Fluttertoast.showToast(
-                                                              msg: error
-                                                                  .toString());
-                                                        }
-                                                      }),
-                                                  Container(
-                                                    margin: mylocale
-                                                            .languageCode
-                                                            .contains("ur")
-                                                        ? EdgeInsets.only(
-                                                            right: 10)
-                                                        : EdgeInsets.only(
-                                                            left: 10),
-                                                    child: Text(
-                                                      "${data.votesAverage.toString()}",
-                                                      style: TextStyle(
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                  ),
-                                                  IconButton(
-                                                    icon: data.isVotDownloading
-                                                        ? CircularProgressIndicator()
-                                                        : Icon(
-                                                            Icons
-                                                                .arrow_drop_down,
-                                                            size: 40,
-                                                            color:
-                                                                Colors.black54,
-                                                          ),
-                                                    onPressed: () async {
-                                                      try {
-                                                        setState(() {
-                                                          data.isVotDownloading =
-                                                              true;
-                                                        });
-                                                        await modelData
-                                                            .postQuestionsDownVote(
-                                                                data.id)
-                                                            .then((_) {
-                                                          setState(() {
-                                                            data.isVotDownloading =
-                                                                false;
-                                                          });
-                                                          SweetAlert.show(
-                                                            context,
-                                                            title: modelData
-                                                                .message,
-                                                            style:
-                                                                SweetAlertStyle
-                                                                    .confirm,
-                                                          );
-                                                        });
-                                                      } on HttpException catch (error) {
-                                                        Fluttertoast.showToast(
-                                                            msg: error
-                                                                .toString());
-                                                      } catch (error) {
-                                                        Fluttertoast.showToast(
-                                                            msg: error
-                                                                .toString());
-                                                      }
-                                                    },
-                                                  ),
-                                                ],
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Container(
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 10.0),
-                                                child: AutoSizeText(
-                                                  "${data.title}",
-                                                  maxLines: 2,
-                                                  style:
-                                                      TextStyle(fontSize: 14),
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              width: 300,
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 10.0),
-                                                child: Text(
-                                                  "${data.body}",
-                                                  style:
-                                                      TextStyle(fontSize: 14),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                    Row(
-                                      children: <Widget>[
-                                        Padding(
-                                          padding: const EdgeInsets.all(8),
-                                          child: Row(
-                                            children: <Widget>[
-                                              SvgPicture.asset(
-                                                "assets/svgs/seen.svg",
-                                                height: 15,
-                                                width: 15,
-                                                color: Colors.black45,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text("${data.views}"),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 27,
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8),
-                                          child: Row(
-                                            children: <Widget>[
-                                              SvgPicture.asset(
-                                                "assets/svgs/chat.svg",
-                                                height: 30,
-                                                width: 30,
-                                                color: Colors.black45,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                    "${data.answersCount}"),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 27,
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8),
-                                          child: Row(
-                                            children: <Widget>[
-                                              SvgPicture.asset(
-                                                "assets/svgs/controbution.svg",
-                                                height: 20,
-                                                width: 20,
-                                                color: Colors.black45,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                    "${data.followersCount}"),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(width: 27),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8),
-                                          child: Row(
-                                            children: <Widget>[
-                                              Icon(
-                                                Icons.star,
-                                                color: Colors.black45,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text("0"),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              );
-            } else {
-              return Center(
-                child: Text("No Data"),
-              );
-            }
-          },
-        );
-        break;
-      case 3:
+      case 4:
         return Consumer<AnswersProvider>(
           builder: (ctx, modelData, child) {
             modelData.getAnswers();
@@ -1454,7 +1101,7 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
           },
         );
         break;
-      case 4:
+      case 6:
         return Consumer<QuestionsProvider>(
           builder: (ctx, modelData, child) {
             modelData.getQuestionsMostViewed();
@@ -1872,358 +1519,6 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                                                       color: Colors.black54,
                                                     ),
                                                     onPressed: () {},
-                                                  ),
-                                                ],
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Container(
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 10.0),
-                                                child: AutoSizeText(
-                                                  "${data.title}",
-                                                  maxLines: 2,
-                                                  style:
-                                                      TextStyle(fontSize: 14),
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              width: 300,
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 10.0),
-                                                child: Text(
-                                                  "${data.body}",
-                                                  style:
-                                                      TextStyle(fontSize: 14),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                    Row(
-                                      children: <Widget>[
-                                        Padding(
-                                          padding: const EdgeInsets.all(8),
-                                          child: Row(
-                                            children: <Widget>[
-                                              SvgPicture.asset(
-                                                "assets/svgs/seen.svg",
-                                                height: 15,
-                                                width: 15,
-                                                color: Colors.black45,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text("${data.views}"),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 27,
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8),
-                                          child: Row(
-                                            children: <Widget>[
-                                              SvgPicture.asset(
-                                                "assets/svgs/chat.svg",
-                                                height: 30,
-                                                width: 30,
-                                                color: Colors.black45,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                    "${data.answersCount}"),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 27,
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8),
-                                          child: Row(
-                                            children: <Widget>[
-                                              SvgPicture.asset(
-                                                "assets/svgs/controbution.svg",
-                                                height: 20,
-                                                width: 20,
-                                                color: Colors.black45,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                    "${data.followersCount}"),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(width: 27),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8),
-                                          child: Row(
-                                            children: <Widget>[
-                                              Icon(
-                                                Icons.star,
-                                                color: Colors.black45,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text("0"),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              );
-            } else {
-              return Center(
-                child: Text("No Data"),
-              );
-            }
-          },
-        );
-        break;
-      case 6:
-        return Consumer<QuestionsProvider>(
-          builder: (ctx, modelData, child) {
-            modelData.getQuestionsMostAnswered();
-            if (modelData.isLoading) {
-              return Center(child: CircularProgressIndicator());
-            } else if (modelData.getDatumQuestions != null) {
-              return ListView.builder(
-                itemCount: modelData.getDatumQuestions.length,
-                itemBuilder: (ctx, index) {
-                  var data = modelData.getDatumQuestions[index];
-                  return Container(
-                    color: Colors.grey[200],
-                    child: Container(
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          top: 2.0,
-                        ),
-                        child: new Container(
-                          color: Colors.grey[200],
-                          width: double.infinity,
-                          child: Material(
-                            elevation: 1,
-                            child: FittedBox(
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    right: 30.0, left: 30.0, top: 20),
-                                child: Column(
-                                  children: <Widget>[
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Row(
-                                          children: <Widget>[
-                                            Align(
-                                              alignment: Alignment.topRight,
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Image.asset(
-                                                  "assets/Avatar.png",
-                                                  height: 50,
-                                                  width: 50,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 8.0),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 5.0, bottom: 2.0),
-                                                child: AutoSizeText(
-                                                  "${data.user.name}",
-//                                                  AppLocalizations.of(context).translate('tabs', 'name'),
-                                                  maxLines: 2,
-                                                  style: TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
-                                              ),
-                                              Container(
-                                                width: 300,
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          right: 0.0),
-                                                  child: AutoSizeText(
-                                                    AppLocalizations.of(context)
-                                                        .translate(
-                                                            'tabs', 'asked_t'),
-                                                    style:
-                                                        TextStyle(fontSize: 14),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    Row(
-                                      children: <Widget>[
-                                        Row(
-                                          children: <Widget>[
-                                            Padding(
-                                              padding: mylocale.languageCode
-                                                      .contains("ur")
-                                                  ? EdgeInsets.only(left: 12.0)
-                                                  : EdgeInsets.only(
-                                                      right: 12.0),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: <Widget>[
-                                                  //////////////////////vooote Up Questionnnnnnnnnnnnnnnnnnnnnnnnnnn
-                                                  IconButton(
-                                                      icon: data.isVotUploading
-                                                          ? CircularProgressIndicator()
-                                                          : Icon(
-                                                              Icons
-                                                                  .arrow_drop_up,
-                                                              size: 40,
-                                                              color: Colors
-                                                                  .black54,
-                                                            ),
-                                                      onPressed: () async {
-                                                        try {
-                                                          setState(() {
-                                                            data.isVotUploading =
-                                                                true;
-                                                          });
-                                                          await modelData
-                                                              .postQuestionsUpVote(
-                                                                  data.id)
-                                                              .then((_) {
-                                                            setState(() {
-                                                              data.isVotUploading =
-                                                                  false;
-                                                            });
-                                                            SweetAlert.show(
-                                                              context,
-                                                              title: modelData
-                                                                  .message,
-                                                              style:
-                                                                  SweetAlertStyle
-                                                                      .success,
-                                                            );
-                                                          });
-                                                        } on HttpException catch (error) {
-                                                          Fluttertoast.showToast(
-                                                              msg: error
-                                                                  .toString());
-                                                        } catch (error) {
-                                                          Fluttertoast.showToast(
-                                                              msg: error
-                                                                  .toString());
-                                                        }
-                                                      }),
-                                                  Container(
-                                                    margin: mylocale
-                                                            .languageCode
-                                                            .contains("ur")
-                                                        ? EdgeInsets.only(
-                                                            right: 10)
-                                                        : EdgeInsets.only(
-                                                            left: 10),
-                                                    child: Text(
-                                                      "${data.votesAverage.toString()}",
-                                                      style: TextStyle(
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                  ),
-                                                  IconButton(
-                                                    icon: data.isVotDownloading
-                                                        ? CircularProgressIndicator()
-                                                        : Icon(
-                                                            Icons
-                                                                .arrow_drop_down,
-                                                            size: 40,
-                                                            color:
-                                                                Colors.black54,
-                                                          ),
-                                                    onPressed: () async {
-                                                      try {
-                                                        setState(() {
-                                                          data.isVotDownloading =
-                                                              true;
-                                                        });
-                                                        await modelData
-                                                            .postQuestionsDownVote(
-                                                                data.id)
-                                                            .then((_) {
-                                                          setState(() {
-                                                            data.isVotDownloading =
-                                                                false;
-                                                          });
-                                                          SweetAlert.show(
-                                                            context,
-                                                            title: modelData
-                                                                .message,
-                                                            style:
-                                                                SweetAlertStyle
-                                                                    .confirm,
-                                                          );
-                                                        });
-                                                      } on HttpException catch (error) {
-                                                        Fluttertoast.showToast(
-                                                            msg: error
-                                                                .toString());
-                                                      } catch (error) {
-                                                        Fluttertoast.showToast(
-                                                            msg: error
-                                                                .toString());
-                                                      }
-                                                    },
                                                   ),
                                                 ],
                                               ),

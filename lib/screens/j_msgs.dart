@@ -85,15 +85,17 @@ class Temp extends State<J_msgs> {
                         Row(
                           children: <Widget>[
                             Padding(
-                                padding: const EdgeInsets.only(
-                                    right: 34.0, top: 10, left: 33.0),
-                                child: Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Container(
-                                        height: 30,
-                                        width: 30,
-                                        child: Image.asset(
-                                            "assets/envelope.png"))))
+                              padding: const EdgeInsets.only(
+                                  right: 34.0, top: 10, left: 33.0),
+                              child: Align(
+                                alignment: Alignment.centerRight,
+                                child: Container(
+                                  height: 30,
+                                  width: 30,
+                                  child: Image.asset("assets/envelope.png"),
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                         Padding(
