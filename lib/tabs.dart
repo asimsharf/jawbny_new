@@ -176,13 +176,13 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
                     AppLocalizations.of(context).translate('menu', 'mail'),
                   ),
                   selected: true,
-                  onTap: ()async {
-                    try {
-                     await Provider.of<ConversationProvider>(context, listen: false)
-                          .getConvesationMessage();
-                    } catch (error) {
-                      print('An error acurred');
-                    }
+                  onTap: () {
+                    // try {
+                    //  await Provider.of<ConversationProvider>(context, listen: false)
+                    //       .getConvesationMessage();
+                    // } catch (error) {
+                    //   print('An error acurred');
+                    // }
                     Navigator.of(context).pop();
                     Navigator.push(
                       context,

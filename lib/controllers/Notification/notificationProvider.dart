@@ -1,4 +1,4 @@
-import 'dart:convert';
+// import 'dart:convert';
 import 'dart:async';
 import 'dart:io';
 
@@ -18,7 +18,6 @@ class NotificationProvider extends ChangeNotifier {
 
 
   Future<void> fetchNotification() async {
-    // print('Notification Called ............');
     try {
       final response = await http.get(
         Uri.encodeFull(APIData.domainApiLink + 'notifications'),
@@ -27,11 +26,6 @@ class NotificationProvider extends ChangeNotifier {
           HttpHeaders.authorizationHeader: auth,
         },
       );
-      // print("Staus Code : " + response.statusCode.toString());
-
-      // final responseData = json.decode(response.body);
-      // print("Response Data : " + responseData.toString());
-
       var notificationData = notificationsFromJson(response.body);
       notifications = notificationData;
       notifyListeners();

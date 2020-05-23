@@ -10,6 +10,7 @@ import 'package:scope_demo/model/QuestionsIFollow.dart';
 import 'package:scope_demo/model/QuestionsMostAnswered.dart';
 import 'package:scope_demo/model/QuestionsMostViewed.dart';
 import 'package:scope_demo/model/QuestionsMy.dart';
+import 'package:scope_demo/model/QuestionsMyOnHold.dart';
 import 'package:scope_demo/model/QuestionsPrivate.dart';
 import 'package:scope_demo/model/QuestionsSingle.dart';
 import 'package:scope_demo/model/QuestionsUsersIFollow.dart';
@@ -150,10 +151,12 @@ class QuestionsProvider extends ChangeNotifier {
   Future<void> getQuestionsIFollow() async {
     try {
       final responseData =
-          await http.get(Uri.encodeFull(APIData.myquestions), headers: {
+          await http.get(Uri.encodeFull(APIData.questionsifollow), headers: {
         HttpHeaders.acceptHeader: APIData.acceptHeader,
         HttpHeaders.authorizationHeader: auth
       });
+
+      print(responseData.body.toString());
       isLoading = false;
       if (responseData.statusCode == 200) {
         final questionsIFollow = questionsIFollowFromJson(responseData.body);
@@ -176,11 +179,12 @@ class QuestionsProvider extends ChangeNotifier {
   Future<void> getQuestionsMostAnswered() async {
     try {
       final responseData = await http.get(
-          Uri.encodeFull(APIData.questions + "/?order_by=answers_count"),
-          headers: {
-            HttpHeaders.acceptHeader: APIData.acceptHeader,
-            HttpHeaders.authorizationHeader: auth
-          });
+        Uri.encodeFull(APIData.questions + "/?order_by=answers_count"),
+        headers: {
+          HttpHeaders.acceptHeader: APIData.acceptHeader,
+          HttpHeaders.authorizationHeader: auth
+        },
+      );
       isLoading = false;
       if (responseData.statusCode == 200) {
         final questionsMostAnswered =
@@ -460,4 +464,34 @@ class QuestionsProvider extends ChangeNotifier {
   }
 
   bool get getIsLoading => isLoading;
+
+///////////////////////////////[ON HOLD QUESTION]///////////////////////////////////////////
+  List<QuestionOnHold> questionOnHold = [];
+
+  Future<void> fetchOnHoldQuestions() async {
+    // print('On Hold Called ............');
+    try {
+      final response = await http.get(
+        Uri.encodeFull(APIData.domainApiLink + 'my-questions-on-hold'),
+        headers: {
+          HttpHeaders.acceptHeader: APIData.acceptHeader,
+          HttpHeaders.authorizationHeader: auth,
+        },
+      );
+
+      // print("Staus Code : " + response.statusCode.toString());
+      if (response.statusCode >= 400) {
+        throw HttpException('Au Authorized !');
+      }
+
+      // final responseData = json.decode(response.body);
+      // print("Response Data : " + responseData.toString());
+
+      var quesHoldData = questionOnHoldFromJson(response.body);
+      questionOnHold = quesHoldData;
+      notifyListeners();
+    } catch (error) {
+      throw error;
+    }
+  }
 }
