@@ -185,13 +185,13 @@ class QuestionsProvider extends ChangeNotifier {
           HttpHeaders.authorizationHeader: auth
         },
       );
+      print(responseData.body.toString());
       isLoading = false;
       if (responseData.statusCode == 200) {
         final questionsMostAnswered =
             questionsMostAnsweredFromJson(responseData.body);
         questionsMostAnsweredList = questionsMostAnswered;
 
-        _data.clear();
         questionsMostAnswered.data.forEach((e) {
           _data.add(e);
         });
@@ -226,7 +226,6 @@ class QuestionsProvider extends ChangeNotifier {
             questionsMostViewedFromJson(responseData.body);
         questionsMostViewedList = questionsMostViewed;
 
-        _dataMostViewedQuestions.clear();
         questionsMostViewed.data.forEach((e) {
           _dataMostViewedQuestions.add(e);
         });
@@ -243,6 +242,32 @@ class QuestionsProvider extends ChangeNotifier {
       _dataMostViewedQuestions;
   QuestionsMostViewed get getQuestionsMostMostViewedList =>
       questionsMostViewedList;
+
+  ///[ON HOLD QUESTION]
+  List<QuestionOnHold> questionOnHold = [];
+
+  Future<void> fetchOnHoldQuestions() async {
+    // print('On Hold Called ............');
+    try {
+      final response = await http.get(
+        Uri.encodeFull(APIData.domainApiLink + 'my-questions-on-hold'),
+        headers: {
+          HttpHeaders.acceptHeader: APIData.acceptHeader,
+          HttpHeaders.authorizationHeader: auth,
+        },
+      );
+
+      if (response.statusCode >= 400) {
+        throw HttpException('Au Authorized !');
+      }
+
+      var quesHoldData = questionOnHoldFromJson(response.body);
+      questionOnHold = quesHoldData;
+      notifyListeners();
+    } catch (error) {
+      throw error;
+    }
+  }
 
   ///fetch all QuestionsIFollow
   Future<void> postQuestions(
@@ -314,7 +339,7 @@ class QuestionsProvider extends ChangeNotifier {
     }
   }
 
-////////////////////////////////////[Question VoteUp Post]//////////////////////////////
+  ///[Question VoteUp Post]
   ///post all UpVote Questions
   Future<void> postQuestionsUpVote(int questionsID) async {
     try {
@@ -344,7 +369,7 @@ class QuestionsProvider extends ChangeNotifier {
     }
   }
 
-  ////////////////////////////////////[Question VoteDown Post]//////////////////////////
+  ///[Question_VoteDown_Post]
   ///post all DownVote Questions
   Future<void> postQuestionsDownVote(int questionsID) async {
     try {
@@ -464,34 +489,4 @@ class QuestionsProvider extends ChangeNotifier {
   }
 
   bool get getIsLoading => isLoading;
-
-///////////////////////////////[ON HOLD QUESTION]///////////////////////////////////////////
-  List<QuestionOnHold> questionOnHold = [];
-
-  Future<void> fetchOnHoldQuestions() async {
-    // print('On Hold Called ............');
-    try {
-      final response = await http.get(
-        Uri.encodeFull(APIData.domainApiLink + 'my-questions-on-hold'),
-        headers: {
-          HttpHeaders.acceptHeader: APIData.acceptHeader,
-          HttpHeaders.authorizationHeader: auth,
-        },
-      );
-
-      // print("Staus Code : " + response.statusCode.toString());
-      if (response.statusCode >= 400) {
-        throw HttpException('Au Authorized !');
-      }
-
-      // final responseData = json.decode(response.body);
-      // print("Response Data : " + responseData.toString());
-
-      var quesHoldData = questionOnHoldFromJson(response.body);
-      questionOnHold = quesHoldData;
-      notifyListeners();
-    } catch (error) {
-      throw error;
-    }
-  }
 }

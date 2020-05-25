@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 import 'package:scope_demo/controllers/Answers/AnswersProvider.dart';
 import 'package:scope_demo/controllers/Questions/questions_provider.dart';
 import 'package:scope_demo/controllers/app_localizations.dart';
-import 'package:scope_demo/controllers/convesations/conversation_provider.dart';
 import 'package:scope_demo/model/Http_Exception.dart';
 import 'package:scope_demo/screens/best_answer.dart';
 import 'package:scope_demo/screens/j_comunities.dart';
@@ -353,19 +352,27 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
     List<_Page> _allPages = <_Page>[
       _Page(
         cat: 1,
+        text: "أسئلة حالية",
+      ),
+      _Page(
+        cat: 2,
         text: AppLocalizations.of(context).translate('home', 'top_answered'),
       ),
       _Page(
-        cat: 4,
+        cat: 3,
         text: AppLocalizations.of(context).translate('home', 'answers'),
       ),
       _Page(
-        cat: 6,
+        cat: 4,
         text: AppLocalizations.of(context).translate('home', 'top_visit'),
       ),
       _Page(
         cat: 5,
         text: AppLocalizations.of(context).translate('home', 'top_voted'),
+      ),
+      _Page(
+        cat: 6,
+        text: "لا جواب",
       ),
     ];
 
@@ -472,1199 +479,2078 @@ class ScrollableTabsDemoState extends State<ScrollableTabsDemo>
     Locale mylocale = Localizations.localeOf(context);
     switch (id) {
       case 1:
-        return Consumer<QuestionsProvider>(
-          builder: (ctx, modelData, child) {
-            modelData.getQuestionsMostAnswered();
-            if (modelData.isLoading) {
+        return FutureBuilder(
+          future: Provider.of<QuestionsProvider>(context, listen: false)
+              .getQuestions(),
+          builder: (ctx, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(child: CircularProgressIndicator());
-            } else if (modelData.getDatumQuestions != null) {
-              return ListView.builder(
-                itemCount: modelData.getDatumQuestions.length,
-                itemBuilder: (ctx, index) {
-                  var data = modelData.getDatumQuestions[index];
-                  return Container(
-                    color: Colors.grey[200],
-                    child: Container(
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          top: 2.0,
-                        ),
-                        child: new Container(
-                          color: Colors.grey[200],
-                          width: double.infinity,
-                          child: Material(
-                            elevation: 1,
-                            child: FittedBox(
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    right: 30.0, left: 30.0, top: 20),
-                                child: Column(
-                                  children: <Widget>[
-                                    Row(
-                                      mainAxisAlignment:
+            } else if (snapshot.error != null) {
+              Fluttertoast.showToast(
+                msg: 'يوجد خطأ , يرجى التحقق من الانترنت',
+              );
+            } else {
+              return Consumer<QuestionsProvider>(
+                builder: (ctx, modelData, child) {
+                  return ListView.builder(
+                    itemCount: modelData.getQuestionsList.data.length,
+                    itemBuilder: (ctx, index) {
+                      var data = modelData.getQuestionsList.data[index];
+
+                      return Container(
+                        color: Colors.grey[200],
+                        child: Container(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              top: 2.0,
+                            ),
+                            child: new Container(
+                              color: Colors.grey[200],
+                              width: double.infinity,
+                              child: Material(
+                                elevation: 1,
+                                child: FittedBox(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 30.0, left: 30.0, top: 20),
+                                    child: Column(
+                                      children: <Widget>[
+                                        Row(
+                                          mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,
-                                      crossAxisAlignment:
+                                          crossAxisAlignment:
                                           CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Row(
                                           children: <Widget>[
-                                            Align(
-                                              alignment: Alignment.topRight,
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Image.asset(
-                                                  "assets/Avatar.png",
-                                                  height: 50,
-                                                  width: 50,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 8.0),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 5.0, bottom: 2.0),
-                                                child: AutoSizeText(
-                                                  "${data.user.name}",
-//                                                  AppLocalizations.of(context).translate('tabs', 'name'),
-                                                  maxLines: 2,
-                                                  style: TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
-                                              ),
-                                              Container(
-                                                width: 300,
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          right: 0.0),
-                                                  child: AutoSizeText(
-                                                    AppLocalizations.of(context)
-                                                        .translate(
-                                                            'tabs', 'asked_t'),
-                                                    style:
-                                                        TextStyle(fontSize: 14),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    Row(
-                                      children: <Widget>[
-                                        Row(
-                                          children: <Widget>[
-                                            Padding(
-                                              padding: mylocale.languageCode
-                                                      .contains("ur")
-                                                  ? EdgeInsets.only(left: 12.0)
-                                                  : EdgeInsets.only(
-                                                      right: 12.0),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: <Widget>[
-                                                  //////////////////////vooote Up Questionnnnnnnnnnnnnnnnnnnnnnnnnnn
-                                                  IconButton(
-                                                      icon: data.isVotUploading
-                                                          ? CircularProgressIndicator()
-                                                          : Icon(
-                                                              Icons
-                                                                  .arrow_drop_up,
-                                                              size: 40,
-                                                              color: Colors
-                                                                  .black54,
-                                                            ),
-                                                      onPressed: () async {
-                                                        try {
-                                                          setState(() {
-                                                            data.isVotUploading =
-                                                                true;
-                                                          });
-                                                          await modelData
-                                                              .postQuestionsUpVote(
-                                                                  data.id)
-                                                              .then((_) {
-                                                            setState(() {
-                                                              data.isVotUploading =
-                                                                  false;
-                                                            });
-                                                            SweetAlert.show(
-                                                              context,
-                                                              title: modelData
-                                                                  .message,
-                                                              style:
-                                                                  SweetAlertStyle
-                                                                      .success,
-                                                            );
-                                                          });
-                                                        } on HttpException catch (error) {
-                                                          Fluttertoast.showToast(
-                                                              msg: error
-                                                                  .toString());
-                                                        } catch (error) {
-                                                          Fluttertoast.showToast(
-                                                              msg: error
-                                                                  .toString());
-                                                        }
-                                                      }),
-                                                  Container(
-                                                    margin: mylocale
-                                                            .languageCode
-                                                            .contains("ur")
-                                                        ? EdgeInsets.only(
-                                                            right: 10)
-                                                        : EdgeInsets.only(
-                                                            left: 10),
-                                                    child: Text(
-                                                      "${data.votesAverage.toString()}",
-                                                      style: TextStyle(
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.bold),
+                                            Row(
+                                              children: <Widget>[
+                                                Align(
+                                                  alignment: Alignment.topRight,
+                                                  child: Padding(
+                                                    padding:
+                                                    const EdgeInsets.all(
+                                                        8.0),
+                                                    child: Image.asset(
+                                                      "assets/Avatar.png",
+                                                      height: 50,
+                                                      width: 50,
                                                     ),
                                                   ),
-                                                  IconButton(
-                                                    icon: data.isVotDownloading
-                                                        ? CircularProgressIndicator()
-                                                        : Icon(
-                                                            Icons
-                                                                .arrow_drop_down,
-                                                            size: 40,
-                                                            color:
-                                                                Colors.black54,
-                                                          ),
-                                                    onPressed: () async {
-                                                      try {
-                                                        setState(() {
-                                                          data.isVotDownloading =
-                                                              true;
-                                                        });
-                                                        await modelData
-                                                            .postQuestionsDownVote(
-                                                                data.id)
-                                                            .then((_) {
-                                                          setState(() {
-                                                            data.isVotDownloading =
-                                                                false;
-                                                          });
-                                                          SweetAlert.show(
-                                                            context,
-                                                            title: modelData
-                                                                .message,
-                                                            style:
-                                                                SweetAlertStyle
-                                                                    .confirm,
-                                                          );
-                                                        });
-                                                      } on HttpException catch (error) {
-                                                        Fluttertoast.showToast(
-                                                            msg: error
-                                                                .toString());
-                                                      } catch (error) {
-                                                        Fluttertoast.showToast(
-                                                            msg: error
-                                                                .toString());
-                                                      }
-                                                    },
+                                                ),
+                                              ],
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 8.0),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment
+                                                    .spaceEvenly,
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  Padding(
+                                                    padding:
+                                                    const EdgeInsets.only(
+                                                        top: 5.0,
+                                                        bottom: 2.0),
+                                                    child: AutoSizeText(
+                                                      "${data.user.name}",
+//                                                  AppLocalizations.of(context).translate('tabs', 'name'),
+                                                      maxLines: 2,
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                        FontWeight.w500,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    width: 300,
+                                                    child: Padding(
+                                                      padding:
+                                                      const EdgeInsets.only(
+                                                          right: 0.0),
+                                                      child: AutoSizeText(
+                                                        AppLocalizations.of(
+                                                            context)
+                                                            .translate('tabs',
+                                                            'asked_t'),
+                                                        style: TextStyle(
+                                                            fontSize: 14),
+                                                      ),
+                                                    ),
                                                   ),
                                                 ],
                                               ),
                                             )
                                           ],
                                         ),
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                        Row(
                                           children: <Widget>[
-                                            Container(
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 10.0),
-                                                child: AutoSizeText(
-                                                  "${data.title}",
-                                                  maxLines: 2,
-                                                  style:
-                                                      TextStyle(fontSize: 14),
+                                            Row(
+                                              children: <Widget>[
+                                                Padding(
+                                                  padding: mylocale.languageCode
+                                                      .contains("ur")
+                                                      ? EdgeInsets.only(
+                                                      left: 12.0)
+                                                      : EdgeInsets.only(
+                                                      right: 12.0),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .center,
+                                                    children: <Widget>[
+                                                      //////////////////////vooote Up Questionnnnnnnnnnnnnnnnnnnnnnnnnnn
+                                                      IconButton(
+                                                        icon: Icon(
+                                                          Icons.arrow_drop_up,
+                                                          size: 40,
+                                                          color: Colors.black54,
+                                                        ),
+                                                        onPressed: () async {
+                                                          try {
+                                                            setState(() {
+//                                                                data.isVotUploading =
+//                                                                    true;
+                                                            });
+                                                            await modelData
+                                                                .postQuestionsUpVote(
+                                                                data.id)
+                                                                .then(
+                                                                  (_) {
+                                                                setState(() {
+//                                                                  data.isVotUploading =
+//                                                                      false;
+                                                                });
+                                                                SweetAlert.show(
+                                                                  context,
+                                                                  title: modelData
+                                                                      .message,
+                                                                  style: SweetAlertStyle
+                                                                      .success,
+                                                                );
+                                                              },
+                                                            );
+                                                          } on HttpException catch (error) {
+                                                            Fluttertoast
+                                                                .showToast(
+                                                              msg: error
+                                                                  .toString(),
+                                                            );
+                                                          } catch (error) {
+                                                            Fluttertoast
+                                                                .showToast(
+                                                              msg: error
+                                                                  .toString(),
+                                                            );
+                                                          }
+                                                        },
+                                                      ),
+                                                      Container(
+                                                        margin: mylocale
+                                                            .languageCode
+                                                            .contains("ur")
+                                                            ? EdgeInsets.only(
+                                                            right: 10)
+                                                            : EdgeInsets.only(
+                                                            left: 10),
+                                                        child: Text(
+                                                          "${data.votesAverage
+                                                              .toString()}",
+                                                          style: TextStyle(
+                                                              fontSize: 14,
+                                                              fontWeight:
+                                                              FontWeight
+                                                                  .bold),
+                                                        ),
+                                                      ),
+                                                      IconButton(
+                                                        icon: Icon(
+                                                          Icons.arrow_drop_down,
+                                                          size: 40,
+                                                          color: Colors.black54,
+                                                        ),
+                                                        onPressed: () async {
+                                                          try {
+                                                            setState(() {
+//                                                              data.isVotDownloading =
+//                                                                  true;
+                                                            });
+                                                            await modelData
+                                                                .postQuestionsDownVote(
+                                                                data.id)
+                                                                .then((_) {
+                                                              setState(() {
+//                                                                data.isVotDownloading =
+//                                                                    false;
+                                                              });
+                                                              SweetAlert.show(
+                                                                context,
+                                                                title: modelData
+                                                                    .message,
+                                                                style:
+                                                                SweetAlertStyle
+                                                                    .confirm,
+                                                              );
+                                                            });
+                                                          } on HttpException catch (error) {
+                                                            Fluttertoast
+                                                                .showToast(
+                                                                msg: error
+                                                                    .toString());
+                                                          } catch (error) {
+                                                            Fluttertoast
+                                                                .showToast(
+                                                                msg: error
+                                                                    .toString());
+                                                          }
+                                                        },
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                            Column(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                Container(
+                                                  child: Padding(
+                                                    padding:
+                                                    const EdgeInsets.only(
+                                                        right: 10.0),
+                                                    child: AutoSizeText(
+                                                      "${data.title}",
+                                                      maxLines: 2,
+                                                      style: TextStyle(
+                                                          fontSize: 14),
+                                                    ),
+                                                  ),
                                                 ),
+                                                Container(
+                                                  width: 300,
+                                                  child: Padding(
+                                                    padding:
+                                                    const EdgeInsets.only(
+                                                        right: 10.0),
+                                                    child: Text(
+                                                      "${data.body}",
+                                                      style: TextStyle(
+                                                          fontSize: 14),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                        Row(
+                                          children: <Widget>[
+                                            Padding(
+                                              padding: const EdgeInsets.all(8),
+                                              child: Row(
+                                                children: <Widget>[
+                                                  SvgPicture.asset(
+                                                    "assets/svgs/seen.svg",
+                                                    height: 15,
+                                                    width: 15,
+                                                    color: Colors.black45,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                    const EdgeInsets.all(
+                                                        8.0),
+                                                    child:
+                                                    Text("${data.views}"),
+                                                  )
+                                                ],
                                               ),
                                             ),
-                                            Container(
-                                              width: 300,
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 10.0),
-                                                child: Text(
-                                                  "${data.body}",
-                                                  style:
-                                                      TextStyle(fontSize: 14),
-                                                ),
+                                            SizedBox(
+                                              width: 27,
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.all(8),
+                                              child: Row(
+                                                children: <Widget>[
+                                                  SvgPicture.asset(
+                                                    "assets/svgs/chat.svg",
+                                                    height: 30,
+                                                    width: 30,
+                                                    color: Colors.black45,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                    const EdgeInsets.all(
+                                                        8.0),
+                                                    child: Text(
+                                                        "${data.answersCount}"),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 27,
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.all(8),
+                                              child: Row(
+                                                children: <Widget>[
+                                                  SvgPicture.asset(
+                                                    "assets/svgs/controbution.svg",
+                                                    height: 20,
+                                                    width: 20,
+                                                    color: Colors.black45,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                    const EdgeInsets.all(
+                                                        8.0),
+                                                    child: Text(
+                                                        "${data
+                                                            .followersCount}"),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(width: 27),
+                                            Padding(
+                                              padding: const EdgeInsets.all(8),
+                                              child: Row(
+                                                children: <Widget>[
+                                                  Icon(
+                                                    Icons.star,
+                                                    color: Colors.black45,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                    const EdgeInsets.all(
+                                                        8.0),
+                                                    child: Text("0"),
+                                                  )
+                                                ],
                                               ),
                                             ),
                                           ],
-                                        )
-                                      ],
-                                    ),
-                                    Row(
-                                      children: <Widget>[
-                                        Padding(
-                                          padding: const EdgeInsets.all(8),
-                                          child: Row(
-                                            children: <Widget>[
-                                              SvgPicture.asset(
-                                                "assets/svgs/seen.svg",
-                                                height: 15,
-                                                width: 15,
-                                                color: Colors.black45,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text("${data.views}"),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 27,
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8),
-                                          child: Row(
-                                            children: <Widget>[
-                                              SvgPicture.asset(
-                                                "assets/svgs/chat.svg",
-                                                height: 30,
-                                                width: 30,
-                                                color: Colors.black45,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                    "${data.answersCount}"),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 27,
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8),
-                                          child: Row(
-                                            children: <Widget>[
-                                              SvgPicture.asset(
-                                                "assets/svgs/controbution.svg",
-                                                height: 20,
-                                                width: 20,
-                                                color: Colors.black45,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                    "${data.followersCount}"),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(width: 27),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8),
-                                          child: Row(
-                                            children: <Widget>[
-                                              Icon(
-                                                Icons.star,
-                                                color: Colors.black45,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text("0"),
-                                              )
-                                            ],
-                                          ),
                                         ),
                                       ],
                                     ),
-                                  ],
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
+                      );
+                    },
                   );
                 },
               );
+            }
+            return Center(
+              child: Text(
+                'يوجد خطا الرجاء التأكد من اتصالك بالانترنت ثم المحاولة لاحقاً',
+              ),
+            );
+          },
+        );
+
+        break;
+      case 2:
+        return FutureBuilder(
+          future: Provider.of<QuestionsProvider>(context, listen: false)
+              .getQuestionsMostAnswered(),
+          builder: (ctx, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.error != null) {
+              Fluttertoast.showToast(
+                msg: 'يوجد خطأ , يرجى التحقق من الانترنت',
+              );
             } else {
-              return Center(
-                child: Text("No Data"),
+              return Consumer<QuestionsProvider>(
+                builder: (ctx, modelData, child) {
+                  return ListView.builder(
+                    itemCount: modelData.getDatumQuestions.length,
+                    itemBuilder: (ctx, index) {
+                      var data = modelData.getDatumQuestions[index];
+                      return Container(
+                        color: Colors.grey[200],
+                        child: Container(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              top: 2.0,
+                            ),
+                            child: new Container(
+                              color: Colors.grey[200],
+                              width: double.infinity,
+                              child: Material(
+                                elevation: 1,
+                                child: FittedBox(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 30.0, left: 30.0, top: 20),
+                                    child: Column(
+                                      children: <Widget>[
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Row(
+                                              children: <Widget>[
+                                                Align(
+                                                  alignment: Alignment.topRight,
+                                                  child: Padding(
+                                                    padding:
+                                                    const EdgeInsets.all(
+                                                        8.0),
+                                                    child: Image.asset(
+                                                      "assets/Avatar.png",
+                                                      height: 50,
+                                                      width: 50,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 8.0),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment
+                                                    .spaceEvenly,
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  Padding(
+                                                    padding:
+                                                    const EdgeInsets.only(
+                                                        top: 5.0,
+                                                        bottom: 2.0),
+                                                    child: AutoSizeText(
+                                                      "${data.user.name}",
+//                                                  AppLocalizations.of(context).translate('tabs', 'name'),
+                                                      maxLines: 2,
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                        FontWeight.w500,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    width: 300,
+                                                    child: Padding(
+                                                      padding:
+                                                      const EdgeInsets.only(
+                                                          right: 0.0),
+                                                      child: AutoSizeText(
+                                                        AppLocalizations.of(
+                                                            context)
+                                                            .translate('tabs',
+                                                            'asked_t'),
+                                                        style: TextStyle(
+                                                            fontSize: 14),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                        Row(
+                                          children: <Widget>[
+                                            Row(
+                                              children: <Widget>[
+                                                Padding(
+                                                  padding: mylocale.languageCode
+                                                      .contains("ur")
+                                                      ? EdgeInsets.only(
+                                                      left: 12.0)
+                                                      : EdgeInsets.only(
+                                                      right: 12.0),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .center,
+                                                    children: <Widget>[
+                                                      //////////////////////vooote Up Questionnnnnnnnnnnnnnnnnnnnnnnnnnn
+                                                      IconButton(
+                                                          icon: Icon(
+                                                            Icons.arrow_drop_up,
+                                                            size: 40,
+                                                            color:
+                                                            Colors.black54,
+                                                          ),
+                                                          onPressed: () async {
+                                                            try {
+                                                              setState(() {
+//                                                                data.isVotUploading =
+//                                                                    true;
+                                                              });
+                                                              await modelData
+                                                                  .postQuestionsUpVote(
+                                                                  data.id)
+                                                                  .then((_) {
+                                                                setState(() {
+//                                                                  data.isVotUploading =
+//                                                                      false;
+                                                                });
+                                                                SweetAlert.show(
+                                                                  context,
+                                                                  title: modelData
+                                                                      .message,
+                                                                  style: SweetAlertStyle
+                                                                      .success,
+                                                                );
+                                                              });
+                                                            } on HttpException catch (error) {
+                                                              Fluttertoast
+                                                                  .showToast(
+                                                                  msg: error
+                                                                      .toString());
+                                                            } catch (error) {
+                                                              Fluttertoast
+                                                                  .showToast(
+                                                                  msg: error
+                                                                      .toString());
+                                                            }
+                                                          }),
+                                                      Container(
+                                                        margin: mylocale
+                                                            .languageCode
+                                                            .contains("ur")
+                                                            ? EdgeInsets.only(
+                                                            right: 10)
+                                                            : EdgeInsets.only(
+                                                            left: 10),
+                                                        child: Text(
+                                                          "${data.votesAverage
+                                                              .toString()}",
+                                                          style: TextStyle(
+                                                              fontSize: 14,
+                                                              fontWeight:
+                                                              FontWeight
+                                                                  .bold),
+                                                        ),
+                                                      ),
+                                                      IconButton(
+                                                        icon: Icon(
+                                                          Icons.arrow_drop_down,
+                                                          size: 40,
+                                                          color: Colors.black54,
+                                                        ),
+                                                        onPressed: () async {
+                                                          try {
+                                                            setState(() {
+//                                                              data.isVotDownloading =
+//                                                                  true;
+                                                            });
+                                                            await modelData
+                                                                .postQuestionsDownVote(
+                                                                data.id)
+                                                                .then((_) {
+                                                              setState(() {
+//                                                                data.isVotDownloading =
+//                                                                    false;
+                                                              });
+                                                              SweetAlert.show(
+                                                                context,
+                                                                title: modelData
+                                                                    .message,
+                                                                style:
+                                                                SweetAlertStyle
+                                                                    .confirm,
+                                                              );
+                                                            });
+                                                          } on HttpException catch (error) {
+                                                            Fluttertoast
+                                                                .showToast(
+                                                                msg: error
+                                                                    .toString());
+                                                          } catch (error) {
+                                                            Fluttertoast
+                                                                .showToast(
+                                                                msg: error
+                                                                    .toString());
+                                                          }
+                                                        },
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                            Column(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                Container(
+                                                  child: Padding(
+                                                    padding:
+                                                    const EdgeInsets.only(
+                                                        right: 10.0),
+                                                    child: AutoSizeText(
+                                                      "${data.title}",
+                                                      maxLines: 2,
+                                                      style: TextStyle(
+                                                          fontSize: 14),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Container(
+                                                  width: 300,
+                                                  child: Padding(
+                                                    padding:
+                                                    const EdgeInsets.only(
+                                                        right: 10.0),
+                                                    child: Text(
+                                                      "${data.body}",
+                                                      style: TextStyle(
+                                                          fontSize: 14),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                        Row(
+                                          children: <Widget>[
+                                            Padding(
+                                              padding: const EdgeInsets.all(8),
+                                              child: Row(
+                                                children: <Widget>[
+                                                  SvgPicture.asset(
+                                                    "assets/svgs/seen.svg",
+                                                    height: 15,
+                                                    width: 15,
+                                                    color: Colors.black45,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                    const EdgeInsets.all(
+                                                        8.0),
+                                                    child:
+                                                    Text("${data.views}"),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 27,
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.all(8),
+                                              child: Row(
+                                                children: <Widget>[
+                                                  SvgPicture.asset(
+                                                    "assets/svgs/chat.svg",
+                                                    height: 30,
+                                                    width: 30,
+                                                    color: Colors.black45,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                    const EdgeInsets.all(
+                                                        8.0),
+                                                    child: Text(
+                                                        "${data.answersCount}"),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 27,
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.all(8),
+                                              child: Row(
+                                                children: <Widget>[
+                                                  SvgPicture.asset(
+                                                    "assets/svgs/controbution.svg",
+                                                    height: 20,
+                                                    width: 20,
+                                                    color: Colors.black45,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                    const EdgeInsets.all(
+                                                        8.0),
+                                                    child: Text(
+                                                        "${data
+                                                            .followersCount}"),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(width: 27),
+                                            Padding(
+                                              padding: const EdgeInsets.all(8),
+                                              child: Row(
+                                                children: <Widget>[
+                                                  Icon(
+                                                    Icons.star,
+                                                    color: Colors.black45,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                    const EdgeInsets.all(
+                                                        8.0),
+                                                    child: Text("0"),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
               );
             }
+            return Center(
+              child: Text(
+                'يوجد خطا الرجاء التأكد من اتصالك بالانترنت ثم المحاولة لاحقاً',
+              ),
+            );
+          },
+        );
+
+        break;
+      case 3:
+        return FutureBuilder(
+          future:
+          Provider.of<AnswersProvider>(context, listen: false).getAnswers(),
+          builder: (ctx, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.error != null) {
+              Fluttertoast.showToast(
+                msg: 'يوجد خطأ , يرجى التحقق من الانترنت',
+              );
+            } else {
+              return Consumer<AnswersProvider>(
+                builder: (ctx, modelData, child) {
+                  return ListView.builder(
+                    itemCount: modelData.getDataDatumAnswer.length,
+                    itemBuilder: (ctx, index) {
+                      var data = modelData.getDataDatumAnswer[index];
+                      return Container(
+                        color: Colors.grey[200],
+                        child: Container(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              top: 2.0,
+                            ),
+                            child: new Container(
+                              color: Colors.grey[200],
+                              width: double.infinity,
+                              child: Material(
+                                elevation: 1,
+                                child: FittedBox(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 30.0, left: 30.0, top: 20),
+                                    child: Column(
+                                      children: <Widget>[
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Row(
+                                              children: <Widget>[
+                                                Align(
+                                                  alignment: Alignment.topRight,
+                                                  child: Padding(
+                                                    padding:
+                                                    const EdgeInsets.all(
+                                                        8.0),
+                                                    child: Image.asset(
+                                                      "assets/Avatar.png",
+                                                      height: 50,
+                                                      width: 50,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 8.0),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment
+                                                    .spaceEvenly,
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  Padding(
+                                                    padding:
+                                                    const EdgeInsets.only(
+                                                        top: 5.0,
+                                                        bottom: 2.0),
+                                                    child: AutoSizeText(
+                                                      "wwwww",
+//                                                  AppLocalizations.of(context).translate('tabs', 'name'),
+                                                      maxLines: 2,
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                        FontWeight.w500,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    width: 300,
+                                                    child: Padding(
+                                                      padding:
+                                                      const EdgeInsets.only(
+                                                          right: 0.0),
+                                                      child: AutoSizeText(
+                                                        AppLocalizations.of(
+                                                            context)
+                                                            .translate('tabs',
+                                                            'asked_t'),
+                                                        style: TextStyle(
+                                                            fontSize: 14),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                        Row(
+                                          children: <Widget>[
+                                            Row(
+                                              children: <Widget>[
+                                                Padding(
+                                                  padding: mylocale.languageCode
+                                                      .contains("ur")
+                                                      ? EdgeInsets.only(
+                                                      left: 12.0)
+                                                      : EdgeInsets.only(
+                                                      right: 12.0),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .center,
+                                                    children: <Widget>[
+                                                      IconButton(
+                                                        icon: Icon(
+                                                          Icons.arrow_drop_up,
+                                                          size: 40,
+                                                          color: Colors.black54,
+                                                        ),
+                                                        onPressed: () {},
+                                                      ),
+                                                      Container(
+                                                        margin: mylocale
+                                                            .languageCode
+                                                            .contains("ur")
+                                                            ? EdgeInsets.only(
+                                                            right: 10)
+                                                            : EdgeInsets.only(
+                                                            left: 10),
+                                                        child: Text(
+                                                          "$index",
+                                                          style: TextStyle(
+                                                              fontSize: 14,
+                                                              fontWeight:
+                                                              FontWeight
+                                                                  .bold),
+                                                        ),
+                                                      ),
+                                                      IconButton(
+                                                        icon: Icon(
+                                                          Icons.arrow_drop_down,
+                                                          size: 40,
+                                                          color: Colors.black54,
+                                                        ),
+                                                        onPressed: () {},
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                            Column(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                Container(
+                                                  child: Padding(
+                                                    padding:
+                                                    const EdgeInsets.only(
+                                                        right: 10.0),
+                                                    child: AutoSizeText(
+                                                      "www",
+                                                      maxLines: 2,
+                                                      style: TextStyle(
+                                                          fontSize: 14),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Container(
+                                                  width: 300,
+                                                  child: Padding(
+                                                    padding:
+                                                    const EdgeInsets.only(
+                                                        right: 10.0),
+                                                    child: Text(
+                                                      "aaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                                                      style: TextStyle(
+                                                          fontSize: 14),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                        Row(
+                                          children: <Widget>[
+                                            Padding(
+                                              padding: const EdgeInsets.all(8),
+                                              child: Row(
+                                                children: <Widget>[
+                                                  SvgPicture.asset(
+                                                    "assets/svgs/seen.svg",
+                                                    height: 15,
+                                                    width: 15,
+                                                    color: Colors.black45,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                    const EdgeInsets.all(
+                                                        8.0),
+                                                    child: Text("$index"),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 27,
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.all(8),
+                                              child: Row(
+                                                children: <Widget>[
+                                                  SvgPicture.asset(
+                                                    "assets/svgs/chat.svg",
+                                                    height: 30,
+                                                    width: 30,
+                                                    color: Colors.black45,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                    const EdgeInsets.all(
+                                                        8.0),
+                                                    child: Text("22"),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 27,
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.all(8),
+                                              child: Row(
+                                                children: <Widget>[
+                                                  SvgPicture.asset(
+                                                    "assets/svgs/controbution.svg",
+                                                    height: 20,
+                                                    width: 20,
+                                                    color: Colors.black45,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                    const EdgeInsets.all(
+                                                        8.0),
+                                                    child: Text("22"),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(width: 27),
+                                            Padding(
+                                              padding: const EdgeInsets.all(8),
+                                              child: Row(
+                                                children: <Widget>[
+                                                  Icon(
+                                                    Icons.star,
+                                                    color: Colors.black45,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                    const EdgeInsets.all(
+                                                        8.0),
+                                                    child: Text("0"),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              );
+            }
+            return Center(
+              child: Text(
+                'يوجد خطا الرجاء التأكد من اتصالك بالانترنت ثم المحاولة لاحقاً',
+              ),
+            );
           },
         );
         break;
       case 4:
-        return Consumer<AnswersProvider>(
-          builder: (ctx, modelData, child) {
-            modelData.getAnswers();
-            if (modelData.isLoading) {
+        return FutureBuilder(
+          future: Provider.of<QuestionsProvider>(context, listen: false)
+              .getQuestionsMostViewed(),
+          builder: (ctx, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(child: CircularProgressIndicator());
-            } else if (modelData.getDataDatumAnswer != null) {
-              return ListView.builder(
-                itemCount: modelData.getDataDatumAnswer.length,
-                itemBuilder: (ctx, index) {
-                  var data = modelData.getDataDatumAnswer[index];
-                  return Container(
-                    color: Colors.grey[200],
-                    child: Container(
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          top: 2.0,
-                        ),
-                        child: new Container(
-                          color: Colors.grey[200],
-                          width: double.infinity,
-                          child: Material(
-                            elevation: 1,
-                            child: FittedBox(
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    right: 30.0, left: 30.0, top: 20),
-                                child: Column(
-                                  children: <Widget>[
-                                    Row(
-                                      mainAxisAlignment:
+            } else if (snapshot.error != null) {
+              Fluttertoast.showToast(
+                msg: 'يوجد خطأ , يرجى التحقق من الانترنت',
+              );
+            } else {
+              return Consumer<QuestionsProvider>(
+                builder: (ctx, modelData, child) {
+                  return ListView.builder(
+                    itemCount: modelData.getDataMostViewedQuestions.length,
+                    itemBuilder: (ctx, index) {
+                      var data = modelData.getDataMostViewedQuestions[index];
+                      return Container(
+                        color: Colors.grey[200],
+                        child: Container(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              top: 2.0,
+                            ),
+                            child: new Container(
+                              color: Colors.grey[200],
+                              width: double.infinity,
+                              child: Material(
+                                elevation: 1,
+                                child: FittedBox(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 30.0, left: 30.0, top: 20),
+                                    child: Column(
+                                      children: <Widget>[
+                                        Row(
+                                          mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,
-                                      crossAxisAlignment:
+                                          crossAxisAlignment:
                                           CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Row(
                                           children: <Widget>[
-                                            Align(
-                                              alignment: Alignment.topRight,
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Image.asset(
-                                                  "assets/Avatar.png",
-                                                  height: 50,
-                                                  width: 50,
+                                            Row(
+                                              children: <Widget>[
+                                                Align(
+                                                  alignment: Alignment.topRight,
+                                                  child: Padding(
+                                                    padding:
+                                                    const EdgeInsets.all(
+                                                        8.0),
+                                                    child: Image.asset(
+                                                      "assets/Avatar.png",
+                                                      height: 50,
+                                                      width: 50,
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
+                                              ],
                                             ),
-                                          ],
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 8.0),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 5.0, bottom: 2.0),
-                                                child: AutoSizeText(
-                                                  "wwwww",
-//                                                  AppLocalizations.of(context).translate('tabs', 'name'),
-                                                  maxLines: 2,
-                                                  style: TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
-                                              ),
-                                              Container(
-                                                width: 300,
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          right: 0.0),
-                                                  child: AutoSizeText(
-                                                    AppLocalizations.of(context)
-                                                        .translate(
-                                                            'tabs', 'asked_t'),
-                                                    style:
-                                                        TextStyle(fontSize: 14),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    Row(
-                                      children: <Widget>[
-                                        Row(
-                                          children: <Widget>[
                                             Padding(
-                                              padding: mylocale.languageCode
-                                                      .contains("ur")
-                                                  ? EdgeInsets.only(left: 12.0)
-                                                  : EdgeInsets.only(
-                                                      right: 12.0),
+                                              padding: const EdgeInsets.only(
+                                                  top: 8.0),
                                               child: Column(
                                                 mainAxisAlignment:
-                                                    MainAxisAlignment.center,
+                                                MainAxisAlignment
+                                                    .spaceEvenly,
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                                 children: <Widget>[
-                                                  IconButton(
-                                                    icon: Icon(
-                                                      Icons.arrow_drop_up,
-                                                      size: 40,
-                                                      color: Colors.black54,
+                                                  Padding(
+                                                    padding:
+                                                    const EdgeInsets.only(
+                                                        top: 5.0,
+                                                        bottom: 2.0),
+                                                    child: AutoSizeText(
+                                                      "${data.user.name}",
+//                                                  AppLocalizations.of(context).translate('tabs', 'name'),
+                                                      maxLines: 2,
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                        FontWeight.w500,
+                                                      ),
                                                     ),
-                                                    onPressed: () {},
                                                   ),
                                                   Container(
-                                                    margin: mylocale
-                                                            .languageCode
-                                                            .contains("ur")
-                                                        ? EdgeInsets.only(
-                                                            right: 10)
-                                                        : EdgeInsets.only(
-                                                            left: 10),
-                                                    child: Text(
-                                                      "$index",
-                                                      style: TextStyle(
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.bold),
+                                                    width: 300,
+                                                    child: Padding(
+                                                      padding:
+                                                      const EdgeInsets.only(
+                                                          right: 0.0),
+                                                      child: AutoSizeText(
+                                                        AppLocalizations.of(
+                                                            context)
+                                                            .translate('tabs',
+                                                            'asked_t'),
+                                                        style: TextStyle(
+                                                            fontSize: 14),
+                                                      ),
                                                     ),
-                                                  ),
-                                                  IconButton(
-                                                    icon: Icon(
-                                                      Icons.arrow_drop_down,
-                                                      size: 40,
-                                                      color: Colors.black54,
-                                                    ),
-                                                    onPressed: () {},
                                                   ),
                                                 ],
                                               ),
                                             )
                                           ],
                                         ),
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Container(
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 10.0),
-                                                child: AutoSizeText(
-                                                  "www",
-                                                  maxLines: 2,
-                                                  style:
-                                                      TextStyle(fontSize: 14),
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              width: 300,
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 10.0),
-                                                child: Text(
-                                                  "aaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-                                                  style:
-                                                      TextStyle(fontSize: 14),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                    Row(
-                                      children: <Widget>[
-                                        Padding(
-                                          padding: const EdgeInsets.all(8),
-                                          child: Row(
-                                            children: <Widget>[
-                                              SvgPicture.asset(
-                                                "assets/svgs/seen.svg",
-                                                height: 15,
-                                                width: 15,
-                                                color: Colors.black45,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text("$index"),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 27,
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8),
-                                          child: Row(
-                                            children: <Widget>[
-                                              SvgPicture.asset(
-                                                "assets/svgs/chat.svg",
-                                                height: 30,
-                                                width: 30,
-                                                color: Colors.black45,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text("22"),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 27,
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8),
-                                          child: Row(
-                                            children: <Widget>[
-                                              SvgPicture.asset(
-                                                "assets/svgs/controbution.svg",
-                                                height: 20,
-                                                width: 20,
-                                                color: Colors.black45,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text("22"),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(width: 27),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8),
-                                          child: Row(
-                                            children: <Widget>[
-                                              Icon(
-                                                Icons.star,
-                                                color: Colors.black45,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text("0"),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              );
-            } else {
-              return Center(
-                child: Text("No Data"),
-              );
-            }
-          },
-        );
-        break;
-      case 6:
-        return Consumer<QuestionsProvider>(
-          builder: (ctx, modelData, child) {
-            modelData.getQuestionsMostViewed();
-            if (modelData.isLoading) {
-              return Center(child: CircularProgressIndicator());
-            } else if (modelData.getDataMostViewedQuestions != null) {
-              return ListView.builder(
-                itemCount: modelData.getDataMostViewedQuestions.length,
-                itemBuilder: (ctx, index) {
-                  var data = modelData.getDataMostViewedQuestions[index];
-                  return Container(
-                    color: Colors.grey[200],
-                    child: Container(
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          top: 2.0,
-                        ),
-                        child: new Container(
-                          color: Colors.grey[200],
-                          width: double.infinity,
-                          child: Material(
-                            elevation: 1,
-                            child: FittedBox(
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    right: 30.0, left: 30.0, top: 20),
-                                child: Column(
-                                  children: <Widget>[
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
                                         Row(
                                           children: <Widget>[
-                                            Align(
-                                              alignment: Alignment.topRight,
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Image.asset(
-                                                  "assets/Avatar.png",
-                                                  height: 50,
-                                                  width: 50,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 8.0),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 5.0, bottom: 2.0),
-                                                child: AutoSizeText(
-                                                  "${data.user.name}",
-//                                                  AppLocalizations.of(context).translate('tabs', 'name'),
-                                                  maxLines: 2,
-                                                  style: TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
-                                              ),
-                                              Container(
-                                                width: 300,
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          right: 0.0),
-                                                  child: AutoSizeText(
-                                                    AppLocalizations.of(context)
-                                                        .translate(
-                                                            'tabs', 'asked_t'),
-                                                    style:
-                                                        TextStyle(fontSize: 14),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    Row(
-                                      children: <Widget>[
-                                        Row(
-                                          children: <Widget>[
-                                            Padding(
-                                              padding: mylocale.languageCode
+                                            Row(
+                                              children: <Widget>[
+                                                Padding(
+                                                  padding: mylocale.languageCode
                                                       .contains("ur")
-                                                  ? EdgeInsets.only(left: 12.0)
-                                                  : EdgeInsets.only(
+                                                      ? EdgeInsets.only(
+                                                      left: 12.0)
+                                                      : EdgeInsets.only(
                                                       right: 12.0),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: <Widget>[
-                                                  IconButton(
-                                                    icon: Icon(
-                                                      Icons.arrow_drop_up,
-                                                      size: 40,
-                                                      color: Colors.black54,
-                                                    ),
-                                                    onPressed: () {},
-                                                  ),
-                                                  Container(
-                                                    margin: mylocale
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .center,
+                                                    children: <Widget>[
+                                                      IconButton(
+                                                        icon: Icon(
+                                                          Icons.arrow_drop_up,
+                                                          size: 40,
+                                                          color: Colors.black54,
+                                                        ),
+                                                        onPressed: () {},
+                                                      ),
+                                                      Container(
+                                                        margin: mylocale
                                                             .languageCode
                                                             .contains("ur")
-                                                        ? EdgeInsets.only(
+                                                            ? EdgeInsets.only(
                                                             right: 10)
-                                                        : EdgeInsets.only(
+                                                            : EdgeInsets.only(
                                                             left: 10),
-                                                    child: Text(
-                                                      "${data.votesAverage.toString()}",
+                                                        child: Text(
+                                                          "${data.votesAverage
+                                                              .toString()}",
+                                                          style: TextStyle(
+                                                              fontSize: 14,
+                                                              fontWeight:
+                                                              FontWeight
+                                                                  .bold),
+                                                        ),
+                                                      ),
+                                                      IconButton(
+                                                        icon: Icon(
+                                                          Icons.arrow_drop_down,
+                                                          size: 40,
+                                                          color: Colors.black54,
+                                                        ),
+                                                        onPressed: () {},
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                            Column(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                Container(
+                                                  child: Padding(
+                                                    padding:
+                                                    const EdgeInsets.only(
+                                                        right: 10.0),
+                                                    child: AutoSizeText(
+                                                      "${data.title}",
+                                                      maxLines: 2,
                                                       style: TextStyle(
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.bold),
+                                                          fontSize: 14),
                                                     ),
                                                   ),
-                                                  IconButton(
-                                                    icon: Icon(
-                                                      Icons.arrow_drop_down,
-                                                      size: 40,
-                                                      color: Colors.black54,
+                                                ),
+                                                Container(
+                                                  width: 300,
+                                                  child: Padding(
+                                                    padding:
+                                                    const EdgeInsets.only(
+                                                        right: 10.0),
+                                                    child: Text(
+                                                      "${data.body}",
+                                                      style: TextStyle(
+                                                          fontSize: 14),
                                                     ),
-                                                    onPressed: () {},
                                                   ),
-                                                ],
-                                              ),
+                                                ),
+                                              ],
                                             )
                                           ],
                                         ),
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                        Row(
                                           children: <Widget>[
-                                            Container(
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 10.0),
-                                                child: AutoSizeText(
-                                                  "${data.title}",
-                                                  maxLines: 2,
-                                                  style:
-                                                      TextStyle(fontSize: 14),
-                                                ),
+                                            Padding(
+                                              padding: const EdgeInsets.all(8),
+                                              child: Row(
+                                                children: <Widget>[
+                                                  SvgPicture.asset(
+                                                    "assets/svgs/seen.svg",
+                                                    height: 15,
+                                                    width: 15,
+                                                    color: Colors.black45,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                    const EdgeInsets.all(
+                                                        8.0),
+                                                    child:
+                                                    Text("${data.views}"),
+                                                  )
+                                                ],
                                               ),
                                             ),
-                                            Container(
-                                              width: 300,
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 10.0),
-                                                child: Text(
-                                                  "${data.body}",
-                                                  style:
-                                                      TextStyle(fontSize: 14),
-                                                ),
+                                            SizedBox(
+                                              width: 27,
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.all(8),
+                                              child: Row(
+                                                children: <Widget>[
+                                                  SvgPicture.asset(
+                                                    "assets/svgs/chat.svg",
+                                                    height: 30,
+                                                    width: 30,
+                                                    color: Colors.black45,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                    const EdgeInsets.all(
+                                                        8.0),
+                                                    child: Text(
+                                                        "${data.answersCount}"),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 27,
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.all(8),
+                                              child: Row(
+                                                children: <Widget>[
+                                                  SvgPicture.asset(
+                                                    "assets/svgs/controbution.svg",
+                                                    height: 20,
+                                                    width: 20,
+                                                    color: Colors.black45,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                    const EdgeInsets.all(
+                                                        8.0),
+                                                    child: Text(
+                                                        "${data
+                                                            .followersCount}"),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(width: 27),
+                                            Padding(
+                                              padding: const EdgeInsets.all(8),
+                                              child: Row(
+                                                children: <Widget>[
+                                                  Icon(
+                                                    Icons.star,
+                                                    color: Colors.black45,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                    const EdgeInsets.all(
+                                                        8.0),
+                                                    child: Text("0"),
+                                                  )
+                                                ],
                                               ),
                                             ),
                                           ],
-                                        )
-                                      ],
-                                    ),
-                                    Row(
-                                      children: <Widget>[
-                                        Padding(
-                                          padding: const EdgeInsets.all(8),
-                                          child: Row(
-                                            children: <Widget>[
-                                              SvgPicture.asset(
-                                                "assets/svgs/seen.svg",
-                                                height: 15,
-                                                width: 15,
-                                                color: Colors.black45,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text("${data.views}"),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 27,
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8),
-                                          child: Row(
-                                            children: <Widget>[
-                                              SvgPicture.asset(
-                                                "assets/svgs/chat.svg",
-                                                height: 30,
-                                                width: 30,
-                                                color: Colors.black45,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                    "${data.answersCount}"),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 27,
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8),
-                                          child: Row(
-                                            children: <Widget>[
-                                              SvgPicture.asset(
-                                                "assets/svgs/controbution.svg",
-                                                height: 20,
-                                                width: 20,
-                                                color: Colors.black45,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                    "${data.followersCount}"),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(width: 27),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8),
-                                          child: Row(
-                                            children: <Widget>[
-                                              Icon(
-                                                Icons.star,
-                                                color: Colors.black45,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text("0"),
-                                              )
-                                            ],
-                                          ),
                                         ),
                                       ],
                                     ),
-                                  ],
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
+                      );
+                    },
                   );
                 },
               );
-            } else {
-              return Center(
-                child: Text("No Data"),
-              );
             }
+            return Center(
+              child: Text(
+                'يوجد خطا الرجاء التأكد من اتصالك بالانترنت ثم المحاولة لاحقاً',
+              ),
+            );
           },
         );
         break;
       case 5:
-        return Consumer<QuestionsProvider>(
-          builder: (ctx, modelData, child) {
-            modelData.getQuestionsMostAnswered();
-            if (modelData.isLoading) {
+        return FutureBuilder(
+          future: Provider.of<QuestionsProvider>(context, listen: false)
+              .getQuestionsMostAnswered(),
+          builder: (ctx, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(child: CircularProgressIndicator());
-            } else if (modelData.getDatumQuestions != null) {
-              return ListView.builder(
-                itemCount: modelData.getDatumQuestions.length,
-                itemBuilder: (ctx, index) {
-                  var data = modelData.getDatumQuestions[index];
-                  return Container(
-                    color: Colors.grey[200],
-                    child: Container(
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          top: 2.0,
-                        ),
-                        child: new Container(
-                          color: Colors.grey[200],
-                          width: double.infinity,
-                          child: Material(
-                            elevation: 1,
-                            child: FittedBox(
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    right: 30.0, left: 30.0, top: 20),
-                                child: Column(
-                                  children: <Widget>[
-                                    Row(
-                                      mainAxisAlignment:
+            } else if (snapshot.error != null) {
+              Fluttertoast.showToast(
+                msg: 'يوجد خطأ , يرجى التحقق من الانترنت',
+              );
+            } else {
+              return Consumer<QuestionsProvider>(
+                builder: (ctx, modelData, child) {
+                  return ListView.builder(
+                    itemCount: modelData.getDatumQuestions.length,
+                    itemBuilder: (ctx, index) {
+                      var data = modelData.getDatumQuestions[index];
+                      return Container(
+                        color: Colors.grey[200],
+                        child: Container(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              top: 2.0,
+                            ),
+                            child: new Container(
+                              color: Colors.grey[200],
+                              width: double.infinity,
+                              child: Material(
+                                elevation: 1,
+                                child: FittedBox(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 30.0, left: 30.0, top: 20),
+                                    child: Column(
+                                      children: <Widget>[
+                                        Row(
+                                          mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,
-                                      crossAxisAlignment:
+                                          crossAxisAlignment:
                                           CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Row(
                                           children: <Widget>[
-                                            Align(
-                                              alignment: Alignment.topRight,
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Image.asset(
-                                                  "assets/Avatar.png",
-                                                  height: 50,
-                                                  width: 50,
+                                            Row(
+                                              children: <Widget>[
+                                                Align(
+                                                  alignment: Alignment.topRight,
+                                                  child: Padding(
+                                                    padding:
+                                                    const EdgeInsets.all(
+                                                        8.0),
+                                                    child: Image.asset(
+                                                      "assets/Avatar.png",
+                                                      height: 50,
+                                                      width: 50,
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
+                                              ],
                                             ),
-                                          ],
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 8.0),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 5.0, bottom: 2.0),
-                                                child: AutoSizeText(
-                                                  "${data.user.name}",
-//                                                  AppLocalizations.of(context).translate('tabs', 'name'),
-                                                  maxLines: 2,
-                                                  style: TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
-                                              ),
-                                              Container(
-                                                width: 300,
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          right: 0.0),
-                                                  child: AutoSizeText(
-                                                    AppLocalizations.of(context)
-                                                        .translate(
-                                                            'tabs', 'asked_t'),
-                                                    style:
-                                                        TextStyle(fontSize: 14),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    Row(
-                                      children: <Widget>[
-                                        Row(
-                                          children: <Widget>[
                                             Padding(
-                                              padding: mylocale.languageCode
-                                                      .contains("ur")
-                                                  ? EdgeInsets.only(left: 12.0)
-                                                  : EdgeInsets.only(
-                                                      right: 12.0),
+                                              padding: const EdgeInsets.only(
+                                                  top: 8.0),
                                               child: Column(
                                                 mainAxisAlignment:
-                                                    MainAxisAlignment.center,
+                                                MainAxisAlignment
+                                                    .spaceEvenly,
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                                 children: <Widget>[
-                                                  IconButton(
-                                                    icon: Icon(
-                                                      Icons.arrow_drop_up,
-                                                      size: 40,
-                                                      color: Colors.black54,
+                                                  Padding(
+                                                    padding:
+                                                    const EdgeInsets.only(
+                                                        top: 5.0,
+                                                        bottom: 2.0),
+                                                    child: AutoSizeText(
+                                                      "${data.user.name}",
+//                                                  AppLocalizations.of(context).translate('tabs', 'name'),
+                                                      maxLines: 2,
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                        FontWeight.w500,
+                                                      ),
                                                     ),
-                                                    onPressed: () {},
                                                   ),
                                                   Container(
-                                                    margin: mylocale
-                                                            .languageCode
-                                                            .contains("ur")
-                                                        ? EdgeInsets.only(
-                                                            right: 10)
-                                                        : EdgeInsets.only(
-                                                            left: 10),
-                                                    child: Text(
-                                                      "${data.votesAverage.toString()}",
-                                                      style: TextStyle(
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.bold),
+                                                    width: 300,
+                                                    child: Padding(
+                                                      padding:
+                                                      const EdgeInsets.only(
+                                                          right: 0.0),
+                                                      child: AutoSizeText(
+                                                        AppLocalizations.of(
+                                                            context)
+                                                            .translate('tabs',
+                                                            'asked_t'),
+                                                        style: TextStyle(
+                                                            fontSize: 14),
+                                                      ),
                                                     ),
-                                                  ),
-                                                  IconButton(
-                                                    icon: Icon(
-                                                      Icons.arrow_drop_down,
-                                                      size: 40,
-                                                      color: Colors.black54,
-                                                    ),
-                                                    onPressed: () {},
                                                   ),
                                                 ],
                                               ),
                                             )
                                           ],
                                         ),
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                        Row(
                                           children: <Widget>[
-                                            Container(
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 10.0),
-                                                child: AutoSizeText(
-                                                  "${data.title}",
-                                                  maxLines: 2,
-                                                  style:
-                                                      TextStyle(fontSize: 14),
+                                            Row(
+                                              children: <Widget>[
+                                                Padding(
+                                                  padding: mylocale.languageCode
+                                                      .contains("ur")
+                                                      ? EdgeInsets.only(
+                                                      left: 12.0)
+                                                      : EdgeInsets.only(
+                                                      right: 12.0),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .center,
+                                                    children: <Widget>[
+                                                      IconButton(
+                                                        icon: Icon(
+                                                          Icons.arrow_drop_up,
+                                                          size: 40,
+                                                          color: Colors.black54,
+                                                        ),
+                                                        onPressed: () {},
+                                                      ),
+                                                      Container(
+                                                        margin: mylocale
+                                                            .languageCode
+                                                            .contains("ur")
+                                                            ? EdgeInsets.only(
+                                                            right: 10)
+                                                            : EdgeInsets.only(
+                                                            left: 10),
+                                                        child: Text(
+                                                          "${data.votesAverage
+                                                              .toString()}",
+                                                          style: TextStyle(
+                                                              fontSize: 14,
+                                                              fontWeight:
+                                                              FontWeight
+                                                                  .bold),
+                                                        ),
+                                                      ),
+                                                      IconButton(
+                                                        icon: Icon(
+                                                          Icons.arrow_drop_down,
+                                                          size: 40,
+                                                          color: Colors.black54,
+                                                        ),
+                                                        onPressed: () {},
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                            Column(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                Container(
+                                                  child: Padding(
+                                                    padding:
+                                                    const EdgeInsets.only(
+                                                        right: 10.0),
+                                                    child: AutoSizeText(
+                                                      "${data.title}",
+                                                      maxLines: 2,
+                                                      style: TextStyle(
+                                                          fontSize: 14),
+                                                    ),
+                                                  ),
                                                 ),
+                                                Container(
+                                                  width: 300,
+                                                  child: Padding(
+                                                    padding:
+                                                    const EdgeInsets.only(
+                                                        right: 10.0),
+                                                    child: Text(
+                                                      "${data.body}",
+                                                      style: TextStyle(
+                                                          fontSize: 14),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                        Row(
+                                          children: <Widget>[
+                                            Padding(
+                                              padding: const EdgeInsets.all(8),
+                                              child: Row(
+                                                children: <Widget>[
+                                                  SvgPicture.asset(
+                                                    "assets/svgs/seen.svg",
+                                                    height: 15,
+                                                    width: 15,
+                                                    color: Colors.black45,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                    const EdgeInsets.all(
+                                                        8.0),
+                                                    child:
+                                                    Text("${data.views}"),
+                                                  )
+                                                ],
                                               ),
                                             ),
-                                            Container(
-                                              width: 300,
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 10.0),
-                                                child: Text(
-                                                  "${data.body}",
-                                                  style:
-                                                      TextStyle(fontSize: 14),
-                                                ),
+                                            SizedBox(
+                                              width: 27,
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.all(8),
+                                              child: Row(
+                                                children: <Widget>[
+                                                  SvgPicture.asset(
+                                                    "assets/svgs/chat.svg",
+                                                    height: 30,
+                                                    width: 30,
+                                                    color: Colors.black45,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                    const EdgeInsets.all(
+                                                        8.0),
+                                                    child: Text(
+                                                        "${data.answersCount}"),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 27,
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.all(8),
+                                              child: Row(
+                                                children: <Widget>[
+                                                  SvgPicture.asset(
+                                                    "assets/svgs/controbution.svg",
+                                                    height: 20,
+                                                    width: 20,
+                                                    color: Colors.black45,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                    const EdgeInsets.all(
+                                                        8.0),
+                                                    child: Text(
+                                                        "${data
+                                                            .followersCount}"),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(width: 27),
+                                            Padding(
+                                              padding: const EdgeInsets.all(8),
+                                              child: Row(
+                                                children: <Widget>[
+                                                  Icon(
+                                                    Icons.star,
+                                                    color: Colors.black45,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                    const EdgeInsets.all(
+                                                        8.0),
+                                                    child: Text("0"),
+                                                  )
+                                                ],
                                               ),
                                             ),
                                           ],
-                                        )
-                                      ],
-                                    ),
-                                    Row(
-                                      children: <Widget>[
-                                        Padding(
-                                          padding: const EdgeInsets.all(8),
-                                          child: Row(
-                                            children: <Widget>[
-                                              SvgPicture.asset(
-                                                "assets/svgs/seen.svg",
-                                                height: 15,
-                                                width: 15,
-                                                color: Colors.black45,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text("${data.views}"),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 27,
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8),
-                                          child: Row(
-                                            children: <Widget>[
-                                              SvgPicture.asset(
-                                                "assets/svgs/chat.svg",
-                                                height: 30,
-                                                width: 30,
-                                                color: Colors.black45,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                    "${data.answersCount}"),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 27,
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8),
-                                          child: Row(
-                                            children: <Widget>[
-                                              SvgPicture.asset(
-                                                "assets/svgs/controbution.svg",
-                                                height: 20,
-                                                width: 20,
-                                                color: Colors.black45,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                    "${data.followersCount}"),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(width: 27),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8),
-                                          child: Row(
-                                            children: <Widget>[
-                                              Icon(
-                                                Icons.star,
-                                                color: Colors.black45,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text("0"),
-                                              )
-                                            ],
-                                          ),
                                         ),
                                       ],
                                     ),
-                                  ],
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
+                      );
+                    },
                   );
                 },
               );
+            }
+            return Center(
+              child: Text(
+                'يوجد خطا الرجاء التأكد من اتصالك بالانترنت ثم المحاولة لاحقاً',
+              ),
+            );
+          },
+        );
+        break;
+      case 6:
+        return FutureBuilder(
+          future: Provider.of<QuestionsProvider>(context, listen: false)
+              .getQuestionsMostAnswered(),
+          builder: (ctx, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.error != null) {
+              Fluttertoast.showToast(
+                msg: 'يوجد خطأ , يرجى التحقق من الانترنت',
+              );
             } else {
-              return Center(
-                child: Text("No Data"),
+              return Consumer<QuestionsProvider>(
+                builder: (ctx, modelData, child) {
+                  return ListView.builder(
+                    itemCount: modelData.getDatumQuestions.length,
+                    itemBuilder: (ctx, index) {
+                      var data = modelData.getDatumQuestions[index];
+                      return Container(
+                        color: Colors.grey[200],
+                        child: Container(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              top: 2.0,
+                            ),
+                            child: new Container(
+                              color: Colors.grey[200],
+                              width: double.infinity,
+                              child: Material(
+                                elevation: 1,
+                                child: FittedBox(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                      right: 30.0,
+                                      left: 30.0,
+                                      top: 20,
+                                    ),
+                                    child: Column(
+                                      children: <Widget>[
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Row(
+                                              children: <Widget>[
+                                                Align(
+                                                  alignment: Alignment.topRight,
+                                                  child: Padding(
+                                                    padding:
+                                                    const EdgeInsets.all(
+                                                        8.0),
+                                                    child: Image.asset(
+                                                      "assets/Avatar.png",
+                                                      height: 50,
+                                                      width: 50,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 8.0),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment
+                                                    .spaceEvenly,
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  Padding(
+                                                    padding:
+                                                    const EdgeInsets.only(
+                                                        top: 5.0,
+                                                        bottom: 2.0),
+                                                    child: AutoSizeText(
+                                                      "${data.user.name}",
+//                                                  AppLocalizations.of(context).translate('tabs', 'name'),
+                                                      maxLines: 2,
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                        FontWeight.w500,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    width: 300,
+                                                    child: Padding(
+                                                      padding:
+                                                      const EdgeInsets.only(
+                                                          right: 0.0),
+                                                      child: AutoSizeText(
+                                                        AppLocalizations.of(
+                                                            context)
+                                                            .translate('tabs',
+                                                            'asked_t'),
+                                                        style: TextStyle(
+                                                            fontSize: 14),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                        Row(
+                                          children: <Widget>[
+                                            Row(
+                                              children: <Widget>[
+                                                Padding(
+                                                  padding: mylocale.languageCode
+                                                      .contains("ur")
+                                                      ? EdgeInsets.only(
+                                                      left: 12.0)
+                                                      : EdgeInsets.only(
+                                                      right: 12.0),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .center,
+                                                    children: <Widget>[
+                                                      //////////////////////vooote Up Questionnnnnnnnnnnnnnnnnnnnnnnnnnn
+                                                      IconButton(
+                                                          icon: data
+                                                              .isVotUploading
+                                                              ? CircularProgressIndicator()
+                                                              : Icon(
+                                                            Icons
+                                                                .arrow_drop_up,
+                                                            size: 40,
+                                                            color: Colors
+                                                                .black54,
+                                                          ),
+                                                          onPressed: () async {
+                                                            try {
+                                                              setState(() {
+                                                                data
+                                                                    .isVotUploading =
+                                                                true;
+                                                              });
+                                                              await modelData
+                                                                  .postQuestionsUpVote(
+                                                                  data.id)
+                                                                  .then((_) {
+                                                                setState(() {
+                                                                  data
+                                                                      .isVotUploading =
+                                                                  false;
+                                                                });
+                                                                SweetAlert.show(
+                                                                  context,
+                                                                  title: modelData
+                                                                      .message,
+                                                                  style: SweetAlertStyle
+                                                                      .success,
+                                                                );
+                                                              });
+                                                            } on HttpException catch (error) {
+                                                              Fluttertoast
+                                                                  .showToast(
+                                                                  msg: error
+                                                                      .toString());
+                                                            } catch (error) {
+                                                              Fluttertoast
+                                                                  .showToast(
+                                                                  msg: error
+                                                                      .toString());
+                                                            }
+                                                          }),
+                                                      Container(
+                                                        margin: mylocale
+                                                            .languageCode
+                                                            .contains("ur")
+                                                            ? EdgeInsets.only(
+                                                            right: 10)
+                                                            : EdgeInsets.only(
+                                                            left: 10),
+                                                        child: Text(
+                                                          "${data.votesAverage
+                                                              .toString()}",
+                                                          style: TextStyle(
+                                                              fontSize: 14,
+                                                              fontWeight:
+                                                              FontWeight
+                                                                  .bold),
+                                                        ),
+                                                      ),
+                                                      IconButton(
+                                                        icon: data
+                                                            .isVotDownloading
+                                                            ? CircularProgressIndicator()
+                                                            : Icon(
+                                                          Icons
+                                                              .arrow_drop_down,
+                                                          size: 40,
+                                                          color: Colors
+                                                              .black54,
+                                                        ),
+                                                        onPressed: () async {
+                                                          try {
+                                                            setState(() {
+                                                              data
+                                                                  .isVotDownloading =
+                                                              true;
+                                                            });
+                                                            await modelData
+                                                                .postQuestionsDownVote(
+                                                                data.id)
+                                                                .then((_) {
+                                                              setState(() {
+                                                                data
+                                                                    .isVotDownloading =
+                                                                false;
+                                                              });
+                                                              SweetAlert.show(
+                                                                context,
+                                                                title: modelData
+                                                                    .message,
+                                                                style:
+                                                                SweetAlertStyle
+                                                                    .confirm,
+                                                              );
+                                                            });
+                                                          } on HttpException catch (error) {
+                                                            Fluttertoast
+                                                                .showToast(
+                                                                msg: error
+                                                                    .toString());
+                                                          } catch (error) {
+                                                            Fluttertoast
+                                                                .showToast(
+                                                                msg: error
+                                                                    .toString());
+                                                          }
+                                                        },
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                            Column(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                Container(
+                                                  child: Padding(
+                                                    padding:
+                                                    const EdgeInsets.only(
+                                                        right: 10.0),
+                                                    child: AutoSizeText(
+                                                      "${data.title}",
+                                                      maxLines: 2,
+                                                      style: TextStyle(
+                                                          fontSize: 14),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Container(
+                                                  width: 300,
+                                                  child: Padding(
+                                                    padding:
+                                                    const EdgeInsets.only(
+                                                        right: 10.0),
+                                                    child: Text(
+                                                      "${data.body}",
+                                                      style: TextStyle(
+                                                          fontSize: 14),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                        Row(
+                                          children: <Widget>[
+                                            Padding(
+                                              padding: const EdgeInsets.all(8),
+                                              child: Row(
+                                                children: <Widget>[
+                                                  SvgPicture.asset(
+                                                    "assets/svgs/seen.svg",
+                                                    height: 15,
+                                                    width: 15,
+                                                    color: Colors.black45,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                    const EdgeInsets.all(
+                                                        8.0),
+                                                    child:
+                                                    Text("${data.views}"),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 27,
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.all(8),
+                                              child: Row(
+                                                children: <Widget>[
+                                                  SvgPicture.asset(
+                                                    "assets/svgs/chat.svg",
+                                                    height: 30,
+                                                    width: 30,
+                                                    color: Colors.black45,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                    const EdgeInsets.all(
+                                                        8.0),
+                                                    child: Text(
+                                                        "${data.answersCount}"),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 27,
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.all(8),
+                                              child: Row(
+                                                children: <Widget>[
+                                                  SvgPicture.asset(
+                                                    "assets/svgs/controbution.svg",
+                                                    height: 20,
+                                                    width: 20,
+                                                    color: Colors.black45,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                    const EdgeInsets.all(
+                                                        8.0),
+                                                    child: Text(
+                                                        "${data
+                                                            .followersCount}"),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(width: 27),
+                                            Padding(
+                                              padding: const EdgeInsets.all(8),
+                                              child: Row(
+                                                children: <Widget>[
+                                                  Icon(
+                                                    Icons.star,
+                                                    color: Colors.black45,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                    const EdgeInsets.all(
+                                                        8.0),
+                                                    child: Text("0"),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
               );
             }
+            return Center(
+              child: Text(
+                'يوجد خطا الرجاء التأكد من اتصالك بالانترنت ثم المحاولة لاحقاً',
+              ),
+            );
           },
         );
         break;
     }
 
 //    return SingleChildScrollView(
-
 //      child: Column(
 //        children: <Widget>[
 //          Consumer<QuestionsProvider>(

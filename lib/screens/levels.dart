@@ -20,8 +20,7 @@ class Temp extends State<user_levels> {
     return Scaffold(
       appBar: AppBar(
         elevation: 5.0,
-        title: Text(AppLocalizations.of(context)
-            .translate('menu', 'funct_class.class')),
+        title: Text(AppLocalizations.of(context).translate('menu', 'class')),
       ),
       backgroundColor: Colors.grey[200],
       body: SingleChildScrollView(

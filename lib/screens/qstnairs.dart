@@ -261,22 +261,22 @@ class J_estitla3atState extends State<J_estitla3at> {
                                             ],
                                           )),
                                       Padding(
-                                          padding: const EdgeInsets.all(8),
-                                          child: Row(
-                                            children: <Widget>[
-                                              Icon(
-                                                Icons.star,
-                                                color: Colors.black45,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                    "${pollsObj
-                                                        .followersCount}"),
-                                              )
-                                            ],
-                                          )),
+                                        padding: const EdgeInsets.all(8),
+                                        child: Row(
+                                          children: <Widget>[
+                                            Icon(
+                                              Icons.star,
+                                              color: Colors.black45,
+                                            ),
+                                            Padding(
+                                              padding:
+                                              const EdgeInsets.all(8.0),
+                                              child: Text(
+                                                  "${pollsObj.followersCount}"),
+                                            )
+                                          ],
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ],

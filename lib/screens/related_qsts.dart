@@ -38,8 +38,8 @@ class J_waitState extends State<J_wait> {
               Fluttertoast.showToast(msg: 'يوجد خطأ , يرجى التحقق من الانترنت');
             } else {
               return Consumer<QuestionsProvider>(
-                builder: (ctx, onHoldQusetion, _) {
-                  var onHoldQ = onHoldQusetion.questionOnHold;
+                builder: (ctx, onHoldQuestion, _) {
+                  var onHoldQ = onHoldQuestion.questionOnHold;
                   return onHoldQ.isEmpty
                       ? Center(
                           child: Text(
