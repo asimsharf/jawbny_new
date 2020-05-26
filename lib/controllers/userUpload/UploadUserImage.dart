@@ -1,10 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:path/path.dart';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:path/path.dart';
 import 'package:scope_demo/apidata.dart';
 
 class UploadUserImage extends ChangeNotifier {
@@ -37,9 +36,12 @@ class UploadUserImage extends ChangeNotifier {
       //  var url = Uri.parse(APIData.domainApiLink + 'users/$userId/profile-image');
       String fileName = basename(userImage.path);
       print("File base name: $fileName");
-
-      FormData formData =
-          FormData.from({"file": UploadFileInfo(userImage, fileName)});
+//
+//      FormData formData =
+//          FormData.fromMap({"file": UploadFileInfo(userImage, fileName)});
+      FormData formData = FormData.fromMap({
+        "file": await MultipartFile.fromFile(userImage, filename: fileName),
+      });
 
       Response response = await Dio().post(
         APIData.domainApiLink + 'users/$userId/profile-image',

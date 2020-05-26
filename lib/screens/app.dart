@@ -68,9 +68,8 @@ class App extends StatelessWidget {
           update: (context, auth, __) => NotificationProvider(
             auth: auth.token,
           ),
-            create: (_) => null,
-            ),
-
+          create: (_) => null,
+        ),
 
         ///[ProxyProvider]  the 'CommunitiesProvider' widget depends on  [Auth] & [CommunitiesProvider]
         ChangeNotifierProxyProvider<AuthenticationProvider,
