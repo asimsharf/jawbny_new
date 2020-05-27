@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
+
 QuestionsMostAnswered questionsMostAnsweredFromJson(String str) =>
     QuestionsMostAnswered.fromMap(json.decode(str));
 
@@ -30,9 +32,11 @@ class QuestionsMostAnswered {
       };
 }
 
-class DatumAnswerQuestions {
-    var isVotDownloading = false;
-  var isVotUploading = false;
+class DatumAnswerQuestions extends ChangeNotifier {
+  bool isVotDownloading = false;
+  bool isVotUploading = false;
+  bool isvotUp = false;
+  bool isvotdown = false;
   int id;
   String title;
   String body;
@@ -78,6 +82,20 @@ class DatumAnswerQuestions {
     this.answersCount,
     this.createdAt,
   });
+
+  void changIsVotUpValue(bool value) {
+    isVotUploading = value;
+    isvotUp = true;
+    isvotdown = false;
+    notifyListeners();
+  }
+
+  void changIsVotDownValue(bool value) {
+    isVotDownloading = value;
+    isvotdown = true;
+    isvotUp = false;
+    notifyListeners();
+  }
 
   factory DatumAnswerQuestions.fromMap(Map<String, dynamic> json) =>
       DatumAnswerQuestions(

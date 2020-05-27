@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
+
 Questions questionsFromJson(String str) => Questions.fromMap(json.decode(str));
 
 String questionsToJson(Questions data) => json.encode(data.toMap());
@@ -36,7 +38,11 @@ class Questions {
       };
 }
 
-class Datum {
+class Datum extends ChangeNotifier {
+  bool isVotUpLoading = false;
+  bool isVotDownLoading = false;
+  bool isvotUp = false;
+  bool isvotdown = false;
   int id;
   String title;
   String body;
@@ -80,6 +86,20 @@ class Datum {
     this.answersCount,
     this.createdAt,
   });
+
+  void changIsVotUpValue(bool value) {
+    isVotUpLoading = value;
+    isvotUp = true;
+    isvotdown = false;
+    notifyListeners();
+  }
+
+  void changIsVotDownValue(bool value) {
+    isVotDownLoading = value;
+    isvotdown = true;
+    isvotUp = false;
+    notifyListeners();
+  }
 
   factory Datum.fromMap(Map<String, dynamic> json) => Datum(
         id: json["id"] == null ? null : json["id"],

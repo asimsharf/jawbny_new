@@ -20,6 +20,8 @@ class QuestionsProvider extends ChangeNotifier {
   String message;
   String auth;
 
+  bool isVotUpLoading = false;
+
   QuestionsProvider({this.auth});
 
   ///fetch all Questions
@@ -349,6 +351,7 @@ class QuestionsProvider extends ChangeNotifier {
             HttpHeaders.acceptHeader: APIData.acceptHeader,
             HttpHeaders.authorizationHeader: auth,
           });
+
 
       var responseData = json.decode(response.body);
 

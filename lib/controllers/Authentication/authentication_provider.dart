@@ -154,4 +154,26 @@ class AuthenticationProvider extends ChangeNotifier {
     notifyListeners();
     return true;
   }
+
+  /// [*] ............... [LogOUT] .....................
+  Future<void> logOut() async {
+    try {
+      await http.post(
+        Uri.encodeFull(
+            APIData.domainApiLink + "logout?phone=$userPhone&otp=$userOtp"),
+        headers: {
+          HttpHeaders.acceptHeader: APIData.acceptHeader,
+          HttpHeaders.authorizationHeader: _token
+        },
+      );
+
+      _token = null;
+
+      final prefs = await SharedPreferences.getInstance();
+      prefs.clear();
+      notifyListeners();
+    } catch (error) {
+      throw error;
+    }
+  }
 }

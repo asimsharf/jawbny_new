@@ -20,17 +20,17 @@ class ConversationProvider extends ChangeNotifier {
   Conversations conversations;
   List<Datum> _convMessagList = [];
 
-  List<Datum> get singleCnvData {
+  List<Datum> get convMessagList {
     return _convMessagList;
   }
 
-  Future<void> getConvesationMessage() async {
-    print('hhhhhhhhhhhhhhhhhhhhhhhhh');
+  Future<void> getConvesationMessage(String convId) async {
+    print('getConvesationMessage run ......... ');
     try {
       final response = await http.get(
         // http://alliedinds.com/jawebny/api/conversations/2
 
-        Uri.encodeFull(APIData.domainApiLink + 'conversations/$userId'),
+        Uri.encodeFull(APIData.domainApiLink + 'conversations/$convId'),
         headers: {
           HttpHeaders.acceptHeader: APIData.acceptHeader,
           HttpHeaders.contentTypeHeader: APIData.contentType,
@@ -63,23 +63,23 @@ class ConversationProvider extends ChangeNotifier {
   List<AllConversationData> allconversationdata = [];
 
   Future<void> getAllConvesationList() async {
-    print('Conversation lisr run .........');
+    print('Conversation list Run .........');
     try {
       final response = await http.get(
         Uri.encodeFull(APIData.domainApiLink + 'conversations'),
         headers: {
           HttpHeaders.acceptHeader: APIData.acceptHeader,
           HttpHeaders.contentTypeHeader: APIData.contentType,
-          HttpHeaders.authorizationHeader: "Bearer " + auth,
+          HttpHeaders.authorizationHeader: auth,
         },
       );
-       print("$userId");
-      print("&&&&&&&&&&&&&& " + response.statusCode.toString());
-      print (APIData.domainApiLink + 'conversations/$userId');
+      print("Conversation List Response Code : " +
+          response.statusCode.toString());
       print(auth);
+      print(userId);
 
       final responseData = json.decode(response.body);
-      print(responseData..toString());
+      print(' Conversation body .......... ' + responseData.toString());
 
       final conversationsData = allConversationFromJson(response.body);
       allconversation = conversationsData;
@@ -88,6 +88,27 @@ class ConversationProvider extends ChangeNotifier {
         allconversationdata.add(e);
         notifyListeners();
       });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+///////////////////////////////[Conversation Sent Message]///////////////////////////////////////////
+
+  Future<void> postMessage(String message , String reseverID) async {
+    try {
+      final response = await http.post(
+        Uri.encodeFull(APIData.domainApiLink + 'conversations'),
+        headers: {
+          HttpHeaders.acceptHeader: APIData.acceptHeader,
+          HttpHeaders.contentTypeHeader: APIData.contentType,
+          HttpHeaders.authorizationHeader: auth,
+        },
+      );
+      final responseData = json.decode(response.body);
+      if (response.statusCode == 200) {
+        throw HttpException(responseData['message']);
+      }
     } catch (error) {
       throw error;
     }

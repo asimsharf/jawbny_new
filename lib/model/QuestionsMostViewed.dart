@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
+
 QuestionsMostViewed questionsMostViewedFromJson(String str) =>
     QuestionsMostViewed.fromMap(json.decode(str));
 
@@ -32,7 +34,11 @@ class QuestionsMostViewed {
       };
 }
 
-class DatumViewQuestions {
+class DatumViewQuestions extends ChangeNotifier {
+  bool isVotDownloading = false;
+  bool isVotUploading = false;
+  bool isvotUp = false;
+  bool isvotdown = false;
   int id;
   String title;
   String body;
@@ -76,6 +82,20 @@ class DatumViewQuestions {
     this.answersCount,
     this.createdAt,
   });
+
+  void changIsVotUpValue(bool value) {
+    isVotUploading = value;
+    isvotUp = true;
+    isvotdown = false;
+    notifyListeners();
+  }
+
+  void changIsVotDownValue(bool value) {
+    isVotDownloading = value;
+    isvotdown = true;
+    isvotUp = false;
+    notifyListeners();
+  }
 
   factory DatumViewQuestions.fromMap(Map<String, dynamic> json) =>
       DatumViewQuestions(

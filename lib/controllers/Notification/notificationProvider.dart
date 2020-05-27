@@ -29,7 +29,6 @@ class NotificationProvider extends ChangeNotifier {
       var notificationData = notificationsFromJson(response.body);
       notifications = notificationData;
       notifyListeners();
-      print(notifications);
   
     } catch (error) {
       throw error;
