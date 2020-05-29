@@ -26,7 +26,7 @@ class AuthenticationProvider extends ChangeNotifier {
   bool get userLoading => _isLoading;
 
   bool get isAuth {
-    // print('Rebuilding ............');
+    print('Rebuilding ............');
     // print(_token);
     return _token != null;
   }
