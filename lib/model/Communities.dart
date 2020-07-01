@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
+
 Communities communitiesFromJson(String str) =>
     Communities.fromMap(json.decode(str));
 
@@ -37,7 +39,12 @@ class Communities {
       };
 }
 
-class Datum {
+class Datum extends ChangeNotifier {
+  bool isFollowLoading = false;
+  bool isUnFollowLoading = false;
+  bool isFollow = false;
+  bool isUnFollow = false;
+
   int id;
   String name;
   int questionsCount;
@@ -51,6 +58,20 @@ class Datum {
     this.followersCount,
     this.questions,
   });
+
+  void changIsFollowValue(bool value) {
+    isFollowLoading = value;
+    isFollow = true;
+    isUnFollow = false;
+    notifyListeners();
+  }
+
+  void changIsUnFollowValue(bool value) {
+    isUnFollowLoading = value;
+    isFollow = true;
+    isUnFollow = false;
+    notifyListeners();
+  }
 
   factory Datum.fromMap(Map<String, dynamic> json) => Datum(
         id: json["id"] == null ? null : json["id"],

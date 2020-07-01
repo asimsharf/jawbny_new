@@ -1,13 +1,17 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:scope_demo/controllers/Communities/communities_provider.dart';
 import 'package:scope_demo/controllers/app_localizations.dart';
+import 'package:scope_demo/model/Http_Exception.dart';
+import 'package:sweetalert/sweetalert.dart';
 
 class J_com extends StatefulWidget {
   static final String route = "About-route";
   final routes = <String, WidgetBuilder>{};
+
   @override
   State<StatefulWidget> createState() => Temp();
 }
@@ -117,10 +121,36 @@ class Temp extends State<J_com> {
                               ],
                             ),
                           ),
+//
+//                    ChangeNotifierProvider.value(
+//                      value: data.getCommunitiesList.data.length,
+//                    ),
                           InkWell(
                             borderRadius: new BorderRadius.circular(50.0),
-                            onTap: () {
-//                              _do_follow(comData[i].id.toString(), context);
+                            onTap: () async {
+                              try {
+//                                data.changIsFollowValue(true);
+                                await data
+                                    .postCommunitiesFollow(comData[i].id)
+                                    .then(
+                                  (_) {
+//                                    data.changIsUnFollowValue(false);
+                                    SweetAlert.show(
+                                      context,
+                                      title: data.message,
+                                      style: SweetAlertStyle.success,
+                                    );
+                                  },
+                                );
+                              } on HttpException catch (error) {
+                                Fluttertoast.showToast(
+                                  msg: error.toString(),
+                                );
+                              } catch (error) {
+                                Fluttertoast.showToast(
+                                  msg: error.toString(),
+                                );
+                              }
                             },
                             child: Container(
                               padding: const EdgeInsets.only(

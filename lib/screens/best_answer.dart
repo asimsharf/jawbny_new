@@ -33,7 +33,7 @@ class best_answerState extends State<best_answer> {
                 child: Material(
                   elevation: 1,
                   child: Padding(
-                    padding: const EdgeInsets.only(right: 10, left: 20),
+                    padding: const EdgeInsets.only(right: 10, left: 10),
                     child: Column(
                       children: <Widget>[
                         Row(
@@ -41,7 +41,7 @@ class best_answerState extends State<best_answer> {
                             Row(
                               children: <Widget>[
                                 Padding(
-                                  padding: const EdgeInsets.all(12.0),
+                                  padding: const EdgeInsets.all(10.0),
                                   child: Image.asset(
                                     "assets/Avatar.png",
                                     height: 50,
@@ -59,7 +59,7 @@ class best_answerState extends State<best_answer> {
                                   child: AutoSizeText(
                                     "هميم السر",
                                     maxLines: 2,
-                                    style: TextStyle(fontSize: 19),
+                                    style: TextStyle(fontSize: 15),
                                   ),
                                 ),
                                 Container(
@@ -74,7 +74,7 @@ class best_answerState extends State<best_answer> {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(
-                              right: 20.0, left: 20, bottom: 20),
+                              right: 10.0, left: 10, bottom: 20),
                           child: Row(
                             children: <Widget>[
                               Column(
@@ -96,7 +96,7 @@ class best_answerState extends State<best_answer> {
                                     width: 300,
                                     child: Padding(
                                       padding: const EdgeInsets.only(
-                                          right: 20.0, left: 20),
+                                          right: 10.0, left: 10),
                                       child: Text(
                                         "هو اسم يستخدم لوصف أي نوع من ذواكر الوصول العشوائي (الرام) التي لا تفقد معلوماتها",
                                         style: TextStyle(fontSize: 14),

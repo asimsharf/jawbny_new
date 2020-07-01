@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -49,7 +50,7 @@ class CommunitiesProvider extends ChangeNotifier {
       final responseData =
           await http.get(Uri.encodeFull(APIData.communitiesifollow), headers: {
         HttpHeaders.acceptHeader: APIData.acceptHeader,
-            HttpHeaders.AUTHORIZATION: auth,
+        HttpHeaders.AUTHORIZATION: auth,
       });
       isLoading = false;
       if (responseData.statusCode == 200) {
@@ -74,9 +75,9 @@ class CommunitiesProvider extends ChangeNotifier {
     try {
       final responseData =
           await http.get(Uri.encodeFull(APIData.communities), headers: {
-        HttpHeaders.acceptHeader: APIData.acceptHeader,
+            HttpHeaders.acceptHeader: APIData.acceptHeader,
             HttpHeaders.AUTHORIZATION: auth,
-      });
+          });
       isLoading = false;
       if (responseData.statusCode == 200) {
         final communities = communitiesFromJson(responseData.body);
@@ -94,19 +95,28 @@ class CommunitiesProvider extends ChangeNotifier {
 
   ///post all follow Communities
   Future<void> postCommunitiesFollow(int communityID) async {
+    print("###postCommunitiesFollow $communityID###");
     try {
-      final responseData = await http
-          .get(Uri.encodeFull(APIData.follow + "/$communityID"), headers: {
-        HttpHeaders.acceptHeader: APIData.acceptHeader,
-        HttpHeaders.AUTHORIZATION: auth,
-      });
+      final responseData = await http.post(
+//          communities/" + APIData.follow + "/$communityID
+          Uri.encodeFull(
+              "http://alliedinds.com/jawebny/api/communities/follow/$communityID"),
+          headers: {
+            HttpHeaders.acceptHeader: APIData.acceptHeader,
+            HttpHeaders.AUTHORIZATION: auth,
+          });
+      print(responseData.body);
       isLoading = false;
       if (responseData.statusCode == 200) {
+        print("you are following (الكتب) community now");
+        final res = json.decode(responseData.body) as Map<String, dynamic>;
+        message = res['message'];
 //        {
 //          "message": "you are following (الكتب) community now"
 //        }
         notifyListeners();
       }
+      notifyListeners();
     } catch (err) {
       message = err.toString();
       isLoading = false;

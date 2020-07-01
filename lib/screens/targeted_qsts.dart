@@ -79,9 +79,9 @@ class J_targetState extends State<J_target> {
                                   children: <Widget>[
                                     Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                          MainAxisAlignment.spaceEvenly,
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       children: <Widget>[
                                         Row(
                                           children: <Widget>[
@@ -89,7 +89,7 @@ class J_targetState extends State<J_target> {
                                               alignment: Alignment.topRight,
                                               child: Padding(
                                                 padding:
-                                                const EdgeInsets.all(8.0),
+                                                    const EdgeInsets.all(8.0),
                                                 child: Image.asset(
                                                   "assets/Avatar.png",
                                                   height: 50,
@@ -101,36 +101,36 @@ class J_targetState extends State<J_target> {
                                         ),
                                         Padding(
                                           padding:
-                                          const EdgeInsets.only(top: 8.0),
+                                              const EdgeInsets.only(top: 8.0),
                                           child: Column(
                                             mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
+                                                MainAxisAlignment.spaceEvenly,
                                             crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                                CrossAxisAlignment.start,
                                             children: <Widget>[
                                               Padding(
                                                 padding: const EdgeInsets.only(
                                                     right: 15.0),
                                                 child: AutoSizeText(
                                                   uesrQtionsIfollwData[i]
-                                                  ["user_id"],
+                                                      ["user_id"],
                                                   maxLines: 2,
                                                   style: TextStyle(
                                                       fontSize: 14,
                                                       fontWeight:
-                                                      FontWeight.w500),
+                                                          FontWeight.w500),
                                                 ),
                                               ),
                                               Container(
                                                 width: 300,
                                                 child: Padding(
                                                   padding:
-                                                  const EdgeInsets.only(
-                                                      right: 10.0),
+                                                      const EdgeInsets.only(
+                                                          right: 10.0),
                                                   child: AutoSizeText(
                                                     "سأل: مايو 23,2019   في: مجتمع الكتب",
                                                     style:
-                                                    TextStyle(fontSize: 14),
+                                                        TextStyle(fontSize: 14),
                                                   ),
                                                 ),
                                               ),
@@ -158,13 +158,13 @@ class J_targetState extends State<J_target> {
                                                   ),
                                                   Padding(
                                                     padding:
-                                                    const EdgeInsets.only(
-                                                        right: 10, top: 5),
+                                                        const EdgeInsets.only(
+                                                            right: 10, top: 5),
                                                     child: Text(
                                                       "2",
                                                       style: TextStyle(
                                                           fontWeight:
-                                                          FontWeight.bold),
+                                                              FontWeight.bold),
                                                     ),
                                                   ),
                                                   IconButton(
@@ -182,9 +182,9 @@ class J_targetState extends State<J_target> {
                                         ),
                                         Column(
                                           mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
+                                              MainAxisAlignment.spaceEvenly,
                                           crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Container(
                                               child: Padding(
@@ -192,10 +192,10 @@ class J_targetState extends State<J_target> {
                                                     right: 20.0),
                                                 child: AutoSizeText(
                                                   uesrQtionsIfollwData[i]
-                                                  ["title"],
+                                                      ["title"],
                                                   maxLines: 2,
                                                   style:
-                                                  TextStyle(fontSize: 14),
+                                                      TextStyle(fontSize: 14),
                                                 ),
                                               ),
                                             ),
@@ -206,9 +206,9 @@ class J_targetState extends State<J_target> {
                                                     right: 10.0),
                                                 child: Text(
                                                   uesrQtionsIfollwData[i]
-                                                  ["body"],
+                                                      ["body"],
                                                   style:
-                                                  TextStyle(fontSize: 14),
+                                                      TextStyle(fontSize: 14),
                                                 ),
                                               ),
                                             ),
@@ -230,7 +230,7 @@ class J_targetState extends State<J_target> {
                                                 ),
                                                 Padding(
                                                   padding:
-                                                  const EdgeInsets.all(8.0),
+                                                      const EdgeInsets.all(8.0),
                                                   child: Text("65"),
                                                 )
                                               ],
@@ -247,7 +247,7 @@ class J_targetState extends State<J_target> {
                                                 ),
                                                 Padding(
                                                   padding:
-                                                  const EdgeInsets.all(8.0),
+                                                      const EdgeInsets.all(8.0),
                                                   child: Text("8"),
                                                 )
                                               ],
@@ -264,7 +264,7 @@ class J_targetState extends State<J_target> {
                                                 ),
                                                 Padding(
                                                   padding:
-                                                  const EdgeInsets.all(8.0),
+                                                      const EdgeInsets.all(8.0),
                                                   child: Text("33"),
                                                 )
                                               ],
@@ -279,7 +279,7 @@ class J_targetState extends State<J_target> {
                                                 ),
                                                 Padding(
                                                   padding:
-                                                  const EdgeInsets.all(8.0),
+                                                      const EdgeInsets.all(8.0),
                                                   child: Text("0"),
                                                 )
                                               ],
